@@ -21,7 +21,7 @@
         @include('layouts.sidebar')
 
         {{-- Main Content --}}
-        <main class="page-content">
+        <main class="page-content flex-1 p-4 lg:p-8 overflow-x-auto ">
             @yield('content')
         </main>
     </div>
