@@ -16,7 +16,7 @@ class DashboardController extends Controller
         $user = Auth::user();
         if ($user->role === 'admin') {
             return view('admin.index');
-        }
+        } 
     }
 
 }

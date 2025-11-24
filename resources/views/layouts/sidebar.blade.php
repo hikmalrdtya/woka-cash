@@ -42,7 +42,7 @@
                 <ul class="flex flex-col gap-4 mb-6">
                     <!-- Menu Item Dashboard -->
                     <li>
-                        <a href="#" @click.prevent="selected = (selected === 'Dashboard' ? '':'Dashboard')"
+                        <a href="{{ route('admin.dashboard') }}" @click.prevent="selected = (selected === 'Dashboard' ? '':'Dashboard')"
                             class="menu-item group"
                             :class="(selected === 'Dashboard') || (page === 'ecommerce' || page === 'analytics' ||
                                 page === 'marketing' || page === 'crm' || page === 'stocks') ?
@@ -60,33 +60,8 @@
                             <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">
                                 Dashboard
                             </span>
-
-                            <svg class="menu-item-arrow"
-                                :class="[(selected === 'Dashboard') ? 'menu-item-arrow-active' :
-                                    'menu-item-arrow-inactive', sidebarToggle ? 'lg:hidden' : ''
-                                ]"
-                                width="20" height="20" viewBox="0 0 20 20" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path d="M4.79175 7.39584L10.0001 12.6042L15.2084 7.39585" stroke=""
-                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
                         </a>
-
-                        <!-- Dropdown Menu Start -->
-                        <div class="overflow-hidden transform translate"
-                            :class="(selected === 'Dashboard') ? 'block' : 'hidden'">
-                            <ul :class="sidebarToggle ? 'lg:hidden' : 'flex'"
-                                class="flex flex-col gap-1 mt-2 menu-dropdown pl-9">
-                                <li>
-                                    <a href="index.html" class="menu-dropdown-item group"
-                                        :class="page === 'ecommerce' ? 'menu-dropdown-item-active' :
-                                            'menu-dropdown-item-inactive'">
-                                        eCommerce
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <!-- Dropdown Menu End -->
+                      
                     </li>
                     <!-- Menu Item Dashboard -->
 
@@ -187,122 +162,6 @@
                     </li>
                     <!-- Menu Item Forms -->
 
-                    <!-- Menu Item Tables -->
-                    <li>
-                        <a href="#" @click.prevent="selected = (selected === 'Tables' ? '':'Tables')"
-                            class="menu-item group"
-                            :class="(selected === 'Tables') || (page === 'basicTables' ||
-                                page === 'dataTables') ?
-                            'menu-item-active' : 'menu-item-inactive'">
-                            <svg :class="(selected === 'Tables') || (page === 'basicTables' ||
-                                page === 'dataTables') ?
-                            'menu-item-icon-active' : 'menu-item-icon-inactive'"
-                                width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M3.25 5.5C3.25 4.25736 4.25736 3.25 5.5 3.25H18.5C19.7426 3.25 20.75 4.25736 20.75 5.5V18.5C20.75 19.7426 19.7426 20.75 18.5 20.75H5.5C4.25736 20.75 3.25 19.7426 3.25 18.5V5.5ZM5.5 4.75C5.08579 4.75 4.75 5.08579 4.75 5.5V8.58325L19.25 8.58325V5.5C19.25 5.08579 18.9142 4.75 18.5 4.75H5.5ZM19.25 10.0833H15.416V13.9165H19.25V10.0833ZM13.916 10.0833L10.083 10.0833V13.9165L13.916 13.9165V10.0833ZM8.58301 10.0833H4.75V13.9165H8.58301V10.0833ZM4.75 18.5V15.4165H8.58301V19.25H5.5C5.08579 19.25 4.75 18.9142 4.75 18.5ZM10.083 19.25V15.4165L13.916 15.4165V19.25H10.083ZM15.416 19.25V15.4165H19.25V18.5C19.25 18.9142 18.9142 19.25 18.5 19.25H15.416Z"
-                                    fill="" />
-                            </svg>
-
-                            <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">
-                                Tables
-                            </span>
-
-                            <svg class="menu-item-arrow absolute right-2.5 top-1/2 -translate-y-1/2 stroke-current"
-                                :class="[(selected === 'Tables') ? 'menu-item-arrow-active' :
-                                    'menu-item-arrow-inactive', sidebarToggle ? 'lg:hidden' : ''
-                                ]"
-                                width="20" height="20" viewBox="0 0 20 20" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path d="M4.79175 7.39584L10.0001 12.6042L15.2084 7.39585" stroke=""
-                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </a>
-
-                        <!-- Dropdown Menu Start -->
-                        <div class="overflow-hidden transform translate"
-                            :class="(selected === 'Tables') ? 'block' : 'hidden'">
-                            <ul :class="sidebarToggle ? 'lg:hidden' : 'flex'"
-                                class="flex flex-col gap-1 mt-2 menu-dropdown pl-9">
-                                <li>
-                                    <a href="basic-tables.html" class="menu-dropdown-item group"
-                                        :class="page === 'basicTables' ? 'menu-dropdown-item-active' :
-                                            'menu-dropdown-item-inactive'">
-                                        Basic Tables
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <!-- Dropdown Menu End -->
-                    </li>
-                    <!-- Menu Item Tables -->
-
-                    <!-- Menu Item Pages -->
-                    <li>
-                        <a href="#" @click.prevent="selected = (selected === 'Pages' ? '':'Pages')"
-                            class="menu-item group"
-                            :class="(selected === 'Pages') || (page === 'fileManager' ||
-                                page === 'pricingTables' || page === 'blank' || page === 'page404' ||
-                                page === 'page500' || page === 'page503' || page === 'success' ||
-                                page === 'faq' || page === 'comingSoon' || page === 'maintenance') ?
-                            'menu-item-active' : 'menu-item-inactive'">
-                            <svg :class="(selected === 'Pages') || (page === 'fileManager' ||
-                                page === 'pricingTables' || page === 'blank' || page === 'page404' ||
-                                page === 'page500' || page === 'page503' || page === 'success' ||
-                                page === 'faq' || page === 'comingSoon' || page === 'maintenance') ?
-                            'menu-item-icon-active' : 'menu-item-icon-inactive'"
-                                width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M8.50391 4.25C8.50391 3.83579 8.83969 3.5 9.25391 3.5H15.2777C15.4766 3.5 15.6674 3.57902 15.8081 3.71967L18.2807 6.19234C18.4214 6.333 18.5004 6.52376 18.5004 6.72268V16.75C18.5004 17.1642 18.1646 17.5 17.7504 17.5H16.248V17.4993H14.748V17.5H9.25391C8.83969 17.5 8.50391 17.1642 8.50391 16.75V4.25ZM14.748 19H9.25391C8.01126 19 7.00391 17.9926 7.00391 16.75V6.49854H6.24805C5.83383 6.49854 5.49805 6.83432 5.49805 7.24854V19.75C5.49805 20.1642 5.83383 20.5 6.24805 20.5H13.998C14.4123 20.5 14.748 20.1642 14.748 19.75L14.748 19ZM7.00391 4.99854V4.25C7.00391 3.00736 8.01127 2 9.25391 2H15.2777C15.8745 2 16.4468 2.23705 16.8687 2.659L19.3414 5.13168C19.7634 5.55364 20.0004 6.12594 20.0004 6.72268V16.75C20.0004 17.9926 18.9931 19 17.7504 19H16.248L16.248 19.75C16.248 20.9926 15.2407 22 13.998 22H6.24805C5.00541 22 3.99805 20.9926 3.99805 19.75V7.24854C3.99805 6.00589 5.00541 4.99854 6.24805 4.99854H7.00391Z"
-                                    fill="" />
-                            </svg>
-
-                            <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">
-                                Pages
-                            </span>
-
-                            <svg class="menu-item-arrow absolute right-2.5 top-1/2 -translate-y-1/2 stroke-current"
-                                :class="[(selected === 'Pages') ? 'menu-item-arrow-active' :
-                                    'menu-item-arrow-inactive', sidebarToggle ? 'lg:hidden' : ''
-                                ]"
-                                width="20" height="20" viewBox="0 0 20 20" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path d="M4.79175 7.39584L10.0001 12.6042L15.2084 7.39585" stroke=""
-                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </a>
-
-                        <!-- Dropdown Menu Start -->
-                        <div class="overflow-hidden transform translate"
-                            :class="(selected === 'Pages') ? 'block' : 'hidden'">
-                            <ul :class="sidebarToggle ? 'lg:hidden' : 'flex'"
-                                class="flex flex-col gap-1 mt-2 menu-dropdown pl-9">
-                                <li>
-                                    <a href="blank.html" class="menu-dropdown-item group"
-                                        :class="page === 'blank' ? 'menu-dropdown-item-active' :
-                                            'menu-dropdown-item-inactive'">
-                                        Blank Page
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="404.html" class="menu-dropdown-item group"
-                                        :class="page === 'page404' ? 'menu-dropdown-item-active' :
-                                            'menu-dropdown-item-inactive'">
-                                        404 Error
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <!-- Dropdown Menu End -->
-                    </li>
-                    <!-- Menu Item Pages -->
-                     <li>
-                        <form action="{{ route('logout') }}" method="post">
-                            @csrf
-                            <button type="submit">Logout</button>
-                        </form>
-                     </li>
                 </ul>
             </div>
 
