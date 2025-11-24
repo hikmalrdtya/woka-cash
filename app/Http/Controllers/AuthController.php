@@ -22,13 +22,13 @@ class AuthController extends Controller
             $user = Auth::user();
 
             if($user->role === 'admin'){
-                return redirect()->route('admin.index')->with('success','Anda berhasil login sebagai Admin');
+                return redirect()->route('admin.dashboard')->with('success','Anda berhasil login sebagai Admin');
             }
             elseif($user->role === 'finance'){
-                return redirect()->route('finance.index')->with('success','Anda berhasil login sebagai Finance');
+                return redirect()->route('finance.dashboard')->with('success','Anda berhasil login sebagai Finance');
             }
             elseif($user->role === 'staff'){
-                return redirect()->route('staff.index')->with('success','Anda berhasil login sebagai Staff');
+                return redirect()->route('staff.dashboard')->with('success','Anda berhasil login sebagai Staff');
             } else{
                 Auth::logout();
                 return redirect()->route('login')->with('error','Pengguna tidak di temukan');
