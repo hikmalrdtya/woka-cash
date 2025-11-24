@@ -92,7 +92,8 @@
                                     <span class="p-2 text-gray-400 bg-white dark:bg-gray-900 sm:px-5 sm:py-2">Or</span>
                                 </div>
                             </div>
-                            <form>
+                            <form action="{{ route('login.post') }}" method="POST">
+                                @csrf
                                 <div class="space-y-5">
                                     <!-- Email -->
                                     <div>
@@ -110,7 +111,7 @@
                                             Password<span class="text-error-500">*</span>
                                         </label>
                                         <div x-data="{ showPassword: false }" class="relative">
-                                            <input :type="showPassword ? 'text' : 'password'"
+                                            <input name="password" :type="showPassword ? 'text' : 'password'"
                                                 placeholder="Enter your password"
                                                 class="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent py-2.5 pl-4 pr-11 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800" />
                                             <span @click="showPassword = !showPassword"
@@ -160,7 +161,7 @@
                                     <!-- Button -->
                                     <div>
                                         <button
-                                            class="flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">
+                                            type="submit" class="flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">
                                             Sign In
                                         </button>
                                     </div>

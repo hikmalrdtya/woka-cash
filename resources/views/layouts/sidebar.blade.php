@@ -297,6 +297,12 @@
                         <!-- Dropdown Menu End -->
                     </li>
                     <!-- Menu Item Pages -->
+                     <li>
+                        <form action="{{ route('logout') }}" method="post">
+                            @csrf
+                            <button type="submit">Logout</button>
+                        </form>
+                     </li>
                 </ul>
             </div>
 
