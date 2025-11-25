@@ -3,8 +3,6 @@
 @section('title', 'User Management | WokaCash')
 
 @section('content')
-
- 
     <!-- ===== Page Wrapper Start ===== -->
     <div class="flex h-screen overflow-hidden flex-col">
 

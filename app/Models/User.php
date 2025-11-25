@@ -26,11 +26,31 @@ class User extends Authenticatable
     ];
 
     public function leaderBranch() {
-        return $this->hasOne(Branch::class, 'userId');
+        return $this->hasMany(Branch::class, 'user_id');
     }
 
     public function staffBranch() {
-        return $this->hasOne(BranchUser::class, 'userId');
+        return $this->belongsToMany(Branch::class, 'branch_users');
+    }
+
+    public function incomes() {
+        return $this->hasMany(Income::class, 'user_id');
+    }
+
+    public function budgetRequest() {
+        return $this->hasMany(budgetRequest::class, 'user_id');
+    }
+
+    public function userApproved() {
+        return $this->hasMany(budgetRequest::class, 'user_id');
+    }
+
+    public function expense() {
+        return $this->hasMany(Expense::class, 'user_id');
+    }
+
+    public function verifiedExpense() {
+        return $this->hasMany(Expense::class, 'verified_by');
     }
 
     /**
