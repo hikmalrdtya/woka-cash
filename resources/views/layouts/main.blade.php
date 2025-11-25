@@ -444,8 +444,10 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                             <a class="flex items-center text-gray-700 dark:text-gray-400" href="#"
                                 @click.prevent="dropdownOpen = ! dropdownOpen">
                                 <span class="mr-3 h-11 w-11 overflow-hidden rounded-full">
-                                    <img src="{{ asset('images/user/owner.jpg') }}" alt="User" />
+                                    <img src="{{ Auth::user()->photo_profile ? asset('storage/' . Auth::user()->photo_profile) : asset('asset/profile.jpg') }}"
+                                        class="h-full w-full object-cover" alt="Profile">
                                 </span>
+
 
                                 <span class="text-theme-sm mr-1 block font-medium"> {{ Auth::user()->name }} </span>
 
