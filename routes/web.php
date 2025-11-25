@@ -21,3 +21,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
    Route::get('/dashboard',[DashboardController::class,'index'])->name('dashboard');
    Route::resource('user', UserController::class);
 });
+
+Route::prefix('staff')->name('staff.')->middleware(['auth', 'role:staff'])->group(function () {
+   Route::get('/dashboard',[DashboardController::class,'index'])->name('dashboard');
+});
