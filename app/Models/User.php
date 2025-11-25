@@ -25,6 +25,14 @@ class User extends Authenticatable
         'photo_profile',
     ];
 
+    public function leaderBranch() {
+        return $this->hasOne(Branch::class, 'userId');
+    }
+
+    public function staffBranch() {
+        return $this->hasOne(BranchUser::class, 'userId');
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *

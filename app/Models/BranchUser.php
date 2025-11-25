@@ -4,16 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Branch extends Model
+class BranchUser extends Model
 {
-    //
     protected $fillable = [
+        'branchId',
         'userId',
-        'name',
-        'alamat'
+        'roleInBranch'
     ];
 
-    public function leaderBranch() {
+    public function branchStaff()
+    {
         return $this->belongsTo(User::class, 'userId');
     }
 }
