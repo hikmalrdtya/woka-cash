@@ -73,8 +73,8 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                         <!-- Hamburger Toggle BTN -->
 
                         <a href="index.html" class="lg:hidden">
-                            <img class="dark:hidden" src="{{ asset('images/logo/logo.svg') }}" alt="Logo" />
-                            <img class="hidden dark:block" src="{{ asset('images/logo/logo-dark.svg') }}" alt="Logo" />
+                            <img class="dark:hidden" src="/asset/logo_WokaCash_hitam-d.png" alt="Logo" width="160" height="160" />
+                            <img class="hidden dark:block" src="/asset/logo_WokaCash_putih-d.png" alt="Logo" width="160" height="160" />
                         </a>
 
                         <!-- Application nav menu button -->

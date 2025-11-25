@@ -10,12 +10,12 @@
         class="flex items-center gap-2 pt-8 sidebar-header pb-7">
         <a href="index.html">
             <span class="logo" :class="sidebarToggle ? 'hidden' : ''">
-                <img class="dark:hidden" src="{{ asset('images/logo/logo.svg') }}" alt="Logo" />
-                <img class="hidden dark:block" src="{{ asset('images/logo/logo-dark.svg') }}" alt="Logo" />
+                <img class="dark:hidden" src="/asset/logo_WokaCash_hitam-d.png" alt="Logo" width="160" height="160"/>
+                <img class="hidden dark:block" src="/asset/logo_WokaCash_putih-d.png" alt="Logo" width="160" height="160" />
             </span>
 
             <img class="logo-icon" :class="sidebarToggle ? 'lg:block' : 'hidden'"
-                src="{{ asset('images/logo/logo-icon.svg') }}" alt="Logo" />
+                src="/asset/logo_WokaCash.png" alt="Logo"  />
         </a>
     </div>
     <!-- SIDEBAR HEADER -->

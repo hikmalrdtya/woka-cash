@@ -82,12 +82,6 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <!-- Checkbox -->
-                                    <div class="flex items-center justify-between">
-                                        <a href="/reset-password.html"
-                                            class="text-sm text-brand-500 hover:text-brand-600 dark:text-brand-400">Forgot
-                                            password?</a>
-                                    </div>
                                     <!-- Button -->
                                     <div>
                                         <button
@@ -97,14 +91,6 @@
                                     </div>
                                 </div>
                             </form>
-                            <div class="mt-5">
-                                <p
-                                    class="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-start">
-                                    Don't have an account?
-                                    <a href="/signup.html"
-                                        class="text-brand-500 hover:text-brand-600 dark:text-brand-400">Sign Up</a>
-                                </p>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -116,7 +102,7 @@
                     <include src="./partials/common-grid-shape.html"></include>
                     <div class="flex flex-col items-center max-w-xs">
                         <a href="index.html" class="block mb-4">
-                            <img src="/asset/WhatsApp_Image_2025-11-24_at_15.21.06-removebg-preview.png" alt="Logo" width="200" height="200" />
+                            <img src="/asset/logo_WokaCash_putih.png" alt="Logo" width="200" height="200" />
                         </a>
                         <p class="text-center text-gray-400 dark:text-white/60">
                             pencatatan uang masuk & keluar internal perusahaan
