@@ -7,13 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 class BranchUser extends Model
 {
     protected $fillable = [
-        'branchId',
-        'userId',
-        'roleInBranch'
+        'branch_id',
+        'user_id',
+        'role_in_branch'
     ];
 
-    public function branchStaff()
+    public function branch()
     {
-        return $this->belongsTo(User::class, 'userId');
+        return $this->belongsTo(Branch::class, 'branch_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }
