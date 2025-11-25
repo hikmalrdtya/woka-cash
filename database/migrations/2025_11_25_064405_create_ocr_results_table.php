@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('branches', function (Blueprint $table) {
+        Schema::create('ocr_results', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->string('name', 255);
-            $table->text('alamat');
+            $table->foreignId('expense_id')->constrained('expenses')->cascadeOnDelete();
+            $table->text('raw_text');
+            $table->decimal('parsed_total', 15, 2);
+            $table->date('parsed_date');
+            $table->string('parsed_store', 255);
             $table->timestamps();
         });
     }
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('branches');
+        Schema::dropIfExists('ocr_results');
     }
 };
