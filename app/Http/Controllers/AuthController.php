@@ -34,6 +34,7 @@ class AuthController extends Controller
                 return redirect()->route('login')->with('error','Pengguna tidak di temukan');
             }
         }
+        return back()->withErrors(['email' => 'Email atau Password Salah!'])->onlyInput('email');
     }
     public function Logout(Request $request){
         Auth::logout();

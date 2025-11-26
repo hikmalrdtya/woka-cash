@@ -12,7 +12,6 @@
         }
     </script>
     <link rel="stylesheet" href="{{ asset(path: 'css/style.css') }}">
-    @vite(['resources/js/app.js'])
 
     <title>@yield('title')</title>
 </head>
@@ -39,6 +38,34 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
 
         {{-- Main Content --}}
         <main class="page-content flex-1 p-4 lg:p-8 overflow-x-auto overflow-hidden">
+            @if (session('success'))
+                <div id="alert-success" class="fixed z-999999 top-6 left-1/2 -translate-x-1/2 z-[9999]
+                       px-4 py-3 text-sm text-white rounded-xl shadow-lg
+                       bg-brand-500 w-max max-w-[90%]
+                       animate-toast-in flex items-center gap-3">
+
+                    <!-- Icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                        <polyline points="22 4 12 14.01 9 11.01" />
+                    </svg>
+
+                    <!-- Text -->
+                    <span>{{ session('success') }}</span>
+                </div>
+
+                <script>
+                    setTimeout(() => {
+                        const el = document.getElementById('alert-success');
+                        if (el) {
+                            el.classList.add('opacity-0', 'translate-y-2', 'transition', 'duration-700');
+                            setTimeout(() => el.remove(), 800);
+                        }
+                    }, 5000);
+                </script>
+            @endif
+
             <header x-data="{ menuToggle: false }"
                 class="sticky top-0 z-99999 flex w-full border-gray-200 bg-white lg:border-b dark:border-gray-800 dark:bg-gray-900">
                 <div class="flex grow flex-col items-center justify-between lg:flex-row lg:px-6">
@@ -538,6 +565,9 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                     </div>
                 </div>
             </header>
+
+
+
 
             @yield('content')
         </main>
