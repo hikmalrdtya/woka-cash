@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Branch;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class BranchController extends Controller
@@ -13,7 +15,8 @@ class BranchController extends Controller
     public function index()
     {
         //
-        return view('admin.branch.index');
+        $branches = Branch::with('user')->orderBy('created_at', 'desc')->paginate(10);
+        return view('admin.branch.index', compact('branches'));
     }
 
     /**
@@ -21,7 +24,8 @@ class BranchController extends Controller
      */
     public function create()
     {
-        //
+        $users = User::whereIn('role', ['finance', 'staff'])->get();
+        return view('admin.branch.create', compact('users'));
     }
 
     /**
@@ -29,7 +33,19 @@ class BranchController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'user' => 'required|string',
+            'name_branches' => 'required|string|max:255',
+            'address' => 'required',
+        ]);
+
+        Branch::create([
+            'user_id' => $data['user'],
+            'name' => $data['name_branches'],
+            'address' => $data['address']
+        ]);
+
+        return redirect()->route('admin.branch.index')->with('success', 'Branch successfuly added');
     }
 
     /**
@@ -43,24 +59,41 @@ class BranchController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Branch $branch)
     {
-        //
+        $users = User::whereIn('role', ['finance', 'staff'])->get();
+        return view('admin.branch.edit', compact(['branch', 'users']));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Branch $branch)
     {
-        //
+        $data = $request->validate([
+            'user' => 'required|string',
+            'name_branches' => 'required|string|max:255',
+            'address' => 'required',
+        ]);
+
+        $branch->update([
+            'user_id' => $data['user'],
+            'name' => $data['name_branches'],
+            'address' => $data['address']
+        ]);
+
+        return redirect()->route('admin.branch.index')->with('success', 'Branch successfuly updated');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Branch $branch)
     {
-        //
+        if ($branch) {
+            $branch->delete();
+            return redirect()->back()->with('success', 'Branch successfuly deleted');
+        }
+        return redirect()->back()->with('error', 'Branch not found');
     }
 }

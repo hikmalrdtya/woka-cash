@@ -4,7 +4,7 @@
 
 @section('content')
 
- 
+
     <!-- ===== Page Wrapper Start ===== -->
     <div class="flex h-screen overflow-hidden flex-col">
 
@@ -16,8 +16,7 @@
                     <form>
                         <div class="relative">
                             <span class="absolute top-1/2 left-4 -translate-y-1/2">
-                                <svg class="fill-gray-500 dark:fill-gray-400" width="20" height="20"
-                                    viewBox="0 0 20 20">
+                                <svg class="fill-gray-500 dark:fill-gray-400" width="20" height="20" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" clip-rule="evenodd"
                                         d="M3.04175 9.37363C3.04175 5.87693 5.87711 3.04199 9.37508 3.04199C12.8731 3.04199 15.7084 5.87693 15.7084 9.37363C15.7084 12.8703 12.8731 15.7053 9.37508 15.7053C5.87711 15.7053 3.04175 12.8703 3.04175 9.37363ZM9.37508 1.54199C5.04902 1.54199 1.54175 5.04817 1.54175 9.37363C1.54175 13.6991 5.04902 17.2053 9.37508 17.2053C11.2674 17.2053 13.003 16.5344 14.357 15.4176L17.177 18.238C17.4699 18.5309 17.9448 18.5309 18.2377 18.238C18.5306 17.9451 18.5306 17.4703 18.2377 17.1774L15.418 14.3573C16.5365 13.0033 17.2084 11.2669 17.2084 9.37363C17.2084 5.04817 13.7011 1.54199 9.37508 1.54199Z" />
                                 </svg>
@@ -33,9 +32,9 @@
                 </div>
 
                 <!-- CREATE USERS BUTTON -->
-                <a href="{{ route('admin.user.create') }}"
+                <a href="{{ route('admin.branch.create') }}"
                     class="bg-brand-500 px-4 py-2 rounded-lg text-white text-sm shadow hover:bg-brand-600 transition">
-                    Create Users
+                    Create Branches
                 </a>
             </div>
 
@@ -44,7 +43,7 @@
 
                 <!-- Title -->
                 <h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-4">
-                    Daftar Users
+                    List Branches
                 </h2>
 
                 <!-- Table Wrapper - Full Width -->
@@ -54,33 +53,25 @@
                             <tr class="bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
                                 <th class="py-3 px-4 text-gray-600 dark:text-white">No</th>
                                 <th class="py-3 px-4 text-gray-600 dark:text-white">Name</th>
-                                <th class="py-3 px-4 text-gray-600 dark:text-white">Email</th>
-                                <th class="py-3 px-4 text-gray-600 dark:text-white">Role</th>
-                                <th class="py-3 px-4 text-gray-600 dark:text-white">Cabang Perusahaan</th>
+                                <th class="py-3 px-4 text-gray-600 dark:text-white">Leader Name</th>
+                                <th class="py-3 px-4 text-gray-600 dark:text-white">Address</th>
                                 <th class="py-3 px-4 text-gray-600 dark:text-white">Actions</th>
                             </tr>
                         </thead>
 
                         <tbody>
-                            @forelse ($users as $no => $row)
+                            @forelse ($branches as $no => $row)
                                 <tr
                                     class="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition">
                                     <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $no + 1 }}</td>
-                                    <td class="py-3 px-4 text-gray-700 dark:text-white">
-                                        <div class="flex rounded items-center justify-around">
-                                            <img src="{{ asset('storage/' . $row->photo_profile) }}" alt="photo profile"
-                                                srcset="" width="50px">
-                                            {{ $row->name }}
-                                        </div>
-                                    </td>
-                                    <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->email }}</td>
-                                    <td class="py-3 px-4 text-gray-700 dark:text-white">{{ ucfirst($row->role) }}</td>
-                                    <td class="py-3 px-4 text-gray-700 dark:text-white">Jakarta</td>
+                                    <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->name }}</td>
+                                    <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->user->name }}</td>
+                                    <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->address }}</td>
                                     <td class="py-3 px-4 flex gap-3">
-                                        <a href="{{ route('admin.user.edit', $row->id) }}"
+                                        <a href="{{ route('admin.branch.edit', $row->id) }}"
                                             class="text-white bg-warning-500 p-3 rounded-lg hover:underline ml-2">Edit</a>
                                         <form id="delete-form-{{ $row->id }}"
-                                            action="{{ route('admin.user.destroy', $row->id) }}" method="POST">
+                                            action="{{ route('admin.branch.destroy', $row->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
 
@@ -95,7 +86,7 @@
                             @empty
                                 <tr>
                                     <td colspan="8" class="text-center text-gray- py-4">
-                                        <i class="bi bi-info-circle"></i> Belum ada data Kegiatan.
+                                        <i class="bi bi-info-circle"></i> No branches data yet.
                                     </td>
                                 </tr>
                             @endforelse

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\BranchController;
+use App\Http\Controllers\Admin\BranchUserController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
@@ -22,6 +23,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
    Route::get('/dashboard',[DashboardController::class,'index'])->name('dashboard');
    Route::resource('user', UserController::class);
    Route::resource('branch', BranchController::class);
+   Route::resource('branchUser', BranchUserController::class);
 });
 
 Route::prefix('staff')->name('staff.')->middleware(['auth', 'role:staff'])->group(function () {

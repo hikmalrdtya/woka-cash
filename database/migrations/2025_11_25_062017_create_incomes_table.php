@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('project_id')->constrained('projects')->cascadeOnDelete();
             $table->foreignId('branch_id')->constrained('branches')->cascadeOnDelete();
-            $table->decimal('jumlah', 15, 2);
+            $table->decimal('amount', 15, 2);
             $table->text('description');
             $table->date('date');
             $table->timestamps();
