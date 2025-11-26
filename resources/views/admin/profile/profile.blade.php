@@ -106,7 +106,8 @@
 
                     {{-- SIMPAN PERUBAHAN --}}
                     <div class="flex justify-end gap-2">
-                        <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center gap-2 bg-gray-500 text-sm font-medium items px-4 rounded-lg text-white py-2">Back</a>
+                        <a href="{{ route('admin.dashboard') }}"
+                            class="inline-flex items-center gap-2 bg-gray-500 text-sm font-medium items px-4 rounded-lg text-white py-2">Back</a>
                         <button
                             class="inline-flex items-center gap-2 px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-gray-600">
                             Simpan Perubahan
@@ -119,9 +120,137 @@
 
         </div>
 
+        <!-- Modal Crop -->
+        <div id="cropModal" class="fixed inset-0 hidden items-center justify-center bg-black/70 backdrop-blur-sm z-50">
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-2xl w-[90%] max-w-sm animate-scaleIn">
+
+                <h2 class="text-center text-lg font-semibold text-gray-800 dark:text-white mb-4">
+                    Sesuaikan Foto Profil
+                </h2>
+
+                <!-- Container Croppie -->
+                <div id="croppieContainer" class="flex justify-center"></div>
+
+                <div class="mt-5 flex justify-end gap-3">
+                    <button id="cancelCrop"
+                        class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg transition">
+                        Batal
+                    </button>
+
+                    <button id="cropImageBtn"
+                        class="px-4 py-2 bg-brand-500 hover:bg-brand-700 text-white rounded-lg transition">
+                        Crop & Simpan
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Animasi -->
+
     </section>
 
+    <style>
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .animate-scaleIn {
+            animation: scaleIn .2s ease-out;
+        }
+
+        /* Biar crop bulat */
+        .croppie-container .cr-viewport {
+            border-radius: 50% !important;
+        }
+    </style>
+
+
     <script>
+        let croppieInstance = null;
+        const fotoInput = document.getElementById("foto");
+        const cropModal = document.getElementById("cropModal");
+        const croppieContainer = document.getElementById("croppieContainer");
+        const previewImage = document.getElementById("preview-image");
+
+        // === Saat pilih foto baru ===
+        fotoInput.addEventListener("change", function (event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+
+                // Hancurkan Croppie lama
+                if (croppieInstance) {
+                    croppieInstance.destroy();
+                    croppieInstance = null;
+                }
+
+                croppieContainer.innerHTML = ""; // Reset container
+
+                // Buat Croppie baru
+                croppieInstance = new Croppie(croppieContainer, {
+                    viewport: { width: 220, height: 220, type: "circle" },
+                    boundary: { width: 260, height: 260 },
+                    enableZoom: true,
+                    enableOrientation: true
+                });
+
+                croppieInstance.bind({
+                    url: e.target.result
+                });
+
+                // Munculkan modal
+                cropModal.classList.remove("hidden");
+                cropModal.classList.add("flex");
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // === Tombol Batal ===
+        document.getElementById("cancelCrop").addEventListener("click", function () {
+            cropModal.classList.add("hidden");
+            fotoInput.value = ""; // Reset input supaya bisa pilih file yang sama berkali-kali
+        });
+
+        // === Tombol Crop ===
+        document.getElementById("cropImageBtn").addEventListener("click", function () {
+            if (!croppieInstance) return;
+
+            croppieInstance.result({
+                type: "base64",
+                format: "png",
+                size: { width: 450, height: 450 }
+            })
+                .then(function (base64) {
+
+                    // === DI SINI BARU PREVIEW DIUBAH ===
+                    previewImage.src = base64;
+
+                    // Convert base64 → file untuk dikirim di form
+                    fetch(base64)
+                        .then(r => r.blob())
+                        .then(blob => {
+                            const croppedFile = new File([blob], "profile.png", { type: "image/png" });
+
+                            const dt = new DataTransfer();
+                            dt.items.add(croppedFile);
+                            fotoInput.files = dt.files; // kirim lewat form
+                        });
+
+                    // Tutup modal
+                    cropModal.classList.add("hidden");
+                });
+        });
+
         function previewPhoto(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -134,4 +263,5 @@
             wrapper.classList.add('border-brand-500');
         }
     </script>
+
 @endsection
