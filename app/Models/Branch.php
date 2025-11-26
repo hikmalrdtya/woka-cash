@@ -10,7 +10,7 @@ class Branch extends Model
     protected $fillable = [
         'user_id',
         'name',
-        'alamat'
+        'address'
     ];
 
     public function user() {

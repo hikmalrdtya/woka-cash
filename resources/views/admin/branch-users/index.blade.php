@@ -3,6 +3,8 @@
 @section('title', 'User Management | WokaCash')
 
 @section('content')
+
+
     <!-- ===== Page Wrapper Start ===== -->
     <div class="flex h-screen overflow-hidden flex-col">
 
@@ -22,26 +24,26 @@
 
                             <input type="text" placeholder="Search name user" id="search-input"
                                 class="dark:bg-dark-900 shadow-sm focus:border-brand-300 focus:ring-brand-500/10 
-                                                                h-11 w-full rounded-lg border border-gray-200 bg-transparent py-2.5 pr-14 pl-12 
-                                                                text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 outline-none
-                                                                xl:w-64 dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:placeholder:text-white/30" />
+                                            h-11 w-full rounded-lg border border-gray-200 bg-transparent py-2.5 pr-14 pl-12 
+                                            text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 outline-none
+                                            xl:w-64 dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:placeholder:text-white/30" />
                         </div>
                     </form>
                 </div>
 
                 <!-- CREATE USERS BUTTON -->
-                <a href="{{ route('admin.user.create') }}"
+                <a href="{{ route('admin.branchUser.create') }}"
                     class="bg-brand-500 px-4 py-2 rounded-lg text-white text-sm shadow hover:bg-brand-600 transition">
-                    Create Users
+                    Create Branches User
                 </a>
             </div>
 
             <!-- Table -->
-            <div class="w-full p-4 bg-white dark:bg-gray-900 rounded-xl shadow-md">
+            <div class="w-full bg-white dark:bg-gray-900 rounded-xl shadow-md">
 
                 <!-- Title -->
                 <h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-4">
-                    Daftar Users
+                    List Branches Staff
                 </h2>
 
                 <!-- Table Wrapper - Full Width -->
@@ -50,46 +52,33 @@
                         <thead>
                             <tr class="bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
                                 <th class="py-3 px-4 text-gray-600 dark:text-white">No</th>
-                                <th class="py-3 px-4 text-gray-600 dark:text-white">Name</th>
-                                <th class="py-3 px-4 text-gray-600 dark:text-white">Email</th>
+                                <th class="py-3 px-4 text-gray-600 dark:text-white">Name Branches</th>
+                                <th class="py-3 px-4 text-gray-600 dark:text-white">Leader Name</th>
+                                <th class="py-3 px-4 text-gray-600 dark:text-white">Staff Name</th>
                                 <th class="py-3 px-4 text-gray-600 dark:text-white">Role</th>
-                                <th class="py-3 px-4 text-gray-600 dark:text-white">Cabang Perusahaan</th>
                                 <th class="py-3 px-4 text-gray-600 dark:text-white">Actions</th>
                             </tr>
                         </thead>
 
                         <tbody>
-                            @forelse ($users as $no => $row)
+                            @forelse ($branchUsers as $no => $row)
                                 <tr
                                     class="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition">
                                     <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $no + 1 }}</td>
-                                    <td class="py-3 px-4 text-gray-700 dark:text-white flex items-center gap-3">
-                                        <div class="w-10 h-10 overflow-hidden rounded-full">
-                                            <img src="{{ asset('storage/' . $row->photo_profile) }}" alt="photo profile"
-                                                srcset="" width="50px">
-                                        </div>
-                                        <div>
-                                            <span class="block font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                                                {{ $row->name }}
-                                            </span>
-                                            <span class="block text-gray-500 text-theme-xs dark:text-gray-400">
-                                                Web Designer
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->email }}</td>
-                                    <td class="py-3 px-4 text-gray-700 dark:text-white">{{ ucfirst($row->role) }}</td>
-                                    <td class="py-3 px-4 text-gray-700 dark:text-white">Jakarta</td>
-                                    <td class="py-3 px-4 flex gap-3 justify-center items-center">
-                                        <a href="{{ route('admin.user.edit', $row->id) }}"
-                                            class="inline-flex items-center gap-2 px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">Edit</a>
+                                    <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->branch->name }}</td>
+                                    <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->branch->user->name }}</td>
+                                    <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->user->name }}</td>
+                                    <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->role_in_branch ?? '-' }}</td>
+                                    <td class="py-3 px-4 flex gap-3">
+                                        <a href="{{ route('admin.branchUser.edit', $row->id) }}"
+                                            class="text-white bg-warning-500 p-3 rounded-lg hover:underline ml-2">Edit</a>
                                         <form id="delete-form-{{ $row->id }}"
-                                            action="{{ route('admin.user.destroy', $row->id) }}" method="POST">
+                                            action="{{ route('admin.branchUser.destroy', $row->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
 
                                             <button type="button" onclick="deleteUser({{ $row->id }})"
-                                                 class="inline-flex items-center gap-2 px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">
+                                                class="text-white bg-error-500 p-3 rounded-lg hover:underline ml-2">
                                                 Delete
                                             </button>
                                         </form>
@@ -98,8 +87,8 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="8" class="text-center dark:text-white py-4">
-                                        <i class="bi bi-info-circle"></i> No user data yet.
+                                    <td colspan="8" class="text-center text-gray- py-4">
+                                        <i class="bi bi-info-circle"></i> No branches data yet.
                                     </td>
                                 </tr>
                             @endforelse
