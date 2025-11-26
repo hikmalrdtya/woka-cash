@@ -53,12 +53,9 @@
                             @else
                                 <div
                                     class="w-30 h-30 rounded-full bg-gray-300 flex items-center justify-center border-[5px] border-blue-300 shadow-lg">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-40 w-40 text-white" fill="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5
-                                                                2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10
-                                                                1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z" />
-                                    </svg>
+                                    <img id="preview-image" src="{{ asset('asset/profile.jpg') }}"
+                                        class="w-32 h-32 rounded-full object-cover border-[5px] border-blue-300 shadow-lg"
+                                        width="100">
                                 </div>
                             @endif
 
@@ -108,7 +105,8 @@
                     </div>
 
                     {{-- SIMPAN PERUBAHAN --}}
-                    <div class=" text-right">
+                    <div class="flex justify-end gap-2">
+                        <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center gap-2 bg-gray-500 text-sm font-medium items px-4 rounded-lg text-white py-2">Back</a>
                         <button
                             class="inline-flex items-center gap-2 px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-gray-600">
                             Simpan Perubahan
