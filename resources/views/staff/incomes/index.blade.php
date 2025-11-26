@@ -19,14 +19,14 @@
 
                             <input type="text" placeholder="Search incomes" id="search-input"
                                 class="dark:bg-dark-900 shadow-sm focus:border-brand-300 focus:ring-brand-500/10 
-                                                h-11 w-full rounded-lg border border-gray-200 bg-transparent py-2.5 pr-14 pl-12 
-                                                text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 outline-none
-                                                xl:w-64 dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:placeholder:text-white/30" />
+                                                            h-11 w-full rounded-lg border border-gray-200 bg-transparent py-2.5 pr-14 pl-12 
+                                                            text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 outline-none
+                                                            xl:w-64 dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:placeholder:text-white/30" />
                         </div>
                     </form>
                 </div>
 
-               
+
                 <button id="open-modal-button"
                     class="bg-brand-500 px-4 py-2 rounded-lg text-white text-sm shadow hover:bg-brand-600 transition">
                     Add Incomes
@@ -34,7 +34,7 @@
             </div>
 
             <div id="add-income-modal-wrapper" class="hidden fixed inset-0 z-50 overflow-y-auto">
-               
+
                 <div id="add-income-modal-backdrop"
                     class="fixed inset-0 bg-gray-900/70 backdrop-blur-sm transition-opacity duration-300 ease-in-out opacity-0">
                 </div>
@@ -42,8 +42,9 @@
                 <div class="flex items-center justify-center min-h-screen p-4">
                     <div id="add-income-modal-content"
                         class="relative bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl border border-white/20 dark:border-gray-700/50 rounded-2xl shadow-2xl w-full max-w-md transform transition-all duration-300 ease-in-out opacity-0 scale-95 mx-auto">
-                        
-                        <div class="flex items-center justify-between p-6 border-b border-white/20 dark:border-gray-700/50 bg-white/20 dark:bg-gray-800/20 rounded-t-2xl">
+
+                        <div
+                            class="flex items-center justify-between p-6 border-b border-white/20 dark:border-gray-700/50 bg-white/20 dark:bg-gray-800/20 rounded-t-2xl">
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Add New Income</h3>
                             <button id="close-modal-button-header"
                                 class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors duration-200 bg-white/30 dark:bg-gray-700/30 hover:bg-white/50 dark:hover:bg-gray-600/50 rounded-full p-1">
@@ -107,10 +108,13 @@
                                         Amount
                                     </label>
                                     <div class="relative">
-                                        <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400">Rp</span>
-                                        <input type="number" name="amount"
-                                            class="w-full border border-gray-300/50 dark:border-gray-600/50 bg-white/50 dark:bg-gray-700/50 rounded-xl pl-10 pr-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent dark:text-white placeholder-gray-500 dark:placeholder-gray-400 backdrop-blur-sm"
-                                            placeholder="0.00" min="0" step="0.01" required>
+                                        <span
+                                            class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-300 text-sm">
+                                            Rp
+                                        </span>
+                                        <input type="text" id="amount" name="amount"
+                                            class="w-full border border-gray-300/50 dark:border-gray-600/50 bg-white/50 dark:bg-gray-700/50 rounded-xl pl-14 pr-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent dark:text-white placeholder-gray-500 dark:placeholder-gray-400 backdrop-blur-sm"
+                                            required oninput="formatRupiah(this)">
                                     </div>
                                 </div>
 
@@ -135,7 +139,8 @@
                         </div>
 
                         {{-- MODAL FOOTER WITH GLASS EFFECT - Enhanced submit button --}}
-                        <div class="flex justify-end gap-3 p-6 border-t border-white/20 dark:border-gray-700/50 bg-white/20 dark:bg-gray-800/20 rounded-b-2xl">
+                        <div
+                            class="flex justify-end gap-3 p-6 border-t border-white/20 dark:border-gray-700/50 bg-white/20 dark:bg-gray-800/20 rounded-b-2xl">
                             <button id="close-modal-button-footer" type="button"
                                 class="px-5 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white/60 dark:bg-gray-700/60 border border-white/30 dark:border-gray-600/50 rounded-xl hover:bg-white/80 dark:hover:bg-gray-600/80 focus:outline-none focus:ring-2 focus:ring-gray-400/50 backdrop-blur-sm transition-all duration-200">
                                 Cancel
@@ -171,7 +176,8 @@
 
                         <tbody>
                             @forelse ($Incomeslist as $no => $row)
-                                <tr class="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition">
+                                <tr
+                                    class="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition">
                                     <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $no + 1 }}</td>
                                     <td class="py-3 px-4 text-gray-700 dark:text-white flex items-center gap-3">
                                         {{ $row->user->name }}
@@ -213,7 +219,7 @@
         .modal-open-backdrop {
             opacity: 1;
         }
-        
+
         .modal-open-content {
             opacity: 1;
             transform: scale(1) translateY(0);
@@ -221,73 +227,91 @@
 
         /* Enhanced glass morphism effects */
         #add-income-modal-content {
-            background: linear-gradient(135deg, 
-                rgba(255, 255, 255, 0.8) 0%, 
-                rgba(255, 255, 255, 0.6) 100%);
+            background: linear-gradient(135deg,
+                    rgba(255, 255, 255, 0.8) 0%,
+                    rgba(255, 255, 255, 0.6) 100%);
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
             border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 
+            box-shadow:
                 0 25px 50px -12px rgba(0, 0, 0, 0.25),
                 inset 0 1px 0 0 rgba(255, 255, 255, 0.2),
                 inset 0 -1px 0 0 rgba(0, 0, 0, 0.1);
         }
 
         .dark #add-income-modal-content {
-            background: linear-gradient(135deg, 
-                rgba(31, 41, 55, 0.8) 0%, 
-                rgba(31, 41, 55, 0.6) 100%);
+            background: linear-gradient(135deg,
+                    rgba(31, 41, 55, 0.8) 0%,
+                    rgba(31, 41, 55, 0.6) 100%);
             border: 1px solid rgba(55, 65, 81, 0.5);
-            box-shadow: 
+            box-shadow:
                 0 25px 50px -12px rgba(0, 0, 0, 0.5),
                 inset 0 1px 0 0 rgba(255, 255, 255, 0.1),
                 inset 0 -1px 0 0 rgba(0, 0, 0, 0.3);
         }
 
         /* Smooth scrolling for modal content */
-        #add-income-modal-content > div:last-child {
+        #add-income-modal-content>div:last-child {
             scrollbar-width: thin;
             scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
         }
 
-        #add-income-modal-content > div:last-child::-webkit-scrollbar {
+        #add-income-modal-content>div:last-child::-webkit-scrollbar {
             width: 6px;
         }
 
-        #add-income-modal-content > div:last-child::-webkit-scrollbar-track {
+        #add-income-modal-content>div:last-child::-webkit-scrollbar-track {
             background: transparent;
         }
 
-        #add-income-modal-content > div:last-child::-webkit-scrollbar-thumb {
+        #add-income-modal-content>div:last-child::-webkit-scrollbar-thumb {
             background-color: rgba(156, 163, 175, 0.5);
             border-radius: 3px;
         }
 
-        #add-income-modal-content > div:last-child::-webkit-scrollbar-thumb:hover {
+        #add-income-modal-content>div:last-child::-webkit-scrollbar-thumb:hover {
             background-color: rgba(107, 114, 128, 0.7);
         }
 
         /* Dark mode scrollbar */
-        .dark #add-income-modal-content > div:last-child::-webkit-scrollbar-thumb {
+        .dark #add-income-modal-content>div:last-child::-webkit-scrollbar-thumb {
             background-color: rgba(75, 85, 99, 0.5);
         }
 
-        .dark #add-income-modal-content > div:last-child::-webkit-scrollbar-thumb:hover {
+        .dark #add-income-modal-content>div:last-child::-webkit-scrollbar-thumb:hover {
             background-color: rgba(107, 114, 128, 0.7);
         }
 
         /* Input focus effects for glass morphism */
-        input:focus, select:focus, textarea:focus {
+        input:focus,
+        select:focus,
+        textarea:focus {
             background: rgba(255, 255, 255, 0.7) !important;
             backdrop-filter: blur(10px) !important;
         }
 
-        .dark input:focus, .dark select:focus, .dark textarea:focus {
+        .dark input:focus,
+        .dark select:focus,
+        .dark textarea:focus {
             background: rgba(55, 65, 81, 0.7) !important;
         }
     </style>
 
     <script>
+        function formatRupiah(el) {
+            let value = el.value.replace(/[^0-9]/g, ""); // hanya angka
+
+            if (!value) {
+                el.value = "";
+                return;
+            }
+
+            // format angka dengan locale Indonesia
+            let formatted = new Intl.NumberFormat("id-ID").format(value);
+
+            el.value = formatted;
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
             // Modal Elements
             const modalWrapper = document.getElementById('add-income-modal-wrapper');
@@ -306,16 +330,16 @@
             // Open Modal Function
             function openModal() {
                 modalWrapper.classList.remove('hidden');
-                
+
                 // Trigger reflow
                 modalWrapper.offsetHeight;
-                
+
                 // Add open classes with slight delay for transition
                 setTimeout(() => {
                     modalBackdrop.classList.add('modal-open-backdrop');
                     modalContent.classList.add('modal-open-content');
                 }, 10);
-                
+
                 // Prevent body scroll
                 document.body.style.overflow = 'hidden';
             }
@@ -325,7 +349,7 @@
                 // Remove open classes
                 modalBackdrop.classList.remove('modal-open-backdrop');
                 modalContent.classList.remove('modal-open-content');
-                
+
                 // Wait for transition to complete before hiding
                 setTimeout(() => {
                     modalWrapper.classList.add('hidden');
@@ -339,14 +363,14 @@
             closeButtonFooter.addEventListener('click', closeModal);
 
             // Close modal when clicking on backdrop
-            modalWrapper.addEventListener('click', function(e) {
+            modalWrapper.addEventListener('click', function (e) {
                 if (e.target === modalWrapper || e.target === modalBackdrop) {
                     closeModal();
                 }
             });
 
             // Close modal with Escape key
-            document.addEventListener('keydown', function(e) {
+            document.addEventListener('keydown', function (e) {
                 if (e.key === 'Escape' && !modalWrapper.classList.contains('hidden')) {
                     closeModal();
                 }
