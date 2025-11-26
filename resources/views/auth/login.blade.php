@@ -6,7 +6,7 @@
     <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Sign In| TailAdmin - Tailwind CSS Admin Dashboard Template</title>
+    <title>Sign In | Wokacash</title>
     <script>
         if (localStorage.getItem("dark-mode") === "true") {
             document.documentElement.classList.add("dark");
@@ -42,7 +42,38 @@
                             </p>
                         </div>
                         <div>
-                            
+                            @if (session('success'))
+                                <div id="alert-success"
+                                    class="mb-4 rounded-lg border border-success-300 bg-success-50 p-4 text-white-700 text-sm">
+                                    <div class="font-semibold mb-1 text-success-500">Berhasil</div>
+                                    <p>{{ session('success') }}</p>
+                                </div>
+                                <script>
+                                    setTimeout(() => {
+                                        const el = document.getElementById('alert-success');
+                                        if (el) {
+                                            el.classList.add('opacity-0', 'translate-y-2', 'transition', 'duration-700');
+                                            setTimeout(() => el.remove(), 800);
+                                        }
+                                    }, 3000);
+                                </script>
+                            @endif
+
+                            @if ($errors->any())
+                                <div id="alert-error" class="mb-4 rounded-lg border border-error-300 bg-error-50 p-4 text-white-700 text-sm">
+                                    <div class="font-semibold mb-1 text-error-500">Terjadi Kesalahan</div>
+                                    <p>{{ $errors->first() }}</p>
+                                </div>
+                                <script>
+                                    setTimeout(() => {
+                                        const el = document.getElementById('alert-error');
+                                        if (el) {
+                                            el.classList.add('opacity-0', 'translate-y-2', 'transition', 'duration-700');
+                                            setTimeout(() => el.remove(), 800);
+                                        }
+                                    }, 3000);
+                                </script>
+                            @endif 
                             <form action="{{ route('login.post') }}" method="POST">
                                 @csrf
                                 <div class="space-y-5">
@@ -53,7 +84,8 @@
                                             Email<span class="text-error-500">*</span>
                                         </label>
                                         <input type="email" id="email" name="email" placeholder="info@gmail.com"
-                                            class="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800" />
+                                            class="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
+                                            value="{{ old('email') }}" />
                                     </div>
                                     <!-- Password -->
                                     <div>
@@ -84,8 +116,8 @@
                                     </div>
                                     <!-- Button -->
                                     <div>
-                                        <button
-                                            type="submit" class="flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">
+                                        <button type="submit"
+                                            class="flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">
                                             Sign In
                                         </button>
                                     </div>
