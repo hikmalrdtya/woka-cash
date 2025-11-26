@@ -5,13 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="icon" href="favicon.ico">
+    <link rel="icon" href="/asset/logo_WokaCash.png">
     <script>
         if (localStorage.getItem("dark-mode") === "true") {
             document.documentElement.classList.add("dark");
         }
     </script>
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset(path: 'css/style.css') }}">
+    @vite(['resources/js/app.js'])
+
     <title>@yield('title')</title>
 </head>
 
@@ -73,8 +75,10 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                         <!-- Hamburger Toggle BTN -->
 
                         <a href="index.html" class="lg:hidden">
-                            <img class="dark:hidden" src="/asset/logo_WokaCash_hitam-d.png" alt="Logo" width="160" height="160" />
-                            <img class="hidden dark:block" src="/asset/logo_WokaCash_putih-d.png" alt="Logo" width="160" height="160" />
+                            <img class="dark:hidden" src="/asset/logo_WokaCash_hitam-d.png" alt="Logo" width="160"
+                                height="160" />
+                            <img class="hidden dark:block" src="/asset/logo_WokaCash_putih-d.png" alt="Logo" width="160"
+                                height="160" />
                         </a>
 
                         <!-- Application nav menu button -->
@@ -541,7 +545,6 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
     <script src="{{ asset('js/bundle.js') }}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     @yield('script')
 </body>
 

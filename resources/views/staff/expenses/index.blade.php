@@ -76,7 +76,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="8" class="text-center text-gray- py-4">
+                                <td colspan="8" class="text-center text-gray-700 dark:text-white py-4">
                                     <i class="bi bi-info-circle"></i> Belum ada data Kegiatan.
                                 </td>
                             </tr>
