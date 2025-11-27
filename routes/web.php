@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\BranchUserController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Staff\BudgetRequestController;
 use App\Http\Controllers\Staff\ExpensesController;
 use App\Http\Controllers\Staff\IncomesController;
 use App\Http\Controllers\Finance\IncomesController as FinanceIncomesController;
@@ -36,6 +37,7 @@ Route::prefix('staff')->name('staff.')->middleware(['auth', 'role:staff'])->grou
    Route::get('/dashboard',[DashboardController::class,'index'])->name('dashboard');
    Route::resource('incomes', IncomesController::class);
    Route::resource('expenses', ExpensesController::class);
+   Route::resource('budget_requests', BudgetRequestController::class);
 });
 
 Route::prefix('finance')->name('finance.')->middleware(['auth', 'role:finance'])->group(function () {

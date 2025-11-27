@@ -9,6 +9,10 @@ class Income extends Model
     protected $fillable = [
         'branch_id',
         'user_id',
+        'project_id',
+        'amount',
+        'description',
+        'date',
         'role_in_branch'
     ];
 

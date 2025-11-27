@@ -32,7 +32,7 @@
                 </div>
 
                 <!-- CREATE USERS BUTTON -->
-                <a href="{{ route('admin.user.create') }}"
+                <a href="{{ route('staff.expenses.create') }}"
                     class="bg-brand-500 px-4 py-2 rounded-lg text-white text-sm shadow hover:bg-brand-600 transition">
                     Create Incomes
                 </a>

@@ -3,7 +3,11 @@
 namespace App\Http\Controllers\Staff;
 
 use App\Http\Controllers\Controller;
+use App\Models\Branch;
+use App\Models\Expense;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ExpensesController extends Controller
 {
@@ -13,7 +17,10 @@ class ExpensesController extends Controller
     public function index()
     {
         //
-        return view("staff.expenses.index");
+        $user = Auth::user()->id;
+        $branchIds = Branch::where("user_id", $user)->pluck("id")->toArray();
+        $expensesList = Expense::where("branch_id", $branchIds)->pluck("id")->toArray();
+        return view("staff.expenses.index", compact("expansesList"));
     }
 
     /**
