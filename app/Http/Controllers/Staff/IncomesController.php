@@ -43,30 +43,36 @@ class IncomesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = Auth::user();
+
+        $branchId = BranchUser::where('user_id', $user->id)->value('branch_id');
+
         $request->validate([
-            'amount' => 'required|numeric|min:0',
+            'amount' => 'required',
             'income_source' => 'required|in:project,other',
             'date' => 'required|date',
-            'branch_id' => 'required|exists:branches,id',
             'project_id' => 'required_if:income_source,project|nullable|exists:projects,id',
             'description' => 'required_if:income_source,other|nullable|string',
         ]);
 
+        // Bersihkan format rupiah
+        $cleanAmount = (int) str_replace(['Rp', '.', ',', ' '], '', $request->amount);
+
         Income::create([
-            'user_id' => auth()->id(),
+            'user_id' => $user->id,
             'project_id' => $request->income_source === 'project' ? $request->project_id : null,
-            'branch_id' => $request->branch_id,
-            'jumlah' => $request->amount,
+            'branch_id' => $branchId,
+            'amount' => $cleanAmount,
             'description' => $request->income_source === 'other'
                 ? $request->description
                 : Project::find($request->project_id)?->name,
             'date' => $request->date,
         ]);
 
-        return redirect()->route('staff.incomes.index')->with('success', 'Income recorded successfully.');
-
+        return redirect()->route('staff.incomes.index')
+            ->with('success', 'Income recorded successfully.');
     }
+
 
     /**
      * Display the specified resource.

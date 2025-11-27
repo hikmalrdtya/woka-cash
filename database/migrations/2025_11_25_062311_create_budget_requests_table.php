@@ -20,8 +20,8 @@ return new class extends Migration
             $table->text('note');
             $table->enum('status', ['pending', 'approved', 'rejected']);
             $table->date('date_submission');
-            $table->foreignId('approved_by')->constrained('users')->cascadeOnDelete();
-            $table->timestamp('approved_at');
+            $table->foreignId('approved_by')->nullable()->constrained('users')->cascadeOnDelete();
+            $table->timestamp('approved_at')->nullable();
             $table->timestamps();
         });
     }

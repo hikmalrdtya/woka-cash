@@ -19,9 +19,9 @@
 
                             <input type="text" placeholder="Search incomes" id="search-input"
                                 class="dark:bg-dark-900 shadow-sm focus:border-brand-300 focus:ring-brand-500/10 
-                                                            h-11 w-full rounded-lg border border-gray-200 bg-transparent py-2.5 pr-14 pl-12 
-                                                            text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 outline-none
-                                                            xl:w-64 dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:placeholder:text-white/30" />
+                                                                                    h-11 w-full rounded-lg border border-gray-200 bg-transparent py-2.5 pr-14 pl-12 
+                                                                                    text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 outline-none
+                                                                                    xl:w-64 dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:placeholder:text-white/30" />
                         </div>
                     </form>
                 </div>
@@ -33,12 +33,11 @@
                 </button>
             </div>
 
-            <div id="add-income-modal-wrapper" class="hidden fixed inset-0 z-50 overflow-y-auto">
+            <div id="add-income-modal-wrapper" class="hidden fixed inset-0 z-999999 overflow-y-auto">
 
                 <div id="add-income-modal-backdrop"
                     class="fixed inset-0 bg-gray-900/70 backdrop-blur-sm transition-opacity duration-300 ease-in-out opacity-0">
                 </div>
-
                 <div class="flex items-center justify-center min-h-screen p-4">
                     <div id="add-income-modal-content"
                         class="relative bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl border border-white/20 dark:border-gray-700/50 rounded-2xl shadow-2xl w-full max-w-md transform transition-all duration-300 ease-in-out opacity-0 scale-95 mx-auto">
@@ -66,19 +65,25 @@
                                         <option value="project">Project</option>
                                         <option value="other">Lainnya</option>
                                     </select>
+                                    @error('income_source')
+                                        <p class="text-error-500 text-sm">{{ $message }}</p>
+                                    @enderror
                                 </div>
 
                                 <div id="projectField" class="mb-4 hidden">
                                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                         Select Project
                                     </label>
-                                    <select name="project_id"
+                                    <select name="project_id" id="project_id"
                                         class="w-full border border-gray-300/50 dark:border-gray-600/50 bg-white/50 dark:bg-gray-700/50 rounded-xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent dark:text-white backdrop-blur-sm">
                                         <option value="">Select Project</option>
                                         @foreach($projects as $project)
                                             <option value="{{ $project->id }}">{{ $project->name }}</option>
                                         @endforeach
                                     </select>
+                                    @error('project_id')
+                                        <p class="text-error-500 text-sm">{{ $message }}</p>
+                                    @enderror
                                 </div>
 
                                 <div id="descriptionField" class="mb-4 hidden">
@@ -88,35 +93,37 @@
                                     <input type="text" name="description"
                                         class="w-full border border-gray-300/50 dark:border-gray-600/50 bg-white/50 dark:bg-gray-700/50 rounded-xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent dark:text-white placeholder-gray-500 dark:placeholder-gray-400 backdrop-blur-sm"
                                         placeholder="Enter income description">
+                                    @error('description')
+                                        <p class="text-error-500 text-sm">{{ $message }}</p>
+                                    @enderror
                                 </div>
 
-                                <div class="mb-4">
-                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                        Select Branch
-                                    </label>
-                                    <select name="branch_id"
-                                        class="w-full border border-gray-300/50 dark:border-gray-600/50 bg-white/50 dark:bg-gray-700/50 rounded-xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent dark:text-white backdrop-blur-sm">
-                                        <option value="">Select Branch</option>
-                                        @foreach($branchIds as $branch)
-                                            <option value="{{ $branch->id }}">{{ $branch->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+
 
                                 <div class="mb-4">
                                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                         Amount
                                     </label>
-                                    <div class="relative">
+
+                                    <div
+                                        class="flex items-center rounded-xl overflow-hidden border border-gray-300/50 dark:border-gray-600/50 bg-white/50 dark:bg-gray-700/50 backdrop-blur-sm">
+
+                                        <!-- Prefix -->
                                         <span
-                                            class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-300 text-sm">
+                                            class="px-4 py-2.5 text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 text-sm">
                                             Rp
                                         </span>
+
+                                        <!-- Input -->
                                         <input type="text" id="amount" name="amount"
-                                            class="w-full border border-gray-300/50 dark:border-gray-600/50 bg-white/50 dark:bg-gray-700/50 rounded-xl pl-14 pr-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent dark:text-white placeholder-gray-500 dark:placeholder-gray-400 backdrop-blur-sm"
-                                            required oninput="formatRupiah(this)">
+                                            class="w-full py-2.5 px-3 bg-transparent focus:outline-none dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                                            oninput="formatRupiah(this)" required>
+                                        @error('amount')
+                                            <p class="text-error-500 text-sm">{{ $message }}</p>
+                                        @enderror
                                     </div>
                                 </div>
+
 
                                 <div class="mb-4">
                                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -125,6 +132,9 @@
                                     <input type="date" name="date"
                                         class="w-full border border-gray-300/50 dark:border-gray-600/50 bg-white/50 dark:bg-gray-700/50 rounded-xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent dark:text-white backdrop-blur-sm"
                                         value="{{ date('Y-m-d') }}" required>
+                                    @error('date')
+                                        <p class="text-error-500 text-sm">{{ $message }}</p>
+                                    @enderror
                                 </div>
 
                                 <div class="mb-6">
@@ -183,10 +193,12 @@
                                         {{ $row->user->name }}
                                     </td>
                                     <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->project->name ?? 'N/A' }}</td>
-                                    <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->branches->name ?? 'N/A' }}</td>
-                                    <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->ammount }}</td>
+                                    <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->branch->name ?? 'N/A' }}</td>
+                                    <td class="py-3 px-4 text-gray-700 dark:text-white"> Rp
+                                        {{ number_format((int) $row->amount, 0, ',', '.') }}</td>
                                     <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->description }}</td>
-                                    <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->date }}</td>
+                                    <td class="py-3 px-4 text-gray-700 dark:text-white">
+                                        {{ \Carbon\Carbon::parse($row->date)->format('d M Y') }}</td>
                                     <td class="py-3 px-4 flex gap-3 justify-center items-center">
                                         <a href="{{ route('admin.user.edit', $row->id) }}"
                                             class="inline-flex items-center gap-2 px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">Edit</a>
@@ -195,7 +207,7 @@
                                             @csrf
                                             @method('DELETE')
                                             <button type="button" onclick="deleteUser({{ $row->id }})"
-                                                class="inline-flex items-center gap-2 px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">
+                                                class="inline-flex items-center gap-2 px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-error-500 shadow-theme-xs hover:bg-brand-600">
                                                 Delete
                                             </button>
                                         </form>
