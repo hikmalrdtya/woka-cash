@@ -12,6 +12,8 @@
         }
     </script>
     <link rel="stylesheet" href="{{ asset(path: 'css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
 
     <title>@yield('title')</title>
 </head>
@@ -40,9 +42,9 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
         <main class="page-content flex-1 p-4 lg:p-8 overflow-x-auto overflow-hidden">
             @if (session('success'))
                 <div id="alert-success" class="fixed z-999999 top-6 left-1/2 -translate-x-1/2 z-[9999]
-                       px-4 py-3 text-sm text-white rounded-xl shadow-lg
-                       bg-brand-500 w-max max-w-[90%]
-                       animate-toast-in flex items-center gap-3">
+                           px-4 py-3 text-sm text-white rounded-xl shadow-lg
+                           bg-brand-500 w-max max-w-[90%]
+                           animate-toast-in flex items-center gap-3">
 
                     <!-- Icon -->
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none"
@@ -73,7 +75,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                         class="flex w-full items-center justify-between gap-2 border-b border-gray-200 px-3 py-3 sm:gap-4 lg:justify-normal lg:border-b-0 lg:px-0 lg:py-4 dark:border-gray-800">
                         <!-- Hamburger Toggle BTN -->
                         <button :class="sidebarToggle ?
-                        'lg:bg-transparent dark:lg:bg-transparent bg-gray-100 dark:bg-gray-800' : ''"
+                                'lg:bg-transparent dark:lg:bg-transparent bg-gray-100 dark:bg-gray-800' : ''"
                             class="z-99999 flex h-10 w-10 items-center justify-center rounded-lg border-gray-200 text-gray-500 lg:h-11 lg:w-11 lg:border dark:border-gray-800 dark:text-gray-400"
                             @click.stop="sidebarToggle = !sidebarToggle">
                             <svg class="hidden fill-current lg:block" width="16" height="12" viewBox="0 0 16 12"
@@ -504,7 +506,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
 
                                 <ul class="flex flex-col gap-1 border-b border-gray-200 pt-4 pb-3 dark:border-gray-800">
                                     <li>
-                                        <a href="profile.html"
+                                        <a href="{{ route('admin.profile.edit')}}"
                                             class="group text-theme-sm flex items-center gap-3 rounded-lg px-3 py-2 font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
                                             <svg class="fill-gray-500 group-hover:fill-gray-700 dark:fill-gray-400 dark:group-hover:fill-gray-300"
                                                 width="24" height="24" viewBox="0 0 24 24" fill="none"

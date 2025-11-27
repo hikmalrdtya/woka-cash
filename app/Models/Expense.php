@@ -41,7 +41,7 @@ class Expense extends Model
     }
     
     public function expense() {
-        return $this->hasOne(OcrResult::class, 'project_id');
+        return $this->hasOne(OcrResult::class, 'expense_id');
     }
     
 }

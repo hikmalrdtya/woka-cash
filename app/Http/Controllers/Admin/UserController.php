@@ -114,4 +114,50 @@ class UserController extends Controller
             return redirect()->back()->with('success', 'User successfuly deleted');
         }
     }
+
+    //edit profile admin
+    public function editProfile()
+    {
+        $admin = auth()->user(); // Ambil admin yang sedang login
+
+        return view('admin.profile.profile', compact('admin'));
+    }
+
+    /**
+     * Update Profile Admin
+     */
+    public function updateProfile(Request $request)
+    {
+        $admin = auth()->user();
+
+        $request->validate([
+            'name'      => 'required|string|max:255',
+            'email'     => 'required|email|unique:users,email,' . $admin->id,
+            'password'  => 'nullable|min:6',
+            'foto'      => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        $admin->name  = $request->name;
+        $admin->email = $request->email;
+
+        if ($request->filled('password')) {
+            $admin->password = bcrypt($request->password);
+        }
+
+        if ($request->hasFile('foto')) {
+
+            // Hapus foto lama
+            if ($admin->photo_profile && Storage::disk('public')->exists($admin->photo_profile)) {
+                Storage::disk('public')->delete($admin->photo_profile);
+            }
+
+            // Upload foto baru
+            $path = $request->file('foto')->store('admin_foto', 'public');
+            $admin->photo_profile = $path;
+        }
+
+        $admin->save();
+
+        return redirect()->back()->with('success', 'Profil berhasil diperbarui!');
+    }
 }

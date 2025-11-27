@@ -42,7 +42,7 @@ class User extends Authenticatable
     }
 
     public function userApproved() {
-        return $this->hasMany(budgetRequest::class, 'user_id');
+        return $this->hasMany(BudgetRequest::class, 'approved_by');
     }
 
     public function expense() {

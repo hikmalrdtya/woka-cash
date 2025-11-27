@@ -27,7 +27,7 @@ class BudgetRequest extends Model
     }
 
     public function approvedBy() {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'approved_by');
     }
 
     public function expense() {
