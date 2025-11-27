@@ -48,6 +48,8 @@
 
                     <!-- NAME -->
                     <div class="relative w-full">
+                        <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-white">Select Leader</label>
+
                         <!-- Fake Select -->
                         <button type="button" id="dropdownButton"
                             class="w-full h-11 px-4 rounded-lg border border-gray-300 dark:border-gray-700 

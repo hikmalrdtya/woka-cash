@@ -13,10 +13,18 @@ class BranchUserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-        $branchUsers = BranchUser::with('branch.user')->orderBy('created_at', 'desc')->paginate(10);
+        $query = BranchUser::query()->with('user');
+
+        if ($request->filled('search')) {
+            $query->whereHas('user', function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        $branchUsers = $query->latest()->paginate(10)->withQueryString();
+
         return view('admin.branch-users.index', compact('branchUsers'));
     }
 
