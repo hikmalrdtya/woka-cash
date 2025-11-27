@@ -38,10 +38,14 @@ Route::prefix('staff')->name('staff.')->middleware(['auth', 'role:staff'])->grou
    Route::resource('incomes', IncomesController::class);
    Route::resource('expenses', ExpensesController::class);
    Route::resource('budget_requests', BudgetRequestController::class);
+   Route::get('/profile', [UserController::class, 'editProfileStaff'])->name('profile.edit');
+   Route::put('/profile', [UserController::class, 'updateProfileStaff'])->name('profile.update');
 });
 
 Route::prefix('finance')->name('finance.')->middleware(['auth', 'role:finance'])->group(function () {
    Route::get('/dashboard',[DashboardController::class,'index'])->name('dashboard');
    Route::resource('incomes', FinanceIncomesController::class);
    Route::resource('expenses', FinanceExpensesController::class);
+   Route::get('/profile', [UserController::class, 'editProfileFinance'])->name('profile.edit');
+   Route::put('/profile', [UserController::class, 'updateProfileFinance'])->name('profile.update');
 });

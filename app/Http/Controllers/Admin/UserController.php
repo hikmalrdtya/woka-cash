@@ -118,7 +118,7 @@ class UserController extends Controller
     //edit profile admin
     public function editProfile()
     {
-        $admin = auth()->user(); // Ambil admin yang sedang login
+        $admin = auth()->user(); 
 
         return view('admin.profile.profile', compact('admin'));
     }
@@ -157,6 +157,100 @@ class UserController extends Controller
         }
 
         $admin->save();
+
+        return redirect()->back()->with('success', 'Profil berhasil diperbarui!');
+    }
+
+
+    //edit profile finance
+    public function editProfileFinance()
+    {
+        $finance = auth()->user(); 
+
+        return view('finance.profile.profile', compact('finance'));
+    }
+
+    /**
+     * Update Profile finance
+     */
+    public function updateProfileFinance(Request $request)
+    {
+        $finance = auth()->user();
+
+        $request->validate([
+            'name'      => 'required|string|max:255',
+            'email'     => 'required|email|unique:users,email,' . $finance->id,
+            'password'  => 'nullable|min:6',
+            'foto'      => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        $finance->name  = $request->name;
+        $finance->email = $request->email;
+
+        if ($request->filled('password')) {
+            $finance->password = bcrypt($request->password);
+        }
+
+        if ($request->hasFile('foto')) {
+
+            // Hapus foto lama
+            if ($finance->photo_profile && Storage::disk('public')->exists($finance->photo_profile)) {
+                Storage::disk('public')->delete($finance->photo_profile);
+            }
+
+            // Upload foto baru
+            $path = $request->file('foto')->store('finance_foto', 'public');
+            $finance->photo_profile = $path;
+        }
+
+        $finance->save();
+
+        return redirect()->back()->with('success', 'Profil berhasil diperbarui!');
+    }
+
+
+     //edit profile staff
+    public function editProfileStaff()
+    {
+        $staff = auth()->user(); 
+
+        return view('staff.profile.profile', compact('staff'));
+    }
+
+    /**
+     * Update Profile staff
+     */
+    public function updateProfileStaff(Request $request)
+    {
+        $staff = auth()->user();
+
+        $request->validate([
+            'name'      => 'required|string|max:255',
+            'email'     => 'required|email|unique:users,email,' . $staff->id,
+            'password'  => 'nullable|min:6',
+            'foto'      => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        $staff->name  = $request->name;
+        $staff->email = $request->email;
+
+        if ($request->filled('password')) {
+            $staff->password = bcrypt($request->password);
+        }
+
+        if ($request->hasFile('foto')) {
+
+            // Hapus foto lama
+            if ($staff->photo_profile && Storage::disk('public')->exists($staff->photo_profile)) {
+                Storage::disk('public')->delete($staff->photo_profile);
+            }
+
+            // Upload foto baru
+            $path = $request->file('foto')->store('staff_foto', 'public');
+            $staff->photo_profile = $path;
+        }
+
+        $staff->save();
 
         return redirect()->back()->with('success', 'Profil berhasil diperbarui!');
     }
