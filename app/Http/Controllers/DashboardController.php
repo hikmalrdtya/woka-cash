@@ -18,6 +18,8 @@ class DashboardController extends Controller
             return view('admin.dashboard', compact('user'));
         } elseif ($user->role === 'staff') {
             return view('staff.dashboard');
+        } elseif ($user->role === 'finance') {
+            return view('finance.dashboard');
         }
     }
 }
