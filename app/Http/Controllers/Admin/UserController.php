@@ -12,11 +12,19 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::whereIn('role', ['finance', 'staff'])->get();
+        $query = User::whereIn('role', ['finance', 'staff']);
+
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        $users = $query->latest()->paginate(10)->withQueryString();
+
         return view('admin.users.index', compact('users'));
     }
+
 
     /**
      * Show the form for creating a new resource.

@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('incomes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->foreignId('project_id')->constrained('projects')->cascadeOnDelete();
+            $table->foreignId('project_id')->nullable()->constrained('projects')->cascadeOnDelete();
             $table->foreignId('branch_id')->constrained('branches')->cascadeOnDelete();
             $table->decimal('amount', 15, 2);
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->date('date');
             $table->timestamps();
         });

@@ -12,6 +12,7 @@
         }
     </script>
     <link rel="stylesheet" href="{{ asset(path: 'css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-uK5vNn0nUjsFvdcGaVbL50DJBSSTXQHxPPH/FkOFjHlxkAt2bQVWwtIg9Y9ycYzaPt+F6DRKCVh+F2PzY4H3Nw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
 
