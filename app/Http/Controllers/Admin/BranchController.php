@@ -12,10 +12,16 @@ class BranchController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-        $branches = Branch::with('user')->orderBy('created_at', 'desc')->paginate(10);
+        $query = Branch::query();
+
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        $branches = $query->latest()->paginate(10)->withQueryString();
+
         return view('admin.branch.index', compact('branches'));
     }
 
