@@ -572,6 +572,10 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
 
 
             @yield('content')
+
+
+
+            
         </main>
     </div>
     <script src="{{ asset('js/bundle.js') }}"></script>

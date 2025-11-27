@@ -33,7 +33,7 @@
                 </button>
             </div>
 
-            <div id="add-income-modal-wrapper" class="hidden fixed inset-0 z-50 overflow-y-auto">
+            <div id="add-income-modal-wrapper" class="hidden fixed inset-0 z-999999 overflow-y-auto">
                
                 <div id="add-income-modal-backdrop"
                     class="fixed inset-0 bg-gray-900/70 backdrop-blur-sm transition-opacity duration-300 ease-in-out opacity-0">
@@ -89,18 +89,7 @@
                                         placeholder="Enter income description">
                                 </div>
 
-                                <div class="mb-4">
-                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                        Select Branch
-                                    </label>
-                                    <select name="branch_id"
-                                        class="w-full border border-gray-300/50 dark:border-gray-600/50 bg-white/50 dark:bg-gray-700/50 rounded-xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent dark:text-white backdrop-blur-sm">
-                                        <option value="">Select Branch</option>
-                                        @foreach($branchIds as $branch)
-                                            <option value="{{ $branch->id }}">{{ $branch->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                              
 
                                 <div class="mb-4">
                                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">

@@ -44,6 +44,9 @@ class IncomesController extends Controller
     public function store(Request $request)
     {
         //
+        $user = Auth::user();
+        $branchIds = BranchUser::where('user_id', $user->id)->pluck('branch_id');
+
         $request->validate([
             'amount' => 'required|numeric|min:0',
             'income_source' => 'required|in:project,other',
@@ -56,7 +59,7 @@ class IncomesController extends Controller
         Income::create([
             'user_id' => auth()->id(),
             'project_id' => $request->income_source === 'project' ? $request->project_id : null,
-            'branch_id' => $request->branch_id,
+            'branch_id' => $request->$branchIds ,
             'jumlah' => $request->amount,
             'description' => $request->income_source === 'other'
                 ? $request->description
