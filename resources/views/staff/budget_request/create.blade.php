@@ -107,7 +107,7 @@
                 <!-- BUTTON -->
                 <div class="mt-8 flex justify-end">
                     <button type="submit" class="bg-brand-500 hover:bg-blue-700 text-white  px-4 py-2 rounded-lg shadow transition 
-                            focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-600">
+                                focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-600">
                         Create Branch
                     </button>
                 </div>
@@ -119,6 +119,20 @@
 
     <!-- SCRIPT PREVIEW -->
     <script>
+        function formatRupiah(el) {
+            let value = el.value.replace(/[^0-9]/g, ""); // hanya angka
+
+            if (!value) {
+                el.value = "";
+                return;
+            }
+
+            // format angka dengan locale Indonesia
+            let formatted = new Intl.NumberFormat("id-ID").format(value);
+
+            el.value = formatted;
+        }
+
         const dropdownButton = document.getElementById("dropdownButton");
         const dropdownMenu = document.getElementById("dropdownMenu");
         const searchUser = document.getElementById("searchUser");

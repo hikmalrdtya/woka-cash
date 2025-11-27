@@ -18,9 +18,10 @@ class ExpensesController extends Controller
     {
         //
         $user = Auth::user()->id;
+
         $branchIds = Branch::where("user_id", $user)->pluck("id")->toArray();
-        $expensesList = Expense::where("branch_id", $branchIds)->pluck("id")->toArray();
-        return view("staff.expenses.index", compact("expansesList"));
+        $expensesList = Expense::where("branch_id", $branchIds)->get();
+        return view("staff.expenses.index", compact("expensesList"));
     }
 
     /**

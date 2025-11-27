@@ -57,7 +57,7 @@
                                     {{ number_format($row->amount, 0, ',', '.') }}</td>
                                 <td class="py-3 px-4 text-gray-700 dark:text-white">
                                     <span class="px-3 py-1 rounded-lg text-sm 
-                                            @if($row->status == 'pending') bg-yellow-100 text-yellow-700
+                                            @if($row->status == 'pending') bg-warning-100 text-warning-700
                                             @elseif($row->status == 'approved') bg-green-100 text-green-700
                                             @else bg-red-100 text-red-700 @endif">
                                         {{ ucfirst($row->status) }}

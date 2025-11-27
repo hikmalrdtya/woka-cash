@@ -24,17 +24,17 @@
 
                             <input type="text" placeholder="Search incomes" id="search-input"
                                 class="dark:bg-dark-900 shadow-sm focus:border-brand-300 focus:ring-brand-500/10 
-                                                                                                h-11 w-full rounded-lg border border-gray-200 bg-transparent py-2.5 pr-14 pl-12 
-                                                                                                text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 outline-none
-                                                                                                xl:w-64 dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:placeholder:text-white/30" />
+                                h-11 w-full rounded-lg border border-gray-200 bg-transparent py-2.5 pr-14 pl-12 
+                                text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 outline-none
+                                xl:w-64 dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:placeholder:text-white/30" />
                         </div>
                     </form>
                 </div>
 
                 <!-- CREATE USERS BUTTON -->
-                <a href="{{ route('staff.expenses.create') }}"
+                <a href="{{ route('staff.budget_requests.index') }}"
                     class="bg-brand-500 px-4 py-2 rounded-lg text-white text-sm shadow hover:bg-brand-600 transition">
-                    Create Incomes
+                    Create Requeast expanses
                 </a>
             </div>
 
@@ -53,33 +53,50 @@
                             <tr class="bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
                                 <th class="py-3 px-4 text-gray-600 dark:text-white">No</th>
                                 <th class="py-3 px-4 text-gray-600 dark:text-white">Budget Request</th>
-                                <th class="py-3 px-4 text-gray-600 dark:text-white">Name</th>
+                                <th class="py-3 px-4 text-gray-600 dark:text-white">Pengaju</th>
                                 <th class="py-3 px-4 text-gray-600 dark:text-white">Cabang Perusahaan</th>
-                                <th class="py-3 px-4 text-gray-600 dark:text-white">Actions</th>
+                                <th class="py-3 px-4 text-gray-600 dark:text-white">Aproved By</th>
                             </tr>
                         </thead>
 
                         <tbody>
-                            <tr
-                                class="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition">
-                                <td class="py-3 px-4 text-gray-700 dark:text-white"></td>
-                                <td class="py-3 px-4 text-gray-700 dark:text-white"></td>
-                                <td class="py-3 px-4 text-gray-700 dark:text-white"></td>
-                                <td class="py-3 px-4 text-gray-700 dark:text-white"></td>
-                                <td class="py-3 px-4 flex gap-3">
-                                    <a href=""
-                                        class="text-white bg-warning-500 p-3 rounded-lg hover:underline ml-2">Edit</a>
-                                    <button onclick="openModal()" type="button"
-                                        class="text-white bg-brand-500 p-3 rounded-lg hover:underline ml-2 transition">
-                                        View Detail
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="8" class="text-center text-gray-700 dark:text-white py-4">
-                                    <i class="bi bi-info-circle"></i> Belum ada data Kegiatan.
-                                </td>
-                            </tr>
+                            @forelse ($expensesList as $no => $row)
+                                <tr
+                                    class="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition">
+                                    <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $loop->iteration }}</td>
+                                    <td class="py-3 px-4 text-gray-700 dark:text-white flex items-center gap-3">
+                                        {{ $row->budget_request->title ?? 'N/A' }}
+                                    </td>
+                                    <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->project->name ?? 'N/A' }}</td>
+                                    <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->user->name ?? 'N/A' }}</td>
+                                    <td class="py-3 px-4 text-gray-700 dark:text-white"> Rp
+                                        {{ number_format((int) $row->amount, 0, ',', '.') }}
+                                    </td>
+                                    <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->description }}</td>
+                                    <td class="py-3 px-4 text-gray-700 dark:text-white">
+                                       {{ $row->aproved_by->name ?? 'N/A' }}
+                                    </td>
+                                    <td class="py-3 px-4 flex gap-3 justify-center items-center">
+                                        <a href="{{ route('admin.user.edit', $row->id) }}"
+                                            class="inline-flex items-center gap-2 px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">Edit</a>
+                                        <form id="delete-form-{{ $row->id }}"
+                                            action="{{ route('admin.user.destroy', $row->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="button" onclick="deleteUser({{ $row->id }})"
+                                                class="inline-flex items-center gap-2 px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-error-500 shadow-theme-xs hover:bg-brand-600">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="8" class="text-center text-gray-700 dark:text-white py-4">
+                                        <i class="bi bi-info-circle"></i> No incomes yet
+                                    </td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
