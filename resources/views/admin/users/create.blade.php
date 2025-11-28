@@ -8,7 +8,7 @@
     <div class="px-4 sm:px-6 lg:px-8 py-8">
 
         <!-- Header -->
-        <div class="mt-5 flex items-center justify-between">
+        <div class="mt-5 mb-4 flex items-center justify-between">
             <h2 class="text-2xl font-semibold text-gray-800 dark:text-white">Create User</h2>
 
             <a href="{{ route('admin.user.index') }}"
@@ -18,7 +18,7 @@
         </div>
 
         <!-- Card -->
-        <div class="bg-white dark:bg-gray-900 rounded-xl shadow p-6">
+        <div class="bg-white mt-5 dark:bg-gray-900 rounded-xl shadow p-6">
 
             <form id="userCreateForm" action="{{ route('admin.user.store') }}" method="POST"
                 enctype="multipart/form-data">
@@ -65,22 +65,6 @@
                             <option value="admin">Admin</option>
                             <option value="finance">Finance</option>
                             <option value="staff">Staff</option>
-                        </select>
-                    </div>
-
-                    <!-- CABANG -->
-                    <div>
-                        <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-white">Cabang
-                            Perusahaan</label>
-                        <select name="cabang"
-                            class="w-full h-11 px-4 rounded-lg border border-gray-300 dark:border-gray-700 
-                            bg-white dark:bg-gray-800 text-gray-800 dark:text-white 
-                            focus:ring-2 focus:ring-brand-400 focus:border-brand-500 outline-none"
-                            required>
-                            <option value="" class="dark:bg-gray-800">-- Pilih Cabang --</option>
-                            <option value="jakarta">Jakarta</option>
-                            <option value="bandung">Bandung</option>
-                            <option value="surabaya">Surabaya</option>
                         </select>
                     </div>
 

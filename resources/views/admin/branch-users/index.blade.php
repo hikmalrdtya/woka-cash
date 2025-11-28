@@ -26,24 +26,22 @@
                                     </svg>
                                 </span>
 
-                                <input
-                                    oninput="this.value = this.value
-                                                .replace(/[^a-zA-Z\s]/g, '')     
-                                                .replace(/^\s+/, '')                
-                                                .replace(/\s{2,}/g, ' ');"
-                                    type="text" name="search" value="{{ request('search') }}"
-                                    placeholder="Search name staff"
+                                <input oninput="this.value = this.value
+                                                                    .replace(/[^a-zA-Z\s]/g, '')     
+                                                                    .replace(/^\s+/, '')                
+                                                                    .replace(/\s{2,}/g, ' ');" type="text" name="search"
+                                    value="{{ request('search') }}" placeholder="Search name staff"
                                     class="dark:bg-dark-900 shadow-sm focus:border-brand-300 focus:ring-brand-500/10 
-                                            h-11 w-full rounded-lg border border-gray-200 bg-transparent py-2.5 pr-14 pl-12
-                                            text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 outline-none
-                                            xl:w-64 dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:placeholder:text-white/30">
+                                                                h-11 w-full rounded-lg border border-gray-200 bg-transparent py-2.5 pr-14 pl-12
+                                                                text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 outline-none
+                                                                xl:w-64 dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:placeholder:text-white/30">
                             </div>
 
                             <!-- Reset Button -->
                             @if (request('search'))
                                 <a href="{{ route('admin.branchUser.index') }}"
                                     class="h-11 px-4 flex items-center justify-center rounded-lg border border-gray-300 
-                                        text-gray-600 dark:text-white dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800">
+                                                                                text-gray-600 dark:text-white dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800">
                                     Reset
                                 </a>
                             @endif

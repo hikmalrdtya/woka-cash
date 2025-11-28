@@ -10,6 +10,7 @@ use App\Http\Controllers\Staff\ExpensesController;
 use App\Http\Controllers\Staff\IncomesController;
 use App\Http\Controllers\Finance\IncomesController as FinanceIncomesController;
 use App\Http\Controllers\Finance\ExpensesController as FinanceExpensesController;
+use App\Http\Controllers\Staff\ProjectController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', action: function () {
@@ -38,6 +39,7 @@ Route::prefix('staff')->name('staff.')->middleware(['auth', 'role:staff'])->grou
    Route::resource('incomes', IncomesController::class);
    Route::resource('expenses', ExpensesController::class);
    Route::resource('budget_requests', BudgetRequestController::class);
+   Route::resource('projects', ProjectController::class);
    Route::get('/profile', [UserController::class, 'editProfileStaff'])->name('profile.edit');
    Route::put('/profile', [UserController::class, 'updateProfileStaff'])->name('profile.update');
 });

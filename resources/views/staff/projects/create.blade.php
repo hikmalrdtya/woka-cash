@@ -4,7 +4,6 @@
 
 @section('content')
     <style>
-        /* DARK MODE FIX untuk TomSelect */
         .dark .ts-control,
         .dark .ts-dropdown {
             background-color: #1f2937 !important;
@@ -31,7 +30,7 @@
         <div class="mt-5 mb-4 flex items-center justify-between">
             <h2 class="text-2xl font-semibold text-gray-800 dark:text-white">Create Branch</h2>
 
-            <a href="{{ route('staff.budget_requests.index') }}"
+            <a href="{{ route('staff.projects.index') }}"
                 class="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-white px-4 py-2 rounded-lg transition">
                 ← Back
             </a>
@@ -40,75 +39,40 @@
         <!-- Card -->
         <div class="bg-white dark:bg-gray-900 rounded-xl mt-4 shadow p-6">
 
-            <form id="userCreateForm" action="{{ route('staff.budget_requests.store') }}" method="POST"
+            <form id="userCreateForm" action="{{ route('staff.projects.store') }}" method="POST"
                 enctype="multipart/form-data">
                 @csrf
 
                 <!-- GRID 2 -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                    {{-- CABANG --}}
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Cabang Perusahaan
-                        </label>
-                        <select name="branch_id"
-                            class="w-full border border-gray-300/50 dark:border-gray-600/50 bg-white/50 dark:bg-gray-700/50 rounded-xl px-3 py-2.5 dark:text-white">
-                            <option value="">Pilih Cabang</option>
-                            @foreach ($branches as $branch)
-                                <option value="{{ $branch->id }}">{{ $branch->name }}</option>
-                            @endforeach
-                        </select>
-                        @error('branch_id') <p class="text-error-500 text-sm">{{ $message }}</p> @enderror
-                    </div>
-
                     {{-- TITLE --}}
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Judul Pengeluaran
+                            Nama Project
                         </label>
-                        <input type="text" name="title"
+                        <input type="text" name="name" 
                             class="w-full border border-gray-300/50 dark:border-gray-600/50 bg-white/50 dark:bg-gray-700/50 rounded-xl px-3 py-2.5 dark:text-white">
-                        @error('title') <p class="text-error-500 text-sm">{{ $message }}</p> @enderror
-                    </div>
-
-                    {{-- AMOUNT --}}
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Jumlah Pengeluaran
-                        </label>
-
-                        <div
-                            class="flex items-center rounded-xl overflow-hidden border border-gray-300/50 dark:border-gray-600/50 bg-white/50 dark:bg-gray-700/50">
-                            <span class="px-4 py-2.5 text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 text-sm">
-                                Rp
-                            </span>
-                            <input type="text" name="amount" id="amount"
-                                class="w-full py-2.5 px-3 bg-transparent focus:outline-none dark:text-white"
-                                oninput="formatRupiah(this)">
-                        </div>
-                        @error('amount') <p class="text-error-500 text-sm">{{ $message }}</p> @enderror
+                        @error('name') <p class="text-error-500 text-sm">{{ $message }}</p> @enderror
                     </div>
 
                     {{-- NOTE --}}
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Catatan
+                            Deskripsi Project
                         </label>
-                        <textarea name="note" rows="3"
+                        <textarea name="description" rows="3"
                             class="w-full border border-gray-300/50 dark:border-gray-600/50 bg-white/50 dark:bg-gray-700/50 rounded-xl px-3 py-2.5 dark:text-white"></textarea>
-                        @error('note') <p class="text-error-500 text-sm">{{ $message }}</p> @enderror
+                        @error('description') <p class="text-error-500 text-sm">{{ $message }}</p> @enderror
                     </div>
 
-                    {{-- Tanggal Pengajuan (auto today) --}}
-                    <input type="hidden" name="date_submission" value="{{ date('Y-m-d') }}">
                 </div>
 
                 <!-- BUTTON -->
                 <div class="mt-8 flex justify-end">
                     <button type="submit" class="bg-brand-500 hover:bg-blue-700 text-white  px-4 py-2 rounded-lg shadow transition 
-                                focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-600">
-                        Create Branch
+                                    focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-600">
+                        Add Project
                     </button>
                 </div>
 
@@ -117,22 +81,7 @@
 
     </div>
 
-    <!-- SCRIPT PREVIEW -->
     <script>
-        function formatRupiah(el) {
-            let value = el.value.replace(/[^0-9]/g, ""); // hanya angka
-
-            if (!value) {
-                el.value = "";
-                return;
-            }
-
-            // format angka dengan locale Indonesia
-            let formatted = new Intl.NumberFormat("id-ID").format(value);
-
-            el.value = formatted;
-        }
-
         const dropdownButton = document.getElementById("dropdownButton");
         const dropdownMenu = document.getElementById("dropdownMenu");
         const searchUser = document.getElementById("searchUser");

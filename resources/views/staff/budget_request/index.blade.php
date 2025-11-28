@@ -54,15 +54,20 @@
                                 <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->title }}</td>
                                 <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->branch->name }}</td>
                                 <td class="py-3 px-4 text-gray-700 dark:text-white">Rp
-                                    {{ number_format($row->amount, 0, ',', '.') }}</td>
+                                    {{ number_format($row->amount, 0, ',', '.') }}
+                                </td>
                                 <td class="py-3 px-4 text-gray-700 dark:text-white">
-                                    <span class="px-3 py-1 rounded-lg text-sm 
-                                            @if($row->status == 'pending') bg-warning-100 text-warning-700
-                                            @elseif($row->status == 'approved') bg-green-100 text-green-700
-                                            @else bg-red-100 text-red-700 @endif">
+                                    <span class="
+                                        inline-flex items-center px-3 py-1 text-sm font-medium rounded-full
+                                        @if($row->status == 'pending') bg-yellow-100 text-yellow-700
+                                        @elseif($row->status == 'approved') bg-green-100 text-green-700
+                                        @elseif($row->status == 'rejected') bg-red-100 text-red-700
+                                        @else bg-gray-100 text-gray-700 @endif
+                                    ">
                                         {{ ucfirst($row->status) }}
                                     </span>
                                 </td>
+
                                 <td class="py-3 px-4 text-gray-700 dark:text-white">
                                     {{ \Carbon\Carbon::parse($row->date_submission)->format('d M Y') }}
                                 </td>
