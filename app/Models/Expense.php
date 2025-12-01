@@ -11,7 +11,7 @@ class Expense extends Model
         'user_id',
         'branch_id',
         'project_id',
-        'jumlah',
+        'amount',
         'note_number',
         'store_name',
         'expense_date',
@@ -20,28 +20,34 @@ class Expense extends Model
         'verified_at',
     ];
 
-    public function budgetRequest() {
+    public function budgetRequest()
+    {
         return $this->belongsTo(BudgetRequest::class, 'budget_request_id');
     }
 
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function branch() {
+    public function branch()
+    {
         return $this->belongsTo(Branch::class, 'branch_id');
     }
 
-    public function project() {
+    public function project()
+    {
         return $this->belongsTo(Project::class, 'project_id');
     }
 
-    public function verifiedBy() {
+    public function verifiedBy()
+    {
         return $this->belongsTo(User::class, 'verified_by');
     }
-    
-    public function expense() {
+
+    public function expense()
+    {
         return $this->hasOne(OcrResult::class, 'expense_id');
     }
-    
+
 }

@@ -45,7 +45,6 @@
                                 <th class="py-3 px-4 text-gray-600 dark:text-white">Jumlah</th>
                                 <th class="py-3 px-4 text-gray-600 dark:text-white">Deskripsi</th>
                                 <th class="py-3 px-4 text-gray-600 dark:text-white">Tanggal</th>
-                                <th class="py-3 px-4 text-gray-600 dark:text-white">Actions</th>
                             </tr>
                         </thead>
 
@@ -58,23 +57,10 @@
                                         {{ $row->user->name }}
                                     </td>
                                     <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->project->name ?? 'N/A' }}</td>
-                                    <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->branches->name ?? 'N/A' }}</td>
-                                    <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->ammount }}</td>
+                                    <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->branch->name ?? 'N/A' }}</td>
+                                    <td class="py-3 px-4 text-gray-700 dark:text-white">{{ number_format((int) $row->amount, 0, ',', '.') }}</td>
                                     <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->description }}</td>
                                     <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->date }}</td>
-                                    <td class="py-3 px-4 flex gap-3 justify-center items-center">
-                                        <a href="{{ route('admin.user.edit', $row->id) }}"
-                                            class="inline-flex items-center gap-2 px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">Edit</a>
-                                        <form id="delete-form-{{ $row->id }}"
-                                            action="{{ route('admin.user.destroy', $row->id) }}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="button" onclick="deleteUser({{ $row->id }})"
-                                                class="inline-flex items-center gap-2 px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">
-                                                Delete
-                                            </button>
-                                        </form>
-                                    </td>
                                 </tr>
                             @empty
                                 <tr>

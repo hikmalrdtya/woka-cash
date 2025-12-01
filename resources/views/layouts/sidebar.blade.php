@@ -65,7 +65,7 @@
                         <li>
                             <a href="{{ route('admin.user.index') }}"
                                 class="menu-item group
-                                                            {{ request()->routeIs('admin.user.*') ? 'menu-item-active' : 'menu-item-inactive' }}">
+                                                                {{ request()->routeIs('admin.user.*') ? 'menu-item-active' : 'menu-item-inactive' }}">
                                 <svg class="{{ request()->routeIs('admin.user.*') ? 'menu-item-icon-active' : 'menu-item-icon-inactive' }}"
                                     width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -85,7 +85,7 @@
                         <li>
                             <a href="{{ route('admin.branch.index') }}"
                                 class="menu-item group
-                                                            {{ request()->routeIs('admin.branch.*') ? 'menu-item-active' : 'menu-item-inactive' }}">
+                                                                {{ request()->routeIs('admin.branch.*') ? 'menu-item-active' : 'menu-item-inactive' }}">
                                 <svg class="{{ request()->routeIs('admin.branch.*') ? 'menu-item-icon-active' : 'menu-item-icon-inactive' }}"
                                     width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -104,7 +104,7 @@
                         <li>
                             <a href="{{ route('admin.branchUser.index') }}"
                                 class="menu-item group
-                                                {{ request()->routeIs('admin.branchUser.*') ? 'menu-item-active' : 'menu-item-inactive' }}">
+                                                    {{ request()->routeIs('admin.branchUser.*') ? 'menu-item-active' : 'menu-item-inactive' }}">
                                 <svg class="{{ request()->routeIs('admin.branchUser.*') ? 'menu-item-icon-active' : 'menu-item-icon-inactive' }}"
                                     width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -258,6 +258,34 @@
                                 </span>
                             </a>
                         </li>
+
+                        <li>
+                            <a href="{{ route('finance.budget_requests.index') }}"
+                                class="menu-item group {{ request()->routeIs('finance.budget_requests.*') ? 'menu-item-active' : 'menu-item-inactive' }}">
+
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                    stroke="currentColor" class="w-6 h-6">
+                                    <!-- Dokumen -->
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M7 3h7l5 5v11.5A2.5 2.5 0 0 1 16.5 22h-9A2.5 2.5 0 0 1 5 19.5v-14A2.5 2.5 0 0 1 7.5 3Z" />
+
+                                    <!-- Sudut dokumen terlipat -->
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M14 3v5h5" />
+
+                                    <!-- Teks garis -->
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.5 10h7M8.5 13h7M8.5 16h4" />
+
+                                    <!-- Tanda centang -->
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 18.5l1.5 1.5 3.5-3.5" />
+                                </svg>
+
+                                <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">
+                                    Budget Request
+                                </span>
+                            </a>
+                        </li>
+
+
                         <li>
                             <a href="{{ route('finance.expenses.index') }}"
                                 class="menu-item group {{ request()->routeIs('finance.expenses.*') ? 'menu-item-active' : 'menu-item-inactive' }}">
@@ -279,7 +307,7 @@
                                 </span>
                             </a>
                         </li>
-                      
+
                     @endif
 
                 </ul>

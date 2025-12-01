@@ -18,10 +18,10 @@ return new class extends Migration
             $table->foreignId('branch_id')->constrained('branches')->cascadeOnDelete();
             $table->foreignId('project_id')->nullable()->constrained('projects')->cascadeOnDelete();
             $table->decimal('amount', 15, 2);
-            $table->string('note_number', 255);
-            $table->string('store_name', 255);
+            $table->string('note_number', 255)->nullable();
+            $table->string('store_name', 255)->nullable();
             $table->date('expense_date');
-            $table->string('receipt_file', 255);
+            $table->string('receipt_file', 255)->nullable();
             $table->foreignId('verified_by')->nullable()->constrained('users')->cascadeOnDelete();
             $table->dateTime('verified_at')->nullable();
             $table->timestamps();

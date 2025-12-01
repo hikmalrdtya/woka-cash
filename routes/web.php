@@ -10,6 +10,7 @@ use App\Http\Controllers\Staff\ExpensesController;
 use App\Http\Controllers\Staff\IncomesController;
 use App\Http\Controllers\Finance\IncomesController as FinanceIncomesController;
 use App\Http\Controllers\Finance\ExpensesController as FinanceExpensesController;
+use App\Http\Controllers\Finance\BudgetRequestController as FinanceBudgetRequestController;
 use App\Http\Controllers\Staff\ProjectController;
 use Illuminate\Support\Facades\Route;
 
@@ -35,19 +36,26 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
 });
 
 Route::prefix('staff')->name('staff.')->middleware(['auth', 'role:staff'])->group(function () {
-   Route::get('/dashboard',[DashboardController::class,'index'])->name('dashboard');
-   Route::resource('incomes', IncomesController::class);
-   Route::resource('expenses', ExpensesController::class);
-   Route::resource('budget_requests', BudgetRequestController::class);
-   Route::resource('projects', ProjectController::class);
-   Route::get('/profile', [UserController::class, 'editProfileStaff'])->name('profile.edit');
-   Route::put('/profile', [UserController::class, 'updateProfileStaff'])->name('profile.update');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::resource('incomes', IncomesController::class);
+    Route::resource('expenses', ExpensesController::class);
+    Route::resource('budget_requests', BudgetRequestController::class);
+    Route::resource('projects', ProjectController::class);
+    Route::get('/profile', [UserController::class, 'editProfileStaff'])->name('profile.edit');
+    Route::put('/profile', [UserController::class, 'updateProfileStaff'])->name('profile.update');
 });
 
 Route::prefix('finance')->name('finance.')->middleware(['auth', 'role:finance'])->group(function () {
-   Route::get('/dashboard',[DashboardController::class,'index'])->name('dashboard');
-   Route::resource('incomes', FinanceIncomesController::class);
-   Route::resource('expenses', FinanceExpensesController::class);
-   Route::get('/profile', [UserController::class, 'editProfileFinance'])->name('profile.edit');
-   Route::put('/profile', [UserController::class, 'updateProfileFinance'])->name('profile.update');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::resource('incomes', FinanceIncomesController::class);
+    Route::resource('expenses', FinanceExpensesController::class);
+    Route::get('/budget_request', [FinanceBudgetRequestController::class, 'index'])->name('budget_requests.index');
+    Route::post('/finance/budget_requests/{id}/approve', [FinanceBudgetRequestController::class, 'approve'])
+        ->name('budget_requests.approve');
+    Route::post('/finance/budget_requests/{id}/reject', [FinanceBudgetRequestController::class, 'reject'])
+        ->name('budget_requests.reject');
+    Route::post('/finance/budget_requests/{id}/reject/update', [FinanceBudgetRequestController::class, 'rejectUpdate'])
+        ->name('budget_requests.reject.update');
+    Route::get('/profile', [UserController::class, 'editProfileFinance'])->name('profile.edit');
+    Route::put('/profile', [UserController::class, 'updateProfileFinance'])->name('profile.update');
 });

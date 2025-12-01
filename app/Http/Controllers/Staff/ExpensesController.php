@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Staff;
 
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
+use App\Models\BranchUser;
 use App\Models\Expense;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -16,13 +17,18 @@ class ExpensesController extends Controller
      */
     public function index()
     {
-        //
         $user = Auth::user()->id;
 
-        $branchIds = Branch::where("user_id", $user)->pluck("id")->toArray();
-        $expensesList = Expense::where("branch_id", $branchIds)->get();
+        $branchIds = BranchUser::where('user_id', $user)->pluck('branch_id');
+
+        $expensesList = Expense::where('user_id', $user)
+            ->whereIn('branch_id', $branchIds)
+            ->orderBy('expense_date', 'desc')
+            ->get();
         return view("staff.expenses.index", compact("expensesList"));
     }
+
+
 
     /**
      * Show the form for creating a new resource.

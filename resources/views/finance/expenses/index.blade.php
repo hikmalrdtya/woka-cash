@@ -39,12 +39,12 @@
                         <thead>
                             <tr class="bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
                                 <th class="py-3 px-4 text-gray-600 dark:text-white">No</th>
-                                <th class="py-3 px-4 text-gray-600 dark:text-white">Description</th>
+                                <th class="py-3 px-4 text-gray-600 dark:text-white">Pengaju</th>
                                 <th class="py-3 px-4 text-gray-600 dark:text-white">Cabang Perusahaan</th>
                                 <th class="py-3 px-4 text-gray-600 dark:text-white">Jumlah</th>
                                 <th class="py-3 px-4 text-gray-600 dark:text-white">Deskripsi</th>
                                 <th class="py-3 px-4 text-gray-600 dark:text-white">Tanggal</th>
-                                <th class="py-3 px-4 text-gray-600 dark:text-white">Actions</th>
+                                <th class="py-3 px-4 text-gray-600 text-center dark:text-white">Actions</th>
                             </tr>
                         </thead>
 
@@ -56,11 +56,10 @@
                                     <td class="py-3 px-4 text-gray-700 dark:text-white flex items-center gap-3">
                                         {{ $row->user->name }}
                                     </td>
-                                    <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->budget_request->title ?? 'N/A' }}</td>
-                                    <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->branches->name ?? 'N/A' }}</td>
-                                    <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->ammount }}</td>
-                                    <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->description }}</td>
-                                    <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->date }}</td>
+                                    <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->branch->name ?? 'N/A' }}</td>
+                                    <td class="py-3 px-4 text-gray-700 dark:text-white"> {{ number_format((int) $row->amount, 0, ',', '.') }}</td>
+                                    <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->budgetRequest->title ?? 'N/A' }}</td>
+                                    <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->expense_date }}</td>
                                     <td class="py-3 px-4 flex gap-3 justify-center items-center">
                                         <a href="{{ route('admin.user.edit', $row->id) }}"
                                             class="inline-flex items-center gap-2 px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">Edit</a>
@@ -78,7 +77,7 @@
                             @empty
                                 <tr>
                                     <td colspan="8" class="text-center text-gray-700 dark:text-white py-4">
-                                        <i class="bi bi-info-circle"></i> No incomes yet
+                                        <i class="bi bi-info-circle"></i> No Expanses yet
                                     </td>
                                 </tr>
                             @endforelse
