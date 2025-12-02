@@ -25,32 +25,44 @@ class User extends Authenticatable
         'photo_profile',
     ];
 
-    public function leaderBranch() {
+    public function leaderBranch()
+    {
         return $this->hasMany(Branch::class, 'user_id');
     }
 
-    public function staffBranch() {
+    public function staffBranch()
+    {
         return $this->belongsToMany(Branch::class, 'branch_users');
     }
 
-    public function incomes() {
+    public function incomes()
+    {
         return $this->hasMany(Income::class, 'user_id');
     }
 
-    public function budgetRequest() {
+    public function budgetRequest()
+    {
         return $this->hasMany(budgetRequest::class, 'user_id');
     }
 
-    public function userApproved() {
+    public function userApproved()
+    {
         return $this->hasMany(BudgetRequest::class, 'approved_by');
     }
 
-    public function expense() {
+    public function expense()
+    {
         return $this->hasMany(Expense::class, 'user_id');
     }
 
-    public function verifiedExpense() {
+    public function verifiedExpense()
+    {
         return $this->hasMany(Expense::class, 'verified_by');
+    }
+
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
     }
 
     /**

@@ -63,7 +63,7 @@
                             <label for="foto"
                                 class="absolute bottom-0 right-0 bg-white p-1 rounded-full shadow-lg border-2 border-gray-800 cursor-pointer">
 
-                                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                                <svg class="w-6 h-6 text-gray-800 dark:text-dark" aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 18">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                         stroke-width="2" d="M10 12.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z" />
@@ -77,30 +77,25 @@
                                 onchange="previewPhoto(event)">
                         </div>
 
-                        <p class="text-gray-500 text-sm mt-2">Klik ikon kamera untuk mengganti foto</p>
+                        <p class="text-gray-500 dark:text-gray-900 text-sm mt-2">Klik ikon kamera untuk mengganti foto</p>
                     </div>
 
                     {{-- Username --}}
                     <div>
-                        <label class="block text-sm text-gray-600 dark:text-gray-300 mb-1">Username</label>
-                        <input type="text" name="name"
-                            class="w-full px-4 py-2 rounded-lg bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 shadow-sm"
-                            value="{{ $admin->name }}" required>
+                        <label class="block text-sm text-gray-600 dark:text-gray-900 mb-1">Username</label>
+                        <input type="text" name="name" class="w-full px-4 py-2 rounded-lg bg-white text-gray-800 border border-gray-300 dark:bg-gray-900 dark:text-white dark:border-gray-700 shadow-sm" value="{{ $admin->name }}" required>
                     </div>
 
                     {{-- Email --}}
                     <div>
-                        <label class="block text-sm text-gray-600 dark:text-gray-300 mb-1">Email</label>
-                        <input type="email" name="email"
-                            class="w-full px-4 py-2 rounded-lg bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 shadow-sm"
-                            value="{{ $admin->email }}" required>
+                        <label class="block text-sm text-gray-600 dark:text-gray-900 mb-1">Email</label>
+                        <input type="email" name="email" class="w-full px-4 py-2 rounded-lg bg-white text-gray-800 border border-gray-300 dark:bg-gray-900 dark:text-white dark:border-gray-700 shadow-sm" value="{{ $admin->email }}" required>
                     </div>
 
                     {{-- Password --}}
                     <div>
-                        <label class="block text-sm text-gray-600 dark:text-gray-300 mb-1">Password (Opsional)</label>
-                        <input type="password" name="password"
-                            class="w-full px-4 py-2 rounded-lg bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 shadow-sm"
+                        <label class="block text-sm text-gray-600 dark:text-gray-900 mb-1">Password (Opsional)</label>
+                        <input type="password" name="password" class="w-full px-4 py-2 rounded-lg bg-white text-gray-800 border border-gray-300 dark:bg-gray-900 dark:text-white dark:border-gray-700 shadow-sm"
                             placeholder="Kosongkan jika tidak ingin mengubah password">
                     </div>
 
@@ -199,7 +194,7 @@
                 // Buat Croppie baru
                 croppieInstance = new Croppie(croppieContainer, {
                     viewport: { width: 220, height: 220, type: "circle" },
-                    boundary: { width: 260, height: 260 },
+                    boundary: { width: 300, height: 300 },
                     enableZoom: true,
                     enableOrientation: true
                 });
