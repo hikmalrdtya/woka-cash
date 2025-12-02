@@ -1,34 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Staff;
+namespace App\Http\Controllers\Finance;
 
 use App\Http\Controllers\Controller;
-use App\Models\Branch;
-use App\Models\BranchUser;
-use App\Models\Expense;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class ExpensesController extends Controller
+class ProjectController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $user = Auth::user()->id;
-
-        $branchIds = BranchUser::where('user_id', $user)->pluck('branch_id');
-
-        $expensesList = Expense::where('user_id', $user)
-            ->whereIn('branch_id', $branchIds)
-            ->orderBy('expense_date', 'desc')
-            ->get();
-        return view("staff.expenses.index", compact("expensesList"));
+        //
     }
-
-
 
     /**
      * Show the form for creating a new resource.

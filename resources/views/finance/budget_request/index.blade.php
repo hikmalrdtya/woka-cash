@@ -24,10 +24,22 @@
                     </form>
                 </div>
 
-                <a href="{{ route('staff.budget_requests.create') }}"
-                    class="bg-brand-500 px-4 py-2 rounded-lg text-white text-sm shadow hover:bg-brand-600 transition">
-                    Create Budget Requests
-                </a>
+                <form method="GET" action="{{ route('finance.budget_requests.index') }}">
+                    <select name="branch_id"
+                        class="h-11 rounded-lg border border-gray-300 dark:border-gray-700 px-4 text-sm dark:bg-gray-900 dark:text-white"
+                        onchange="this.form.submit()">
+
+                        <option value="">Semua Cabang</option>
+
+                        @foreach($branches as $branch)
+                            <option value="{{ $branch->id }}" {{ ($branchId == $branch->id) ? 'selected' : '' }}>
+                                {{ $branch->name }}
+                            </option>
+                        @endforeach
+
+                    </select>
+                </form>
+
             </div>
             {{-- TABLE LIST --}}
             <div class="w-full p-4 bg-white dark:bg-gray-900 rounded-xl shadow-md">
@@ -44,6 +56,7 @@
                             <th class="py-3 px-4 text-gray-600 dark:text-white">Jumlah</th>
                             <th class="py-3 px-4 text-gray-600 dark:text-white">Status</th>
                             <th class="py-3 px-4 text-gray-600 dark:text-white">Tanggal</th>
+                            <th class="py-3 px-4 text-gray-600 dark:text-white">Action</th>
                         </tr>
                     </thead>
 
@@ -58,12 +71,12 @@
                                 </td>
                                 <td class="py-3 px-4 text-gray-700 dark:text-white">
                                     <span class="
-                                        inline-flex items-center px-3 py-1 text-sm font-medium rounded-full
-                                        @if($row->status == 'pending') bg-yellow-100 text-yellow-700
-                                        @elseif($row->status == 'approved') bg-green-100 text-green-700
-                                        @elseif($row->status == 'rejected') bg-red-100 text-red-700
-                                        @else bg-gray-100 text-gray-700 @endif
-                                    ">
+                                                                        inline-flex items-center px-3 py-1 text-sm font-medium rounded-full
+                                                                        @if($row->status == 'pending') bg-yellow-100 text-yellow-700
+                                                                        @elseif($row->status == 'approved') bg-green-100 text-green-700
+                                                                        @elseif($row->status == 'rejected') bg-red-100 text-red-700
+                                                                        @else bg-gray-100 text-gray-700 @endif
+                                                                    ">
                                         {{ ucfirst($row->status) }}
                                     </span>
                                 </td>
@@ -71,6 +84,31 @@
                                 <td class="py-3 px-4 text-gray-700 dark:text-white">
                                     {{ \Carbon\Carbon::parse($row->date_submission)->format('d M Y') }}
                                 </td>
+                                <td class="py-3 px-4 text-gray-700 dark:text-white">
+
+                                    @if($row->status == 'pending')
+                                        <form action="{{ route('finance.budget_requests.approve', $row->id) }}" method="POST"
+                                            class="inline-block">
+                                            @csrf
+                                            <button
+                                                class="inline-flex items-center gap-2 px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-60">
+                                                Approve
+                                            </button>
+                                        </form>
+
+                                        <button
+                                            class="inline-flex items-center gap-2 px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-error-500 shadow-theme-xs hover:bg-error-600"
+                                            onclick="openRejectModal({{ $row->id }}, '{{ $row->title }}', '{{ $row->amount }}')">
+                                            Reject
+                                        </button>
+                                    @else
+                                        <span class="text-xs text-gray-500">
+                                            Action Completed
+                                        </span>
+                                    @endif
+
+                                </td>
+
                             </tr>
                         @empty
                             <tr>
@@ -84,8 +122,46 @@
         </div>
     </div>
 
-    {{-- JS sama seperti modal income --}}
+    <div id="rejectModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 w-96">
+
+            <h2 class="text-lg font-semibold mb-3 text-gray-800 dark:text-white">
+                Usulkan Biaya Baru
+            </h2>
+
+            <form method="POST" id="rejectForm">
+                @csrf
+
+                <label class="text-sm text-gray-700 dark:text-gray-300">Jumlah Usulan</label>
+                <input type="number" step="0.01" name="amount_usulan"
+                    class="w-full border rounded-lg px-3 py-2 dark:bg-gray-900 dark:text-white">
+
+                <div class="flex mt-4 items-center justify-end mt-4">
+                    <button type="button" onclick="closeRejectModal()" class="px-3 py-1 bg-gray-300 rounded-lg mr-2">
+                        Cancel
+                    </button>
+
+                    <button type="submit" class="px-3 py-1 bg-brand-500 text-white rounded-lg">
+                        Update
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+
     <script>
+        function openRejectModal(id, title, amount) {
+            document.getElementById("rejectForm").action =
+                "/finance/budget_requests/" + id + "/reject/update";
+            document.getElementById("rejectModal").classList.remove("hidden");
+        }
+
+        function closeRejectModal() {
+            document.getElementById("rejectModal").classList.add("hidden");
+        }
+
         function formatRupiah(el) {
             let value = el.value.replace(/[^0-9]/g, "");
             if (!value) return el.value = "";

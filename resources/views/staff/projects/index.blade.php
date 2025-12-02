@@ -25,6 +25,11 @@
                         </div>
                     </form>
                 </div>
+
+
+                <a href="{{ route('staff.projects.create') }}" class="bg-brand-500 px-4 py-2 rounded-lg text-white text-sm shadow hover:bg-brand-600 transition">
+                    Add New Project
+                </a>
             </div>
 
 
@@ -39,33 +44,43 @@
                         <thead>
                             <tr class="bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
                                 <th class="py-3 px-4 text-gray-600 dark:text-white">No</th>
-                                <th class="py-3 px-4 text-gray-600 dark:text-white">Pengaju</th>
+                                <th class="py-3 px-4 text-gray-600 dark:text-white">Project Title</th>
                                 <th class="py-3 px-4 text-gray-600 dark:text-white">Cabang Perusahaan</th>
-                                <th class="py-3 px-4 text-gray-600 dark:text-white">Jumlah</th>
                                 <th class="py-3 px-4 text-gray-600 dark:text-white">Deskripsi</th>
-                                <th class="py-3 px-4 text-gray-600 dark:text-white">Tanggal</th>
+                                <th class="py-3 px-4 text-gray-600 dark:text-white">Created-at</th>
+                                <th class="py-3 px-4 text-gray-600 text-center dark:text-white">Actions</th>
                             </tr>
                         </thead>
 
                         <tbody>
-                            @forelse ($expensesList as $no => $row)
+                            @forelse ($projectList as $no => $row)
                                 <tr
                                     class="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition">
                                     <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $no + 1 }}</td>
-                                    <td class="py-3 px-4 text-gray-700 dark:text-white flex items-center gap-3">
-                                        {{ $row->user->name }}
-                                    </td>
+                                    <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->name ?? 'N/A' }}</td>
                                     <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->branch->name ?? 'N/A' }}</td>
+                                    <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->description }}</td>
                                     <td class="py-3 px-4 text-gray-700 dark:text-white">
-                                        {{ number_format((int) $row->amount, 0, ',', '.') }}</td>
-                                    <td class="py-3 px-4 text-gray-700 dark:text-white">
-                                        {{ $row->budgetRequest->title ?? 'N/A' }}</td>
-                                    <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->expense_date }}</td>
+                                        {{ \Carbon\Carbon::parse($row->date)->format('d M Y') }}
+                                    </td>
+                                    <td class="py-3 px-4 flex gap-3 justify-center items-center">
+                                        <a href="{{ route('staff.projects.edit', $row->id) }}"
+                                            class="inline-flex items-center gap-2 px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">Edit</a>
+                                        <form id="delete-form-{{ $row->id }}"
+                                            action="{{ route('admin.user.destroy', $row->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="button" onclick="deleteUser({{ $row->id }})"
+                                                class="inline-flex items-center gap-2 px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-error-500 shadow-theme-xs hover:bg-brand-600">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </td>
                                 </tr>
                             @empty
                                 <tr>
                                     <td colspan="8" class="text-center text-gray-700 dark:text-white py-4">
-                                        <i class="bi bi-info-circle"></i> No Expanses yet
+                                        <i class="bi bi-info-circle"></i> No Project yet
                                     </td>
                                 </tr>
                             @endforelse
@@ -159,6 +174,20 @@
     </style>
 
     <script>
+        function formatRupiah(el) {
+            let value = el.value.replace(/[^0-9]/g, ""); // hanya angka
+
+            if (!value) {
+                el.value = "";
+                return;
+            }
+
+            // format angka dengan locale Indonesia
+            let formatted = new Intl.NumberFormat("id-ID").format(value);
+
+            el.value = formatted;
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
             // Modal Elements
             const modalWrapper = document.getElementById('add-income-modal-wrapper');

@@ -24,24 +24,22 @@
                                     </svg>
                                 </span>
 
-                                <input
-                                    oninput="this.value = this.value
-                                                .replace(/[^a-zA-Z\s]/g, '')     
-                                                .replace(/^\s+/, '')                
-                                                .replace(/\s{2,}/g, ' ');"
-                                    type="text" name="search" value="{{ request('search') }}"
-                                    placeholder="Search name user"
+                                <input oninput="this.value = this.value
+                                                    .replace(/[^a-zA-Z\s]/g, '')     
+                                                    .replace(/^\s+/, '')                
+                                                    .replace(/\s{2,}/g, ' ');" type="text" name="search"
+                                    value="{{ request('search') }}" placeholder="Search name user"
                                     class="dark:bg-dark-900 shadow-sm focus:border-brand-300 focus:ring-brand-500/10 
-                                            h-11 w-full rounded-lg border border-gray-200 bg-transparent py-2.5 pr-14 pl-12
-                                            text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 outline-none
-                                            xl:w-64 dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:placeholder:text-white/30">
+                                                h-11 w-full rounded-lg border border-gray-200 bg-transparent py-2.5 pr-14 pl-12
+                                                text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 outline-none
+                                                xl:w-64 dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:placeholder:text-white/30">
                             </div>
 
                             <!-- Reset Button -->
                             @if (request('search'))
                                 <a href="{{ route('admin.user.index') }}"
                                     class="h-11 px-4 flex items-center justify-center rounded-lg border border-gray-300 
-                                        text-gray-600 dark:text-white dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800">
+                                                text-gray-600 dark:text-white dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800">
                                     Reset
                                 </a>
                             @endif
@@ -74,7 +72,6 @@
                                 <th class="py-3 px-4 text-gray-600 dark:text-white">Name</th>
                                 <th class="py-3 px-4 text-gray-600 dark:text-white">Email</th>
                                 <th class="py-3 px-4 text-gray-600 dark:text-white">Role</th>
-                                <th class="py-3 px-4 text-gray-600 dark:text-white">Cabang Perusahaan</th>
                                 <th class="py-3 px-4 text-gray-600 dark:text-white">Actions</th>
                             </tr>
                         </thead>
@@ -108,17 +105,16 @@
                                     </td>
                                     <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->email }}</td>
                                     <td class="py-3 px-4 text-gray-700 dark:text-white">{{ ucfirst($row->role) }}</td>
-                                    <td class="py-3 px-4 text-gray-700 dark:text-white">Jakarta</td>
-                                    <td class="py-3 px-4 flex gap-3 justify-center items-center">
+                                    <td class="py-3 px-4 flex gap-3">
                                         <a href="{{ route('admin.user.edit', $row->id) }}"
-                                            class="inline-flex items-center gap-2 px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">Edit</a>
+                                            class="text-white bg-warning-500 p-3 rounded-lg hover:underline ml-2">Edit</a>
                                         <form id="delete-form-{{ $row->id }}"
                                             action="{{ route('admin.user.destroy', $row->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
 
                                             <button type="button" onclick="deleteUser({{ $row->id }})"
-                                                class="inline-flex items-center gap-2 px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">
+                                                class="text-white bg-error-500 p-3 rounded-lg hover:underline ml-2">
                                                 Delete
                                             </button>
                                         </form>

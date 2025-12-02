@@ -65,7 +65,7 @@
                         <li>
                             <a href="{{ route('admin.user.index') }}"
                                 class="menu-item group
-                                                    {{ request()->routeIs('admin.user.*') ? 'menu-item-active' : 'menu-item-inactive' }}">
+                                                                {{ request()->routeIs('admin.user.*') ? 'menu-item-active' : 'menu-item-inactive' }}">
                                 <svg class="{{ request()->routeIs('admin.user.*') ? 'menu-item-icon-active' : 'menu-item-icon-inactive' }}"
                                     width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -85,7 +85,7 @@
                         <li>
                             <a href="{{ route('admin.branch.index') }}"
                                 class="menu-item group
-                                                    {{ request()->routeIs('admin.branch.*') ? 'menu-item-active' : 'menu-item-inactive' }}">
+                                                                {{ request()->routeIs('admin.branch.*') ? 'menu-item-active' : 'menu-item-inactive' }}">
                                 <svg class="{{ request()->routeIs('admin.branch.*') ? 'menu-item-icon-active' : 'menu-item-icon-inactive' }}"
                                     width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -104,7 +104,7 @@
                         <li>
                             <a href="{{ route('admin.branchUser.index') }}"
                                 class="menu-item group
-                                        {{ request()->routeIs('admin.branchUser.*') ? 'menu-item-active' : 'menu-item-inactive' }}">
+                                                    {{ request()->routeIs('admin.branchUser.*') ? 'menu-item-active' : 'menu-item-inactive' }}">
                                 <svg class="{{ request()->routeIs('admin.branchUser.*') ? 'menu-item-icon-active' : 'menu-item-icon-inactive' }}"
                                     width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -203,6 +203,23 @@
                                 </span>
                             </a>
                         </li>
+                        <li>
+                            <a href="{{ route('staff.projects.index') }}"
+                                class="menu-item group {{ request()->routeIs('staff.projects.*') ? 'menu-item-active' : 'menu-item-inactive' }}">
+
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                    stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M3 7.5A2.5 2.5 0 0 1 5.5 5h4l2 2h7A2.5 2.5 0 0 1 21 9.5v8A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5v-10Z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 13l1.5 1.5L13 12M9 17h4" />
+                                </svg>
+
+                                <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">
+                                    Projects List
+                                </span>
+                            </a>
+                        </li>
+
                     @endif
 
                     @if (Auth::check() && (Auth::user()->role === 'finance'))
@@ -241,30 +258,10 @@
                                 </span>
                             </a>
                         </li>
-                        <li>
-                            <a href="{{ route('finance.expenses.index') }}"
-                                class="menu-item group {{ request()->routeIs('finance.expenses.*') ? 'menu-item-active' : 'menu-item-inactive' }}">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                    stroke="currentColor" class="w-6 h-6">
-                                    <!-- Dompet -->
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M3 10v6a2.5 2.5 0 0 0 2.5 2.5h13A2.5 2.5 0 0 0 21 16v-6A2.5 2.5 0 0 0 18.5 7h-13A2.5 2.5 0 0 0 3 10Z" />
 
-                                    <!-- Kancing dompet -->
-                                    <circle cx="16.5" cy="13" r="1" />
-
-                                    <!-- Uang kertas keluar -->
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M7 7L9.5 3.5h7L19 7H7Z" />
-                                    <circle cx="13" cy="5.25" r="1" />
-                                </svg>
-                                <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">
-                                    Expenses
-                                </span>
-                            </a>
-                        </li>
                         <li>
-                            <a href=""
-                                class="menu-item group {{ request()->routeIs('staff.budget_request.*') ? 'menu-item-active' : 'menu-item-inactive' }}">
+                            <a href="{{ route('finance.budget_requests.index') }}"
+                                class="menu-item group {{ request()->routeIs('finance.budget_requests.*') ? 'menu-item-active' : 'menu-item-inactive' }}">
 
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                     stroke="currentColor" class="w-6 h-6">
@@ -287,6 +284,30 @@
                                 </span>
                             </a>
                         </li>
+
+
+                        <li>
+                            <a href="{{ route('finance.expenses.index') }}"
+                                class="menu-item group {{ request()->routeIs('finance.expenses.*') ? 'menu-item-active' : 'menu-item-inactive' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                    stroke="currentColor" class="w-6 h-6">
+                                    <!-- Dompet -->
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M3 10v6a2.5 2.5 0 0 0 2.5 2.5h13A2.5 2.5 0 0 0 21 16v-6A2.5 2.5 0 0 0 18.5 7h-13A2.5 2.5 0 0 0 3 10Z" />
+
+                                    <!-- Kancing dompet -->
+                                    <circle cx="16.5" cy="13" r="1" />
+
+                                    <!-- Uang kertas keluar -->
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M7 7L9.5 3.5h7L19 7H7Z" />
+                                    <circle cx="13" cy="5.25" r="1" />
+                                </svg>
+                                <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">
+                                    Expenses
+                                </span>
+                            </a>
+                        </li>
+
                     @endif
 
                 </ul>
