@@ -50,11 +50,11 @@ Route::prefix('finance')->name('finance.')->middleware(['auth', 'role:finance'])
     Route::resource('incomes', FinanceIncomesController::class);
     Route::resource('expenses', FinanceExpensesController::class);
     Route::get('/budget_request', [FinanceBudgetRequestController::class, 'index'])->name('budget_requests.index');
-    Route::post('/finance/budget_requests/{id}/approve', [FinanceBudgetRequestController::class, 'approve'])
+    Route::post('/budget_requests/{id}/approve', [FinanceBudgetRequestController::class, 'approve'])
         ->name('budget_requests.approve');
-    Route::post('/finance/budget_requests/{id}/reject', [FinanceBudgetRequestController::class, 'reject'])
+    Route::post('/budget_requests/{id}/reject', [FinanceBudgetRequestController::class, 'reject'])
         ->name('budget_requests.reject');
-    Route::post('/finance/budget_requests/{id}/reject/update', [FinanceBudgetRequestController::class, 'rejectUpdate'])
+    Route::post('/budget_requests/{id}/reject/update', [FinanceBudgetRequestController::class, 'rejectUpdate'])
         ->name('budget_requests.reject.update');
     Route::get('/profile', [UserController::class, 'editProfileFinance'])->name('profile.edit');
     Route::put('/profile', [UserController::class, 'updateProfileFinance'])->name('profile.update');

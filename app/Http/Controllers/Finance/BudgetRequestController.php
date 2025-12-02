@@ -75,18 +75,26 @@ class BudgetRequestController extends Controller
     public function rejectUpdate(Request $request, $id)
     {
         $request->validate([
-            'amount_usulan' => 'required|numeric|min:0',
+            'amount_usulan' => 'required',
         ]);
+
+        $cleanAmount = str_replace('.', '', $request->amount_usulan);
+
+        if (!is_numeric($cleanAmount)) {
+            return back()->with('error', 'Format angka tidak valid.');
+        }
 
         $budget = BudgetRequest::findOrFail($id);
 
         $budget->update([
-            'amount' => $request->amount_usulan,
+            'amount' => $cleanAmount,
             'status' => 'pending',
         ]);
 
-        return back()->with('success', 'Usulan biaya berhasil diperbarui.');
+        return redirect()->route('finance.budget_requests.index')
+            ->with('success', 'Usulan biaya berhasil diperbarui.');
     }
+
 
 
 }
