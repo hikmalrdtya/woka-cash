@@ -128,11 +128,14 @@
                     <!-- Role in Branch -->
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-white">Role in Branch</label>
-                        <input value="{{ old('role_in_branch') }}" type="text" name="role_in_branch"
-                            class="w-full h-11 px-4 rounded-lg border border-gray-300 dark:border-gray-700 
+                        <select class="w-full h-11 px-4 rounded-lg border border-gray-300 dark:border-gray-700 
                             bg-white dark:bg-gray-800 text-gray-800 dark:text-white 
                             placeholder-gray-400 dark:placeholder-white/30
-                            focus:ring-2 focus:ring-brand-400 focus:border-brand-500 outline-none">
+                            focus:ring-2 focus:ring-brand-400 focus:border-brand-500 outline-none" name="role_in_branch" id="">
+                            <option value="" selected disabled>-- Pilih Jabatan --</option>
+                            <option value="developer">Developer</option>
+                            <option value="project-manager">Project Manager</option>
+                        </select>
 
                         @error('role_in_branch')
                             <p class="text-error-500 text-sm mt-1">{{ $message }}</p>

@@ -89,7 +89,7 @@
                                     <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->branch->name }}</td>
                                     <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->branch->user->name }}</td>
                                     <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->user->name }}</td>
-                                    <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->role_in_branch ?? '-' }}
+                                    <td class="py-3 px-4 text-gray-700 dark:text-white">{{ ucwords(str_replace('-', ' ', $row->role_in_branch ?? '-')) }}
                                     </td>
                                     <td class="py-3 px-4 flex gap-3">
                                         <a href="{{ route('admin.branchUser.edit', $row->id) }}"
