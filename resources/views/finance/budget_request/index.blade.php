@@ -70,13 +70,16 @@
                                     {{ number_format($row->amount, 0, ',', '.') }}
                                 </td>
                                 <td class="py-3 px-4 text-gray-700 dark:text-white">
-                                    <span class="
-                                                                        inline-flex items-center px-3 py-1 text-sm font-medium rounded-full
-                                                                        @if($row->status == 'pending') bg-yellow-100 text-yellow-700
-                                                                        @elseif($row->status == 'approved') bg-green-100 text-green-700
-                                                                        @elseif($row->status == 'rejected') bg-red-100 text-red-700
-                                                                        @else bg-gray-100 text-gray-700 @endif
-                                                                    ">
+                                    <span
+                                        class="
+                                    inline-flex items-center px-3 py-1 text-sm font-medium rounded-full
+                                    @if($row->status == 'pending') bg-yellow-100 text-yellow-700
+                                    @elseif($row->status == 'approved') bg-green-100 text-green-700
+                                    @elseif($row->status == 'rejected') bg-red-100 text-red-700
+                                    @else
+                                     bg-gray-100 text-gray-700 @endif
+
+                                                                                                                                                                ">
                                         {{ ucfirst($row->status) }}
                                     </span>
                                 </td>
@@ -90,15 +93,28 @@
                                         <form action="{{ route('finance.budget_requests.approve', $row->id) }}" method="POST"
                                             class="inline-block">
                                             @csrf
-                                            <button
-                                                class="inline-flex items-center gap-2 px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-60">
+                                            <button type="submit"
+                                                class="inline-flex items-center gap-2 px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">
+
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                                </svg>
+
                                                 Approve
                                             </button>
+
                                         </form>
 
                                         <button
-                                            class="inline-flex items-center gap-2 px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-error-500 shadow-theme-xs hover:bg-error-600"
+                                            class="inline-flex items-center gap-2 rounded-lg bg-warning-500 px-4 py-3 text-sm font-medium text-white shadow-theme-xs transition hover:bg-warning-600"
                                             onclick="openRejectModal({{ $row->id }}, '{{ $row->title }}', '{{ $row->amount }}')">
+
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+
                                             Reject
                                         </button>
                                     @else
@@ -122,7 +138,7 @@
         </div>
     </div>
 
-    <div id="rejectModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    <div id="rejectModal" class="hidden fixed inset-0 shadow-lg bg-black/50 flex items-center justify-center z-50">
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 w-96">
 
             <h2 class="text-lg font-semibold mb-3 text-gray-800 dark:text-white">
@@ -133,8 +149,18 @@
                 @csrf
 
                 <label class="text-sm text-gray-700 dark:text-gray-300">Jumlah Usulan</label>
-                <input type="number" step="0.01" name="amount_usulan"
-                    class="w-full border rounded-lg px-3 py-2 dark:bg-gray-900 dark:text-white">
+                <div class="mb-4">
+                    <div
+                        class="flex items-center rounded-xl overflow-hidden border border-gray-300/50 dark:border-gray-600/50 bg-white/50 dark:bg-gray-700/50">
+                        <span class="px-4 py-2.5 text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 text-sm">
+                            Rp
+                        </span>
+                        <input type="text" name="amount_usulan" id="amount_usulan"
+                            class="w-full py-2.5 px-3 bg-transparent focus:outline-none dark:text-white"
+                            oninput="formatRupiah(this)">
+                    </div>
+                    @error('amount') <p class="text-error-500 text-sm">{{ $message }}</p> @enderror
+                </div>
 
                 <div class="flex mt-4 items-center justify-end mt-4">
                     <button type="button" onclick="closeRejectModal()" class="px-3 py-1 bg-gray-300 rounded-lg mr-2">
@@ -155,8 +181,15 @@
         function openRejectModal(id, title, amount) {
             document.getElementById("rejectForm").action =
                 "/finance/budget_requests/" + id + "/reject/update";
+
+            if (amount) {
+                document.getElementById("amount_usulan").value =
+                    new Intl.NumberFormat("id-ID").format(amount);
+            }
+
             document.getElementById("rejectModal").classList.remove("hidden");
         }
+
 
         function closeRejectModal() {
             document.getElementById("rejectModal").classList.add("hidden");

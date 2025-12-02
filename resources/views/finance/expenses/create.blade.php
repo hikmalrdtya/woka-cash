@@ -1,6 +1,10 @@
 @extends('layouts.main')
 
-@section('title', 'Branch Create | WokaCash')
+@section('content')
+
+@extends('layouts.main')
+
+@section('title', 'Expanses Create | WokaCash')
 
 @section('content')
     <style>
@@ -29,7 +33,7 @@
 
         <!-- Header -->
         <div class="mt-5 mb-4 flex items-center justify-between">
-            <h2 class="text-2xl font-semibold text-gray-800 dark:text-white">Create Branch</h2>
+            <h2 class="text-2xl font-semibold text-gray-800 dark:text-white">Create Expanses</h2>
 
             <a href="{{ route('staff.budget_requests.index') }}"
                 class="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-white px-4 py-2 rounded-lg transition">
@@ -40,23 +44,29 @@
         <!-- Card -->
         <div class="bg-white dark:bg-gray-900 rounded-xl mt-4 shadow p-6">
 
-            <form id="userCreateForm" action="{{ route('staff.budget_requests.store') }}" method="POST"
+            <form id="userCreateForm" action="{{ route('finance.expanses.store') }}" method="POST"
                 enctype="multipart/form-data">
                 @csrf
 
                 <!-- GRID 2 -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                    {{-- TITLE --}}
+                    {{-- CABANG --}}
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Judul Pengeluaran
+                            Cabang Perusahaan
                         </label>
-                        <input type="text" name="title"
+                        <select name="branch_id"
                             class="w-full border border-gray-300/50 dark:border-gray-600/50 bg-white/50 dark:bg-gray-700/50 rounded-xl px-3 py-2.5 dark:text-white">
-                        @error('title') <p class="text-error-500 text-sm">{{ $message }}</p> @enderror
+                            <option value="">Pilih Cabang</option>
+                            @foreach ($branches as $branch)
+                                <option value="{{ $branch->id }}">{{ $branch->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('branch_id') <p class="text-error-500 text-sm">{{ $message }}</p> @enderror
                     </div>
 
+                    
                     {{-- AMOUNT --}}
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -201,4 +211,6 @@
             wrapper.classList.add('border-brand-500');
         }
     </script>
+@endsection
+
 @endsection

@@ -19,12 +19,17 @@
 
                             <input type="text" placeholder="Search incomes" id="search-input"
                                 class="dark:bg-dark-900 shadow-sm focus:border-brand-300 focus:ring-brand-500/10 
-                                h-11 w-full rounded-lg border border-gray-200 bg-transparent py-2.5 pr-14 pl-12 
-                                text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 outline-none
-                                xl:w-64 dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:placeholder:text-white/30" />
+                                    h-11 w-full rounded-lg border border-gray-200 bg-transparent py-2.5 pr-14 pl-12 
+                                    text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 outline-none
+                                    xl:w-64 dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:placeholder:text-white/30" />
                         </div>
                     </form>
                 </div>
+
+                <a href="{{ route('finance.expenses.create') }}"
+                    class="bg-brand-500 px-4 py-2 rounded-lg text-white text-sm shadow hover:bg-brand-600 transition">
+                    Create Budget Requests
+                </a>
             </div>
 
 
@@ -57,8 +62,10 @@
                                         {{ $row->user->name }}
                                     </td>
                                     <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->branch->name ?? 'N/A' }}</td>
-                                    <td class="py-3 px-4 text-gray-700 dark:text-white"> {{ number_format((int) $row->amount, 0, ',', '.') }}</td>
-                                    <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->budgetRequest->title ?? 'N/A' }}</td>
+                                    <td class="py-3 px-4 text-gray-700 dark:text-white">
+                                        {{ number_format((int) $row->amount, 0, ',', '.') }}</td>
+                                    <td class="py-3 px-4 text-gray-700 dark:text-white">
+                                        {{ $row->budgetRequest->title ?? 'N/A' }}</td>
                                     <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->expense_date }}</td>
                                     <td class="py-3 px-4 flex gap-3 justify-center items-center">
                                         <a href="{{ route('admin.user.edit', $row->id) }}"
