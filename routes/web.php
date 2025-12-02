@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\BranchUserController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\Staff\BudgetRequestController;
 use App\Http\Controllers\Staff\ExpensesController;
 use App\Http\Controllers\Staff\IncomesController;
@@ -58,4 +59,21 @@ Route::prefix('finance')->name('finance.')->middleware(['auth', 'role:finance'])
         ->name('budget_requests.reject.update');
     Route::get('/profile', [UserController::class, 'editProfileFinance'])->name('profile.edit');
     Route::put('/profile', [UserController::class, 'updateProfileFinance'])->name('profile.update');
+});
+
+Route::middleware(['auth'])->group(function () {
+
+    Route::get('/notifications', [NotificationController::class, 'index'])
+        ->name('notifications.index');
+    Route::post('/notifications/read/{id}', [NotificationController::class, 'markAsRead'])
+        ->name('notifications.read');
+    Route::post('/notifications/read-all', [NotificationController::class, 'markAllAsRead'])
+        ->name('notifications.readAll');
+    Route::delete('/notifications/delete/{id}', [NotificationController::class, 'destroy'])
+        ->name('notifications.delete');
+    Route::delete('/notifications/delete-all', [NotificationController::class, 'destroyAll'])
+        ->name('notifications.deleteAll');
+    // fetch AJAX navbar
+    Route::get('/notifications/fetch', [NotificationController::class, 'fetch'])
+        ->name('notifications.fetch');
 });

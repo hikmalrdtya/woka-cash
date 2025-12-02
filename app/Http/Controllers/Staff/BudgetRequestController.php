@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use App\Models\BranchUser;
 use App\Models\BudgetRequest;
+use App\Models\Notification;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -52,31 +54,53 @@ class BudgetRequestController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        //
-        $request->validate([
-            'branch_id' => 'required|exists:branches,id',
-            'title' => 'required|string|max:255',
-            'amount' => 'required',
-            'note' => 'nullable|string',
-            'date_submission' => 'required|date',
-        ]);
+{
+    $request->validate([
+        'branch_id' => 'required|exists:branches,id',
+        'title' => 'required|string|max:255',
+        'amount' => 'required',
+        'note' => 'nullable|string',
+        'date_submission' => 'required|date',
+    ]);
 
-        $cleanAmount = str_replace('.', '', $request->amount);
+    $cleanAmount = str_replace('.', '', $request->amount);
 
-        BudgetRequest::create([
-            'user_id' => auth()->id(),
-            'branch_id' => $request->branch_id,
-            'title' => $request->title,
-            'amount' => $cleanAmount,
-            'note' => $request->note,
-            'status' => 'pending',
-            'approved_by' => null,
-            'date_submission' => $request->date_submission,
-        ]);
-        return redirect()->route('staff.budget_requests.index')
-            ->with('success', 'Budget request berhasil dikirim.');
-    }
+    // Simpan budget request
+    $budget = BudgetRequest::create([
+        'user_id' => auth()->id(),
+        'branch_id' => $request->branch_id,
+        'title' => $request->title,
+        'amount' => $cleanAmount,
+        'note' => $request->note,
+        'status' => 'pending',
+        'approved_by' => null,
+        'date_submission' => $request->date_submission,
+    ]);
+
+    // === NOTIFIKASI UNTUK FINANCE ===
+    // Jika finance cuma 1 user -> ganti ID-nya
+    // Notification::create([
+    //     'user_id' => 1,
+    //     'title'   => 'Budget Request Baru',
+    //     'message' => auth()->user()->name . ' mengajukan budget request baru.',
+    // ]);
+
+    // Jika finance banyak user -> gunakan role finance
+    $financeUsers = User::where('role', 'finance')->get();
+
+foreach ($financeUsers as $fin) {
+    Notification::create([
+        'user_id' => $fin->id,
+        'title' => 'Pengajuan Budget Baru',
+        'message' => auth()->user()->name . ' mengajukan budget request baru.',
+        'url' => route('finance.budget_requests.index'),
+    ]);
+}
+
+    return redirect()->route('staff.budget_requests.index')
+        ->with('success', 'Budget request berhasil dikirim.');
+}
+
 
     /**
      * Display the specified resource.
