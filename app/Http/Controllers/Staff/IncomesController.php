@@ -36,6 +36,8 @@ class IncomesController extends Controller
     public function create()
     {
         //
+        $projects = Project::whereDoesntHave('incomes')->get();
+        return view('staff.incomes.create', compact('projects'));
     }
 
     /**

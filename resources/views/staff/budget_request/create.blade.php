@@ -47,21 +47,6 @@
                 <!-- GRID 2 -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                    {{-- CABANG --}}
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Cabang Perusahaan
-                        </label>
-                        <select name="branch_id"
-                            class="w-full border border-gray-300/50 dark:border-gray-600/50 bg-white/50 dark:bg-gray-700/50 rounded-xl px-3 py-2.5 dark:text-white">
-                            <option value="">Pilih Cabang</option>
-                            @foreach ($branches as $branch)
-                                <option value="{{ $branch->id }}">{{ $branch->name }}</option>
-                            @endforeach
-                        </select>
-                        @error('branch_id') <p class="text-error-500 text-sm">{{ $message }}</p> @enderror
-                    </div>
-
                     {{-- TITLE --}}
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">

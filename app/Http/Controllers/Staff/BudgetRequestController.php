@@ -54,8 +54,10 @@ class BudgetRequestController extends Controller
     public function store(Request $request)
     {
         //
+        $user = Auth::user()->id;
+        $branchId = BranchUser::where('user_id', $user)->value('branch_id');
+
         $request->validate([
-            'branch_id' => 'required|exists:branches,id',
             'title' => 'required|string|max:255',
             'amount' => 'required',
             'note' => 'nullable|string',
@@ -66,7 +68,7 @@ class BudgetRequestController extends Controller
 
         BudgetRequest::create([
             'user_id' => auth()->id(),
-            'branch_id' => $request->branch_id,
+            'branch_id' => $branchId,
             'title' => $request->title,
             'amount' => $cleanAmount,
             'note' => $request->note,

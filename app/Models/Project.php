@@ -17,7 +17,7 @@ class Project extends Model
     }
     
     public function incomes() {
-        return $this->hasMany(Income::class, 'project_id');
+        return $this->hasOne(Income::class, 'project_id');
     }
 
     public function expense() {

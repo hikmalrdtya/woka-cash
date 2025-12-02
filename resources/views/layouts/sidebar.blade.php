@@ -203,6 +203,7 @@
                                 </span>
                             </a>
                         </li>
+                        @if ($isDeveloper = auth()->user()->staffBranch()->wherePivot('role_in_branch', 'developer')->exists())
                         <li>
                             <a href="{{ route('staff.projects.index') }}"
                                 class="menu-item group {{ request()->routeIs('staff.projects.*') ? 'menu-item-active' : 'menu-item-inactive' }}">
@@ -219,6 +220,7 @@
                                 </span>
                             </a>
                         </li>
+                        @endif   
 
                     @endif
 

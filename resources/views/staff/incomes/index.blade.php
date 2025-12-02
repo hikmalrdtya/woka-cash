@@ -19,147 +19,25 @@
 
                             <input type="text" placeholder="Search incomes" id="search-input"
                                 class="dark:bg-dark-900 shadow-sm focus:border-brand-300 focus:ring-brand-500/10 
-                                                                                    h-11 w-full rounded-lg border border-gray-200 bg-transparent py-2.5 pr-14 pl-12 
-                                                                                    text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 outline-none
-                                                                                    xl:w-64 dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:placeholder:text-white/30" />
+                                                                                                        h-11 w-full rounded-lg border border-gray-200 bg-transparent py-2.5 pr-14 pl-12 
+                                                                                                        text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 outline-none
+                                                                                                        xl:w-64 dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:placeholder:text-white/30" />
                         </div>
                     </form>
                 </div>
+                @php
+                    $isDeveloper = auth()->user()
+                        ->staffBranch()            // relasi belongsToMany
+                        ->wherePivot('role_in_branch', 'developer')  // ← WAJIB pakai wherePivot
+                        ->exists();                 // lebih efisien dari get()->isNotEmpty()
+                @endphp
 
-
-                <button id="open-modal-button"
-                    class="bg-brand-500 px-4 py-2 rounded-lg text-white text-sm shadow hover:bg-brand-600 transition">
-                    Add Incomes
-                </button>
-            </div>
-
-            <div id="add-income-modal-wrapper" class="hidden fixed inset-0 z-50 overflow-y-auto">
-               
-                <div id="add-income-modal-backdrop"
-                    class="fixed inset-0 bg-gray-900/70 backdrop-blur-sm transition-opacity duration-300 ease-in-out opacity-0">
-                </div>
-                <div class="flex items-center justify-center min-h-screen p-4">
-                    <div id="add-income-modal-content"
-                        class="relative bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl border border-white/20 dark:border-gray-700/50 rounded-2xl shadow-2xl w-full max-w-md transform transition-all duration-300 ease-in-out opacity-0 scale-95 mx-auto">
-
-                        <div
-                            class="flex items-center justify-between p-6 border-b border-white/20 dark:border-gray-700/50 bg-white/20 dark:bg-gray-800/20 rounded-t-2xl">
-                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Add New Income</h3>
-                            <button id="close-modal-button-header"
-                                class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors duration-200 bg-white/30 dark:bg-gray-700/30 hover:bg-white/50 dark:hover:bg-gray-600/50 rounded-full p-1">
-                                <i class="bi bi-x-lg text-lg"></i>
-                            </button>
-                        </div>
-
-                        <div class="p-6 max-h-[60vh] overflow-y-auto">
-                            <form action="{{ route('staff.incomes.store') }}" method="POST" id="addIncomeForm">
-                                @csrf
-
-                                <div class="mb-4">
-                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                        Income Source
-                                    </label>
-                                    <select name="income_source" id="income_source"
-                                        class="w-full border border-gray-300/50 dark:border-gray-600/50 bg-white/50 dark:bg-gray-700/50 rounded-xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent dark:text-white backdrop-blur-sm">
-                                        <option value="">Select Source</option>
-                                        <option value="project">Project</option>
-                                        <option value="other">Lainnya</option>
-                                    </select>
-                                    @error('income_source')
-                                        <p class="text-error-500 text-sm">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <div id="projectField" class="mb-4 hidden">
-                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                        Select Project
-                                    </label>
-                                    <select name="project_id" id="project_id"
-                                        class="w-full border border-gray-300/50 dark:border-gray-600/50 bg-white/50 dark:bg-gray-700/50 rounded-xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent dark:text-white backdrop-blur-sm">
-                                        <option value="">Select Project</option>
-                                        @foreach($projects as $project)
-                                            <option value="{{ $project->id }}">{{ $project->name }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('project_id')
-                                        <p class="text-error-500 text-sm">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <div id="descriptionField" class="mb-4 hidden">
-                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                        Description
-                                    </label>
-                                    <input type="text" name="description"
-                                        class="w-full border border-gray-300/50 dark:border-gray-600/50 bg-white/50 dark:bg-gray-700/50 rounded-xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent dark:text-white placeholder-gray-500 dark:placeholder-gray-400 backdrop-blur-sm"
-                                        placeholder="Enter income description">
-                                    @error('description')
-                                        <p class="text-error-500 text-sm">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <div class="mb-4">
-                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                        Amount
-                                    </label>
-
-                                    <div
-                                        class="flex items-center rounded-xl overflow-hidden border border-gray-300/50 dark:border-gray-600/50 bg-white/50 dark:bg-gray-700/50 backdrop-blur-sm">
-
-                                        <!-- Prefix -->
-                                        <span
-                                            class="px-4 py-2.5 text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 text-sm">
-                                            Rp
-                                        </span>
-
-                                        <!-- Input -->
-                                        <input type="text" id="amount" name="amount"
-                                            class="w-full py-2.5 px-3 bg-transparent focus:outline-none dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
-                                            oninput="formatRupiah(this)" required>
-                                        @error('amount')
-                                            <p class="text-error-500 text-sm">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                </div>
-
-
-                                <div class="mb-4">
-                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                        Date
-                                    </label>
-                                    <input type="date" name="date"
-                                        class="w-full border border-gray-300/50 dark:border-gray-600/50 bg-white/50 dark:bg-gray-700/50 rounded-xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent dark:text-white backdrop-blur-sm"
-                                        value="{{ date('Y-m-d') }}" required>
-                                    @error('date')
-                                        <p class="text-error-500 text-sm">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <div class="mb-6">
-                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                        Notes (Optional)
-                                    </label>
-                                    <textarea name="notes" rows="3"
-                                        class="w-full border border-gray-300/50 dark:border-gray-600/50 bg-white/50 dark:bg-gray-700/50 rounded-xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent dark:text-white placeholder-gray-500 dark:placeholder-gray-400 backdrop-blur-sm"
-                                        placeholder="Additional notes..."></textarea>
-                                </div>
-                            </form>
-                        </div>
-
-                        {{-- MODAL FOOTER WITH GLASS EFFECT - Enhanced submit button --}}
-                        <div
-                            class="flex justify-end gap-3 p-6 border-t border-white/20 dark:border-gray-700/50 bg-white/20 dark:bg-gray-800/20 rounded-b-2xl">
-                            <button id="close-modal-button-footer" type="button"
-                                class="px-5 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white/60 dark:bg-gray-700/60 border border-white/30 dark:border-gray-600/50 rounded-xl hover:bg-white/80 dark:hover:bg-gray-600/80 focus:outline-none focus:ring-2 focus:ring-gray-400/50 backdrop-blur-sm transition-all duration-200">
-                                Cancel
-                            </button>
-                            <button type="submit" form="addIncomeForm"
-                                class="bg-brand-500 px-4 py-2 rounded-lg text-white text-sm shadow hover:bg-brand-600 transition">
-                                Add Income
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                @if (!$isDeveloper)
+                    <a href="{{ route('staff.incomes.create') }}"
+                        class="bg-brand-500 px-4 py-2 rounded-lg text-white text-sm shadow hover:bg-brand-600 transition">
+                        Add Income
+                    </a>
+                @endif
             </div>
 
             <div class="w-full p-4 bg-white dark:bg-gray-900 rounded-xl shadow-md">
@@ -193,10 +71,12 @@
                                     <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->project->name ?? 'N/A' }}</td>
                                     <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->branch->name ?? 'N/A' }}</td>
                                     <td class="py-3 px-4 text-gray-700 dark:text-white"> Rp
-                                        {{ number_format((int) $row->amount, 0, ',', '.') }}</td>
+                                        {{ number_format((int) $row->amount, 0, ',', '.') }}
+                                    </td>
                                     <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->description }}</td>
                                     <td class="py-3 px-4 text-gray-700 dark:text-white">
-                                        {{ \Carbon\Carbon::parse($row->date)->format('d M Y') }}</td>
+                                        {{ \Carbon\Carbon::parse($row->date)->format('d M Y') }}
+                                    </td>
                                     <td class="py-3 px-4 flex gap-3 justify-center items-center">
                                         <a href="{{ route('admin.user.edit', $row->id) }}"
                                             class="inline-flex items-center gap-2 px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">Edit</a>
