@@ -3,11 +3,6 @@
 @section('title', 'Dashboard Admin | WokaCash')
 
 @section('content')
-
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts@5.3.6/dist/apexcharts.min.js"></script>
-
-    <script src="{{ asset('js/chart.js') }}"></script>
-
     <!-- ===== Page Wrapper Start ===== -->
     <div class="flex h-screen overflow-hidden">
 
@@ -108,11 +103,12 @@
                                     </div>
                                 </div>
 
-                                <div class="max-w-full overflow-x-auto custom-scrollbar">
-                                    <div class="-ml-5 min-w-[650px] pl-2 xl:min-w-full">
-                                        <div id="chartIncExpense" class="min-w-[1000px]"></div>
+                                <div class="w-full overflow-x-auto custom-scrollbar">
+                                    <div class="inline-block">
+                                        <canvas id="chartIncExpense" height="220"></canvas>
                                     </div>
                                 </div>
+
                             </div>
                             <!-- ====== Chart One End -->
                         </div>
@@ -301,5 +297,6 @@
     </div>
     <!-- ===== Page Wrapper End ===== -->
 
-
+    {{-- <script src="{{ asset('js/app.js') }}"></script> --}}
+    @vite('resources/js/app.js')
 @endsection
