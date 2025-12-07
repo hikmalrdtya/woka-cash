@@ -21,9 +21,155 @@ class DashboardController extends Controller
         //
         $user = Auth::user();
         if ($user->role === 'admin') {
+
             $staff = User::whereIn('role', ['staff', 'finance'])->count();
-            $branch = Branch::count();
-            return view('admin.dashboard', compact(['user', 'staff', 'branch']));
+            $branchCount = Branch::count();
+
+            $monthlyTarget = 20000;
+            $thisMonthRevenue = 15110;
+            $lastMonthRevenue = 12000;
+            $todayIncome = 3287;
+
+            $percent = ($thisMonthRevenue / $monthlyTarget) * 100;
+
+            $growth = 0;
+            if ($lastMonthRevenue > 0) {
+                $growth = (($thisMonthRevenue - $lastMonthRevenue) / $lastMonthRevenue) * 100;
+            }
+
+            $months = [
+                'Jan',
+                'Feb',
+                'Mar',
+                'Apr',
+                'May',
+                'Jun',
+                'Jul',
+                'Aug',
+                'Sep',
+                'Oct',
+                'Nov',
+                'Dec'
+            ];
+
+            // ===============================
+            //   FIX OVERVIEW INCOME
+            // ===============================
+            $overviewIncomeRaw = Income::whereNotNull('date')
+                ->selectRaw('MONTH(date) as month, SUM(amount) as total')
+                ->groupBy('month')
+                ->get();
+
+            $overviewExpenseRaw = Expense::whereNotNull('expense_date')
+                ->selectRaw('MONTH(expense_date) as month, SUM(amount) as total')
+                ->groupBy('month')
+                ->get();
+
+            // build array 1..12 stabil
+            $incomeAll = array_fill(1, 12, 0);
+            foreach ($overviewIncomeRaw as $row) {
+                $m = (int)$row->month;
+                if ($m >= 1 && $m <= 12) {
+                    $incomeAll[$m] = (float)$row->total;
+                }
+            }
+            $incomeAll = array_values($incomeAll);
+
+            $expenseAll = array_fill(1, 12, 0);
+            foreach ($overviewExpenseRaw as $row) {
+                $m = (int)$row->month;
+                if ($m >= 1 && $m <= 12) {
+                    $expenseAll[$m] = (float)$row->total;
+                }
+            }
+            $expenseAll = array_values($expenseAll);
+
+            // ===============================
+            //   FIX PER BRANCH CHART
+            // ===============================
+            $branches = Branch::all();
+            $branchCharts = [];
+
+            foreach ($branches as $branch) {
+
+                $incRaw = Income::where('branch_id', $branch->id)
+                    ->whereNotNull('date')
+                    ->selectRaw('MONTH(date) as month, SUM(amount) as total')
+                    ->groupBy('month')
+                    ->get();
+
+                $expRaw = Expense::where('branch_id', $branch->id)
+                    ->whereNotNull('expense_date')
+                    ->selectRaw('MONTH(expense_date) as month, SUM(amount) as total')
+                    ->groupBy('month')
+                    ->get();
+
+                // prepare array 1..12 = 0
+                $incArr = array_fill(1, 12, 0);
+                foreach ($incRaw as $r) {
+                    $m = (int)$r->month;
+                    if ($m >= 1 && $m <= 12) {
+                        $incArr[$m] = (float)$r->total;
+                    }
+                }
+
+                $expArr = array_fill(1, 12, 0);
+                foreach ($expRaw as $r) {
+                    $m = (int)$r->month;
+                    if ($m >= 1 && $m <= 12) {
+                        $expArr[$m] = (float)$r->total;
+                    }
+                }
+
+                $branchCharts[$branch->id] = [
+                    'name' => $branch->name,
+                    'income' => array_values($incArr),
+                    'expense' => array_values($expArr),
+                ];
+            }
+
+            // ===============================
+            //   PIE CHART PER BRANCH
+            // ===============================
+            $incomeGrouped = Income::select('branch_id', DB::raw('SUM(amount) as total'))
+                ->groupBy('branch_id')
+                ->pluck('total', 'branch_id');
+
+            $expenseGrouped = Expense::select('branch_id', DB::raw('SUM(amount) as total'))
+                ->groupBy('branch_id')
+                ->pluck('total', 'branch_id');
+
+            $branches = Branch::select('id', 'name')->get();
+            $labels = $branches->pluck('name')->toArray();
+
+            $income = $branches->map(fn($b) => $incomeGrouped[$b->id] ?? 0)->toArray();
+            $expense = $branches->map(fn($b) => $expenseGrouped[$b->id] ?? 0)->toArray();
+
+            // ===============================
+            //   DEBUG (HAPUS SETELAH FIX)
+            // ===============================
+            // dd($incomeAll, $expenseAll, $branchCharts);
+
+            return view('admin.dashboard', [
+                'user'     => $user,
+                'staff'    => $staff,
+                'branchCount'   => $branchCount,
+
+                'percent'  => round($percent, 2),
+                'growth'   => round($growth, 2),
+                'target'   => $monthlyTarget,
+                'revenue'  => $thisMonthRevenue,
+                'today'    => $todayIncome,
+
+                'months' => $months,
+                'overviewIncome' => $incomeAll,
+                'overviewExpense' => $expenseAll,
+                'branchCharts' => $branchCharts,
+
+                'labels'   => $labels,
+                'income'   => $income,
+                'expense'  => $expense,
+            ]);
         } elseif ($user->role === 'staff') {
             return view('staff.dashboard');
         } elseif ($user->role === 'finance') {

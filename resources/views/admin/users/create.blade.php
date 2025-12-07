@@ -61,8 +61,7 @@
                             bg-white dark:bg-gray-800 text-gray-800 dark:text-white 
                             focus:ring-2 focus:ring-brand-400 focus:border-brand-500 outline-none"
                             required>
-                            <option value="" class="dark:bg-gray-800">-- Select Role --</option>
-                            <option value="admin">Admin</option>
+                            <option value="" class="dark:bg-gray-800" disabled selected>-- Select Role --</option>
                             <option value="finance">Finance</option>
                             <option value="staff">Staff</option>
                         </select>

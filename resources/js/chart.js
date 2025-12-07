@@ -56,37 +56,27 @@ export const initChart = () => {
                 ],
                 datasets: [
                     {
-                        label: "Income",
-                        data: incomes,
+                        label: "Total Income",
+                        data: incomes, // hanya income total
                         backgroundColor: "#465fff",
                         borderRadius: 20,
                         borderSkipped: false,
-                        barThickness: 24, // lebih tebal
-                    },
-                    {
-                        label: "Expense",
-                        data: expenses,
-                        backgroundColor: "#E91E63",
-                        borderRadius: 20,
-                        borderSkipped: false,
-                        barThickness: 24,
+                        barThickness: 14, // boleh dilebarkan
                     },
                 ],
             },
             options: {
-                responsive: false, // WAJIB: biar gap bisa bekerja
+                responsive: false,
                 maintainAspectRatio: false,
-
                 plugins: {
                     legend: { display: false },
                     tooltip: { enabled: true },
                 },
-
                 scales: {
                     x: {
                         grid: { display: false },
-                        categoryPercentage: 0.5, // kontrol jarak antar bulan
-                        barPercentage: 0.55, // kontrol jarak antar bar Income vs Expense
+                        categoryPercentage: 0.5,
+                        barPercentage: 0.7, // karena 1 bar, bisa lebih besar
                     },
                     y: {
                         beginAtZero: true,

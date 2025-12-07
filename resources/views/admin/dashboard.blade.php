@@ -51,9 +51,7 @@
                                         class="flex h-12 w-12 items-center justify-center rounded-xl bg-gray-100 dark:bg-gray-800">
                                         <svg class="fill-gray-800 dark:fill-white/90" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd" clip-rule="evenodd"
-                                                d="M11.665 3.75621C11.8762 3.65064 12.1247 3.65064 12.3358 3.75621L18.7807 6.97856L12.3358 10.2009C12.1247 10.3065 11.8762 10.3065 11.665 10.2009L5.22014 6.97856L11.665 3.75621ZM4.29297 8.19203V16.0946C4.29297 16.3787 4.45347 16.6384 4.70757 16.7654L11.25 20.0366V11.6513C11.1631 11.6205 11.0777 11.5843 10.9942 11.5426L4.29297 8.19203ZM12.75 20.037L19.2933 16.7654C19.5474 16.6384 19.7079 16.3787 19.7079 16.0946V8.19202L13.0066 11.5426C12.9229 11.5844 12.8372 11.6208 12.75 11.6516V20.037ZM13.0066 2.41456C12.3732 2.09786 11.6277 2.09786 10.9942 2.41456L4.03676 5.89319C3.27449 6.27432 2.79297 7.05342 2.79297 7.90566V16.0946C2.79297 16.9469 3.27448 17.726 4.03676 18.1071L10.9942 21.5857L11.3296 20.9149L10.9942 21.5857C11.6277 21.9024 12.3732 21.9024 13.0066 21.5857L19.9641 18.1071C20.7264 17.726 21.2079 16.9469 21.2079 16.0946V7.90566C21.2079 7.05342 20.7264 6.27432 19.9641 5.89319L13.0066 2.41456Z"
-                                                fill="" />
+                                             <path d="M3 21V3h8v18H3Zm10 0V8h8v13h-8ZM6 6h2V5H6v1Zm0 3h2V8H6v1Zm0 3h2v-1H6v1Zm0 3h2v-1H6v1Zm10-6h2V9h-2v1Zm0 3h2v-1h-2v1Zm0 3h2v-1h-2v1Z"/>
                                         </svg>
                                     </div>
 
@@ -61,7 +59,7 @@
                                         <div>
                                             <span class="text-sm text-gray-500 dark:text-gray-400">Total Branch</span>
                                             <h4 class="mt-2 text-title-sm font-bold text-gray-800 dark:text-white/90">
-                                                {{ $branch }}
+                                                {{ $branchCount }}
                                             </h4>
                                         </div>
                                     </div>
@@ -151,15 +149,28 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="relative max-h-[195px]">
-                                        <div id="chartTwo" class="h-full"></div>
+                                    <div class="relative">
+                                        <div class="relative w-full flex justify-center items-center">
+                                            <canvas id="percentage" style="height: 180px" width="200" height="100"
+                                                data-percent="{{ $percent }}" class="relative z-0">
+                                            </canvas>
+                                            <div id="percentageText"
+                                                class="absolute z-10 mt-10 text-2xl font-semibold text-gray-700">
+                                                {{ $percent }}%
+                                            </div>
+                                        </div>
+
                                         <span
-                                            class="absolute left-1/2 top-[85%] -translate-x-1/2 -translate-y-[85%] rounded-full bg-success-50 px-3 py-1 text-xs font-medium text-success-600 dark:bg-success-500/15 dark:text-success-500">+10%</span>
+                                            class="absolute left-1/2 top-[85%] -translate-x-1/2 -translate-y-[85%]
+                                            rounded-full px-3 py-1 text-xs font-medium
+                                            {{ $growth >= 0
+                                                ? 'bg-success-50 text-success-600 dark:bg-success-500/15 dark:text-success-500'
+                                                : 'bg-danger-50 text-danger-600 dark:bg-danger-500/15 dark:text-danger-500' }}">
+                                            {{ $growth >= 0 ? '+' . $growth : $growth }}%
+                                        </span>
+
                                     </div>
-                                    <p
-                                        class="mx-auto mt-1.5 w-full max-w-[380px] text-center text-sm text-gray-500 sm:text-base">
-                                        You earn $3287 today, it's higher than last month. Keep up your good work!
-                                    </p>
+
                                 </div>
 
                                 <div class="flex items-center justify-center gap-5 px-6 py-3.5 sm:gap-8 sm:py-5">
@@ -170,13 +181,7 @@
                                         </p>
                                         <p
                                             class="flex items-center justify-center gap-1 text-base font-semibold text-gray-800 dark:text-white/90 sm:text-lg">
-                                            $20K
-                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                                    d="M7.26816 13.6632C7.4056 13.8192 7.60686 13.9176 7.8311 13.9176C7.83148 13.9176 7.83187 13.9176 7.83226 13.9176C8.02445 13.9178 8.21671 13.8447 8.36339 13.6981L12.3635 9.70076C12.6565 9.40797 12.6567 8.9331 12.3639 8.6401C12.0711 8.34711 11.5962 8.34694 11.3032 8.63973L8.5811 11.36L8.5811 2.5C8.5811 2.08579 8.24531 1.75 7.8311 1.75C7.41688 1.75 7.0811 2.08579 7.0811 2.5L7.0811 11.3556L4.36354 8.63975C4.07055 8.34695 3.59568 8.3471 3.30288 8.64009C3.01008 8.93307 3.01023 9.40794 3.30321 9.70075L7.26816 13.6632Z"
-                                                    fill="#D92D20" />
-                                            </svg>
+                                            Rp{{ number_format($target, 0, ',', '.') }}
                                         </p>
                                     </div>
 
@@ -189,13 +194,7 @@
                                         </p>
                                         <p
                                             class="flex items-center justify-center gap-1 text-base font-semibold text-gray-800 dark:text-white/90 sm:text-lg">
-                                            $20K
-                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                                    d="M7.60141 2.33683C7.73885 2.18084 7.9401 2.08243 8.16435 2.08243C8.16475 2.08243 8.16516 2.08243 8.16556 2.08243C8.35773 2.08219 8.54998 2.15535 8.69664 2.30191L12.6968 6.29924C12.9898 6.59203 12.9899 7.0669 12.6971 7.3599C12.4044 7.6529 11.9295 7.65306 11.6365 7.36027L8.91435 4.64004L8.91435 13.5C8.91435 13.9142 8.57856 14.25 8.16435 14.25C7.75013 14.25 7.41435 13.9142 7.41435 13.5L7.41435 4.64442L4.69679 7.36025C4.4038 7.65305 3.92893 7.6529 3.63613 7.35992C3.34333 7.06693 3.34348 6.59206 3.63646 6.29926L7.60141 2.33683Z"
-                                                    fill="#039855" />
-                                            </svg>
+                                            Rp{{ number_format($revenue, 0, ',', '.') }}
                                         </p>
                                     </div>
 
@@ -208,13 +207,7 @@
                                         </p>
                                         <p
                                             class="flex items-center justify-center gap-1 text-base font-semibold text-gray-800 dark:text-white/90 sm:text-lg">
-                                            $20K
-                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                                    d="M7.60141 2.33683C7.73885 2.18084 7.9401 2.08243 8.16435 2.08243C8.16475 2.08243 8.16516 2.08243 8.16556 2.08243C8.35773 2.08219 8.54998 2.15535 8.69664 2.30191L12.6968 6.29924C12.9898 6.59203 12.9899 7.0669 12.6971 7.3599C12.4044 7.6529 11.9295 7.65306 11.6365 7.36027L8.91435 4.64004L8.91435 13.5C8.91435 13.9142 8.57856 14.25 8.16435 14.25C7.75013 14.25 7.41435 13.9142 7.41435 13.5L7.41435 4.64442L4.69679 7.36025C4.4038 7.65305 3.92893 7.6529 3.63613 7.35992C3.34333 7.06693 3.34348 6.59206 3.63646 6.29926L7.60141 2.33683Z"
-                                                    fill="#039855" />
-                                            </svg>
+                                            Rp{{ number_format($today, 0, ',', '.') }}
                                         </p>
                                     </div>
                                 </div>
@@ -225,8 +218,8 @@
                         <div class="col-span-12">
                             <!-- ====== Chart Three Start -->
                             <div
-                                class="rounded-2xl border border-gray-200 bg-white px-5 pb-5 pt-5 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6 sm:pt-6">
-                                <div class="flex flex-col gap-5 mb-6 sm:flex-row sm:justify-between">
+                                class="rounded-2xl border border-gray-200 px-5 pb-5 pt-5 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6 sm:pt-6">
+                                <div class="flex flex-col mb-6 sm:flex-row sm:justify-between">
                                     <div class="w-full">
                                         <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
                                             Statistics
@@ -236,57 +229,77 @@
                                         </p>
                                     </div>
 
-                                    <div class="flex items-start w-full gap-3 sm:justify-end">
-                                        <div x-data="{ selected: 'overview' }"
-                                            class="inline-flex w-fit items-center gap-0.5 rounded-lg bg-gray-100 p-0.5 dark:bg-gray-900">
-                                            <button @click="selected = 'overview'"
-                                                :class="selected === 'overview' ?
+                                    <div x-data="{ selected: 'overview', type: 'income' }" class="relative w-full">
+
+                                        <!-- INCOME / EXPENSE CENTERED (ABSOLUTE) -->
+                                        <div id="incomeExpenseBox" x-show="selected === 'overview'"
+                                            x-transition.opacity.duration.250ms
+                                            class="
+                                                    inline-flex items-center gap-0.5 rounded-lg bg-gray-100 p-0.5 dark:bg-gray-900"
+                                            style="pointer-events: auto; position: absolute; left: 60%">
+                                            <button @click="type = 'income'; $dispatch('type-changed', { type })"
+                                                :class="type === 'income'
+                                                    ?
                                                     'shadow-theme-xs text-gray-900 dark:text-white bg-white dark:bg-gray-800' :
                                                     'text-gray-500 dark:text-gray-400'"
-                                                class="px-3 py-2 font-medium rounded-md text-theme-sm hover:text-gray-900 dark:hover:text-white">
-                                                Overview
+                                                class="px-3 py-2 font-medium rounded-md text-theme-sm">
+                                                Income
                                             </button>
-                                            <button @click="selected = 'sales'"
-                                                :class="selected === 'sales' ?
+
+                                            <button @click="type = 'expense'; $dispatch('type-changed', { type })"
+                                                :class="type === 'expense'
+                                                    ?
                                                     'shadow-theme-xs text-gray-900 dark:text-white bg-white dark:bg-gray-800' :
                                                     'text-gray-500 dark:text-gray-400'"
-                                                class="px-3 py-2 font-medium rounded-md text-theme-sm hover:text-gray-900 dark:hover:text-white">
-                                                Sales
-                                            </button>
-                                            <button @click="selected = 'revenue'"
-                                                :class="selected === 'revenue' ?
-                                                    'shadow-theme-xs text-gray-900 dark:text-white bg-white dark:bg-gray-800' :
-                                                    'text-gray-500 dark:text-gray-400'"
-                                                class="px-3 py-2 font-medium rounded-md text-theme-sm hover:text-gray-900 dark:hover:text-white">
-                                                Revenue
+                                                class="px-3 py-2 font-medium rounded-md text-theme-sm">
+                                                Expense
                                             </button>
                                         </div>
 
-                                        <div class="relative w-fit">
-                                            <input
-                                                class="datepicker h-10 w-full max-w-11 rounded-lg border border-gray-200 bg-white py-2.5 pl-[34px] pr-4 text-theme-sm font-medium text-gray-700 shadow-theme-xs focus:outline-hidden focus:ring-0 focus-visible:outline-hidden dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 xl:max-w-fit xl:pl-11"
-                                                placeholder="Select dates" data-class="flatpickr-right"
-                                                readonly="readonly" />
-                                            <div
-                                                class="absolute inset-0 right-auto flex items-center pointer-events-none left-4">
-                                                <svg class="fill-gray-700 dark:fill-gray-400" width="20"
-                                                    height="20" viewBox="0 0 20 20" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                                        d="M6.66683 1.54199C7.08104 1.54199 7.41683 1.87778 7.41683 2.29199V3.00033H12.5835V2.29199C12.5835 1.87778 12.9193 1.54199 13.3335 1.54199C13.7477 1.54199 14.0835 1.87778 14.0835 2.29199V3.00033L15.4168 3.00033C16.5214 3.00033 17.4168 3.89576 17.4168 5.00033V7.50033V15.8337C17.4168 16.9382 16.5214 17.8337 15.4168 17.8337H4.5835C3.47893 17.8337 2.5835 16.9382 2.5835 15.8337V7.50033V5.00033C2.5835 3.89576 3.47893 3.00033 4.5835 3.00033L5.91683 3.00033V2.29199C5.91683 1.87778 6.25262 1.54199 6.66683 1.54199ZM6.66683 4.50033H4.5835C4.30735 4.50033 4.0835 4.72418 4.0835 5.00033V6.75033H15.9168V5.00033C15.9168 4.72418 15.693 4.50033 15.4168 4.50033H13.3335H6.66683ZM15.9168 8.25033H4.0835V15.8337C4.0835 16.1098 4.30735 16.3337 4.5835 16.3337H15.4168C15.693 16.3337 15.9168 16.1098 15.9168 15.8337V8.25033Z"
-                                                        fill="" />
-                                                </svg>
-                                            </div>
+                                        <!-- MENU -->
+                                        <div
+                                            class="inline-flex w-fit items-center gap-0.5 rounded-lg bg-gray-100 p-0.5 dark:bg-gray-900">
+
+                                            <!-- Overview -->
+                                            <button
+                                                @click="
+                                                selected = 'overview';
+                                                $dispatch('chart-changed', { chart: 'overview' });
+                                                "
+                                                :class="selected === 'overview'
+                                                    ?
+                                                    'shadow-theme-xs text-gray-900 dark:text-white bg-white dark:bg-gray-800' :
+                                                    'text-gray-500 dark:text-gray-400'"
+                                                class="px-3 py-2 font-medium rounded-md text-theme-sm">
+                                                Overview
+                                            </button>
+
+                                            <!-- Branches -->
+                                            @foreach ($branchCharts as $id => $b)
+                                                <button
+                                                    @click="
+                                                    selected = '{{ $id }}';
+                                                    $dispatch('chart-changed', { chart: '{{ $id }}' });
+                                                    "
+                                                    :class="selected === '{{ $id }}'
+                                                        ?
+                                                        'shadow-theme-xs text-gray-900 dark:text-white bg-white dark:bg-gray-800' :
+                                                        'text-gray-500 dark:text-gray-400'"
+                                                    class="px-3 py-2 font-medium rounded-md text-theme-sm">
+                                                    {{ Str::limit($b['name'], 3) }}
+                                                </button>
+                                            @endforeach
+
                                         </div>
                                     </div>
+
                                 </div>
                                 <div class="max-w-full overflow-x-auto custom-scrollbar">
-                                    <div id="chartThree" class="-ml-4 min-w-[700px] pl-2"></div>
+                                    <canvas id="branchAreaChart" class="min-w-[700px] h-[350px] -ml-4 pl-2"></canvas>
                                 </div>
                             </div>
                             <!-- ====== Chart Three End -->
                         </div>
-
 
                     </div>
                 </div>
@@ -298,5 +311,16 @@
     <!-- ===== Page Wrapper End ===== -->
 
     {{-- <script src="{{ asset('js/app.js') }}"></script> --}}
+    <script>
+        window.chartData = {
+            months: @json($months),
+            overview: {
+                income: @json($overviewIncome),
+                expense: @json($overviewExpense),
+            },
+            branches: @json($branchCharts)
+        };
+    </script>
+
     @vite('resources/js/app.js')
 @endsection

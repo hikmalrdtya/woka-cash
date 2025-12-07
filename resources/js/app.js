@@ -1,5 +1,9 @@
-import './bootstrap';
+import { initChart } from "./chart.js";
+import { initChartTwo } from "./percentage.js";
+import { initBranchAreaChart } from "./branchChart.js";
 
-import { initChart } from './chart.js';
-
-document.addEventListener("DOMContentLoaded", initChart);
+document.addEventListener("DOMContentLoaded", () => {
+    initChart();
+    initChartTwo();
+    initBranchAreaChart();
+});
