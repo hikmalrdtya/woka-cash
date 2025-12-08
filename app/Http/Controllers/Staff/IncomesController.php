@@ -47,7 +47,6 @@ class IncomesController extends Controller
     {
 
         $user = Auth::user();
-
         $branchId = BranchUser::where('user_id', $user->id)->value('branch_id');
 
         $request->validate([
@@ -88,24 +87,62 @@ class IncomesController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Income $income)
     {
         //
+        $projects = Project::whereDoesntHave('incomes')->orWhere('id', $income->project_id)->get();
+        return view('staff.incomes.edit', compact('projects', 'income'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Income $income)
     {
-        //
+        $request->validate([
+            'amount' => 'required',
+            'description' => 'nullable|string|required_if:income_source,other',
+        ]);
+
+        // Generate nilai description
+        $description = null;
+
+        if ($request->income_source === 'other') {
+            // deskripsi dari input (bisa nullable)
+            $description = $request->description;
+        } else {
+            // ambil nama project jika ada
+            $project = Project::find($request->project_id);
+            $description = $project?->name; // bisa null juga
+        }
+
+        // Format amount
+        $cleanAmount = (int) str_replace(['Rp', '.', ',', ' '], '', $request->amount);
+
+        // Update
+        $income->update([
+            'amount' => $cleanAmount,
+            'date' => now(),
+            'project_id' => $request->project_id,
+            'description' => $description, // ini bisa null
+        ]);
+
+        return redirect()
+            ->route('staff.incomes.index')
+            ->with('success', 'Incomes successfully updated');
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Income $income) 
     {
         //
+        if ($income) {
+            $income->delete();
+            return redirect()->back()->with('success', 'incomes successfuly deleted');
+        }
+        return redirect()->back()->with('error', 'incomes not found');
     }
 }
