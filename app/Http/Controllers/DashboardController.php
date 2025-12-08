@@ -21,13 +21,15 @@ class DashboardController extends Controller
     {
         //
         $user = Auth::user();
-        $branches = Branch::where('user_id', $user->id)->first();
-        $branchId = $branches->id;
         if ($user->role === 'admin') {
             $staff = User::whereIn('role', ['staff', 'finance'])->count();
             $branch = Branch::count();
             return view('admin.dashboard', compact(['user', 'staff', 'branch']));
         } elseif ($user->role === 'staff') {
+
+            $branches = Branch::where('user_id', $user->id)->first();
+            $branchId = $branches->id;
+
             $totalIncome = Income::where('branch_id', $branchId)->count();
             $totalExpense = Expense::where('branch_id', $branchId)->count();
             $netBalance = $totalIncome - $totalExpense;
