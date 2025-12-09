@@ -31,7 +31,7 @@
 
             <div class="w-full p-4 bg-white dark:bg-gray-900 rounded-xl shadow-md">
                 <h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-4">
-                    Daftar Incomes
+                    Daftar Expanses
                 </h2>
 
                 <div class="w-full overflow-x-auto">

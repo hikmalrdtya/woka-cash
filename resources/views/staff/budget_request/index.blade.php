@@ -57,13 +57,28 @@
                                     {{ number_format($row->amount, 0, ',', '.') }}
                                 </td>
                                 <td class="py-3 px-4 text-gray-700 dark:text-white">
-                                    <span class="
-                                        inline-flex items-center px-3 py-1 text-sm font-medium rounded-full
-                                        @if($row->status == 'pending') bg-yellow-100 text-yellow-700
-                                        @elseif($row->status == 'approved') bg-green-100 text-green-700
-                                        @elseif($row->status == 'rejected') bg-red-100 text-red-700
-                                        @else bg-gray-100 text-gray-700 @endif
-                                    ">
+                                    <span class="inline-flex items-center justify-center gap-1 rounded-full
+                                                                @if($row->status == 'pending') bg-warning-50 py-0.5 pl-2 pr-2.5 text-sm font-medium text-warning-600 dark:bg-warning-500/15 dark:text-orange-400
+                                                                @elseif($row->status == 'approved') bg-success-50 py-0.5 pl-2 pr-2.5 text-sm font-medium text-success-600 dark:bg-success-500/15 dark:text-success-500
+                                                                @elseif($row->status == 'rejected') bg-error-50 py-0.5 pl-2 pr-2.5 text-sm font-medium text-error-600 dark:bg-error-500/15 dark:text-error-500
+                                                                @else bg-gray-100 text-gray-700 
+                                                                @endif
+                                                                ">
+                                        @if($row->status == 'approved')
+                                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M20 6L9 17l-5-5" />
+                                            </svg>
+
+                                        @elseif($row->status == 'rejected')
+                                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <line x1="18" y1="6" x2="6" y2="18" />
+                                                <line x1="6" y1="6" x2="18" y2="18" />
+                                            </svg>
+
+                                        @endif
+                                        
                                         {{ ucfirst($row->status) }}
                                     </span>
                                 </td>
