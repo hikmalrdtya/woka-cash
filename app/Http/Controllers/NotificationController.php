@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
-    // 1. Menampilkan daftar notifikasi lengkap
     public function index()
     {
         $notifications = Notification::where('user_id', Auth::id())
@@ -18,7 +17,7 @@ class NotificationController extends Controller
         return view('notifications.index', compact('notifications'));
     }
 
-    // 2. Tandai 1 notif sebagai read
+    //menandai notif 
     public function markAsRead($id)
     {
         $notif = Notification::where('user_id', Auth::id())->findOrFail($id);
@@ -27,7 +26,7 @@ class NotificationController extends Controller
         return back();
     }
 
-    // 3. Tandai semua notif sebagai read
+    //menandai semua notif
     public function markAllAsRead()
     {
         Notification::where('user_id', Auth::id())
@@ -36,30 +35,47 @@ class NotificationController extends Controller
         return back();
     }
 
-    // 4. Hapus 1 notif
     public function destroy($id)
     {
-        Notification::where('user_id', Auth::id())
-            ->where('id', $id)
-            ->delete();
+        $notif = Notification::findOrFail($id);
+
+        $deletedBy = $notif->deleted_by ? json_decode($notif->deleted_by, true) : [];
+
+        // masukkan user id ke list
+        if (!in_array(Auth::id(), $deletedBy)) {
+            $deletedBy[] = Auth::id();
+        }
+
+        $notif->deleted_by = json_encode($deletedBy);
+        $notif->save();
 
         return back();
     }
 
-    // 5. Hapus semua notif
+
     public function destroyAll()
     {
-        Notification::where('user_id', Auth::id())->delete();
+        $userId = auth()->id();
+
+        // Ambil semua notif yang BELUM dihapus user
+        $notifs = Notification::where(function ($q) use ($userId) {
+            $q->whereNull('deleted_by')
+                ->orWhereRaw("JSON_CONTAINS(deleted_by, '\"$userId\"') = 0");
+        })->get();
+
+        foreach ($notifs as $notif) {
+            $deletedBy = $notif->deleted_by ? json_decode($notif->deleted_by, true) : [];
+
+            if (!in_array($userId, $deletedBy)) {
+                $deletedBy[] = $userId;
+            }
+
+            $notif->deleted_by = json_encode($deletedBy);
+            $notif->save();
+        }
+
         return back();
     }
 
-    // 6. Fetch untuk navbar (JSON)
-    public function fetch()
-    {
-        return response()->json([
-            'unread_count' => Notification::where('user_id', Auth::id())->where('is_read', false)->count(),
-            'notifications' => Notification::where('user_id', Auth::id())->latest()->take(10)->get()
-        ]);
-    }
 }
 

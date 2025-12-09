@@ -8,6 +8,7 @@ use App\Models\BudgetRequest;
 use App\Models\Expense;
 use App\Models\Notification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BudgetRequestController extends Controller
 {
@@ -44,7 +45,7 @@ class BudgetRequestController extends Controller
         Notification::create([
             'user_id' => $budget->user_id,
             'title' => 'Budget Request Approved',
-            'message' => 'Budget request Anda telah disetujui oleh finance.',
+            'message' => 'Budget request ' . $budget->user->name . ' telah disetujui oleh ' . Auth::user()->name . '.',
         ]);
 
         // === NOTIFIKASI UNTUK FINANCE ===
