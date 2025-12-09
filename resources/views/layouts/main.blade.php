@@ -43,10 +43,11 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
         {{-- Main Content --}}
         <main class="page-content flex-1 p-4 lg:p-8 overflow-x-auto overflow-hidden">
             @if (session('success'))
-                <div id="alert-success" class="fixed z-999999 top-6 left-1/2 -translate-x-1/2 z-[9999]
-                                           px-4 py-3 text-sm text-white rounded-xl shadow-lg
-                                           bg-brand-500 w-max max-w-[90%]
-                                           animate-toast-in flex items-center gap-3">
+                <div id="alert-success"
+                    class="fixed z-999999 top-6 left-1/2 -translate-x-1/2 z-[9999]
+                                                                                   px-4 py-3 text-sm text-white rounded-xl shadow-lg
+                                                                                   bg-brand-500 w-max max-w-[90%]
+                                                                                   animate-toast-in flex items-center gap-3">
 
                     <!-- Icon -->
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none"
@@ -174,9 +175,50 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
 
                             <!-- Notification Menu Area -->
                             @php
-                                $notifs = App\Models\Notification::where('user_id', auth()->id())->latest()->take(10)->get();
-                                $unread = App\Models\Notification::where('user_id', auth()->id())->where('is_read', false)->count();
+                                if (auth()->user()->role === 'staff') {
+
+                                    // Staff → Query awal, kecuali Budget Request Approved
+                                    $notifs = App\Models\Notification::where('title', '!=', 'Konfirmasi Approval')
+                                        ->latest()
+                                        ->take(10)
+                                        ->get();
+
+                                } else if (auth()->user()->role === 'finance') {
+
+                                    // Finance → Hanya notif dengan title Pengajuan Budget Baru
+                                    $notifs = App\Models\Notification::query()
+                                        ->leftJoin('budget_requests', 'notifications.user_id', '=', 'budget_requests.user_id')
+                                        ->where(function ($q) {
+                                            $q->where('notifications.user_id', auth()->id())
+                                                ->orWhere('notifications.title', 'Pengajuan Budget Baru')
+                                                ->orWhere(function ($q) {
+                                                    $q->where('notifications.title', 'Budget Request Approved')
+                                                        ->where('budget_requests.approved_by', '!=', auth()->id());
+                                                });
+                                        })
+                                        ->select('notifications.*')
+                                        ->latest('notifications.created_at')
+                                        ->take(10)
+                                        ->get();
+
+                                } else {
+
+                                    $notifs = collect(); // Jika bukan staff/finance → kosong
+                                }
+                                $notifs = $notifs->filter(function ($n) {
+                                    $deletedBy = $n->deleted_by ? json_decode($n->deleted_by, true) : [];
+                                    return !in_array(auth()->id(), $deletedBy);
+                                });
+
+                                $unread = App\Models\Notification::where('user_id', auth()->id())
+                                    ->where('is_read', false)
+                                    ->where(function ($q) {
+                                        $q->whereNull('deleted_by')
+                                            ->orWhereRaw("JSON_CONTAINS(deleted_by, '\"" . auth()->id() . "\"') = 0");
+                                    })
+                                    ->count();
                             @endphp
+
 
                             <div class="relative"
                                 x-data="{ dropdownOpen: false, notifying: {{ $unread > 0 ? 'true' : 'false' }} }"
@@ -185,7 +227,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                                 <!-- Tombol Bell -->
                                 <button
                                     class="hover:text-dark-900 relative flex h-11 w-11 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
-                                    @click.prevent="dropdownOpen = ! dropdownOpen; notifying = false">
+                                    @click.prevent="dropdownOpen = !dropdownOpen; notifying = false">
 
                                     <!-- Indicator Unread -->
                                     @if($unread > 0)
@@ -196,15 +238,14 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                                         </span>
                                     @endif
 
-                                    <svg class="fill-current" width="20" height="20" viewBox="0 0 20 20" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
+                                    <!-- Icon Bell -->
+                                    <svg class="fill-current" width="20" height="20" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" clip-rule="evenodd"
-                                            d="M10.75 2.29248C10.75 1.87827 10.4143 1.54248 10 1.54248C9.58583 1.54248 9.25004 1.87827 9.25004 2.29248V2.83613C6.08266 3.20733 3.62504 5.9004 3.62504 9.16748V14.4591H3.33337C2.91916 14.4591 2.58337 14.7949 2.58337 15.2091C2.58337 15.6234 2.91916 15.9591 3.33337 15.9591H4.37504H15.625H16.6667C17.0809 15.9591 17.4167 15.6234 17.4167 15.2091C17.4167 14.7949 17.0809 14.4591 16.6667 14.4591H16.375V9.16748C16.375 5.9004 13.9174 3.20733 10.75 2.83613V2.29248ZM14.875 14.4591V9.16748C14.875 6.47509 12.6924 4.29248 10 4.29248C7.30765 4.29248 5.12504 6.47509 5.12504 9.16748V14.4591H14.875ZM8.00004 17.7085C8.00004 18.1228 8.33583 18.4585 8.75004 18.4585H11.25C11.6643 18.4585 12 18.1228 12 17.7085C12 17.2943 11.6643 16.9585 11.25 16.9585H8.75004C8.33583 16.9585 8.00004 17.2943 8.00004 17.7085Z"
-                                            fill="" />
+                                            d="M10.75 2.29248C10.75 1.87827 10.4143 1.54248 10 1.54248C9.58583 1.54248 9.25004 1.87827 9.25004 2.29248V2.83613C6.08266 3.20733 3.62504 5.9004 3.62504 9.16748V14.4591H3.33337C2.91916 14.4591 2.58337 14.7949 2.58337 15.2091C2.58337 15.6234 2.91916 15.9591 3.33337 15.9591H4.37504H15.625H16.6667C17.0809 15.9591 17.4167 15.6234 17.4167 15.2091C17.4167 14.7949 17.0809 14.4591 16.6667 14.4591H16.375V9.16748C16.375 5.9004 13.9174 3.20733 10.75 2.83613V2.29248ZM14.875 14.4591V9.16748C14.875 6.47509 12.6924 4.29248 10 4.29248C7.30765 4.29248 5.12504 6.47509 5.12504 9.16748V14.4591H14.875ZM8.00004 17.7085C8.00004 18.1228 8.33583 18.4585 8.75004 18.4585H11.25C11.6643 18.4585 12 18.1228 12 17.7085C12 17.2943 11.6643 16.9585 11.25 16.9585H8.75004C8.33583 16.9585 8.00004 17.2943 8.00004 17.7085Z" />
                                     </svg>
                                 </button>
 
-                                <!-- Dropdown Notifikasi -->
+                                <!-- Dropdown -->
                                 <div x-show="dropdownOpen"
                                     class="shadow-theme-lg dark:bg-gray-dark absolute -right-[240px] mt-[17px] flex w-[350px] flex-col rounded-2xl border border-gray-200 bg-white p-3 sm:w-[361px] lg:right-0 dark:border-gray-800">
 
@@ -215,8 +256,8 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                                         </h5>
 
                                         <button @click="dropdownOpen = false" class="text-gray-500 dark:text-gray-400">
-                                            <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24">
-                                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                            <svg width="24" height="24" viewBox="0 0 24 24" class="fill-current">
+                                                <path
                                                     d="M6.21967 7.28131C5.92678 6.98841 5.92678 6.51354 6.21967 6.22065C6.51256 5.92775 6.98744 5.92775 7.28033 6.22065L11.999 10.9393L16.7176 6.22078C17.0105 5.92789 17.4854 5.92788 17.7782 6.22078C18.0711 6.51367 18.0711 6.98855 17.7782 7.28144L13.0597 12L17.7782 16.7186C18.0711 17.0115 18.0711 17.4863 17.7782 17.7792C17.4854 18.0721 17.0105 18.0721 16.7176 17.7792L11.999 13.0607L7.28033 17.7794C6.98744 18.0722 6.51256 18.0722 6.21967 17.7794C5.92678 17.4865 5.92678 17.0116 6.21967 16.7187L10.9384 12L6.21967 7.28131Z" />
                                             </svg>
                                         </button>
@@ -225,48 +266,91 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                                     <!-- List Notifikasi -->
                                     <ul class="custom-scrollbar flex h-auto flex-col overflow-y-auto">
                                         @forelse ($notifs as $notif)
-                                            <li>
-                                                <a href="{{ $notif->url }}"
-                                                    class="flex gap-3 rounded-lg border-b border-gray-100 p-3 px-4.5 py-3 hover:bg-gray-100 dark:border-gray-800 dark:hover:bg-white/5">
+                                            <li
+                                                class="flex items-center justify-between gap-2 border-b border-gray-100 dark:border-gray-800">
 
-                                                    <!-- Avatar Default -->
-                                                    <span class="relative z-1 block h-10 w-full max-w-10 rounded-full">
-                                                        <img src="{{ asset('images/user/default.jpg') }}"
+                                                <a href="{{ $notif->url }}"
+                                                    class="flex flex-grow gap-3 p-3 hover:bg-gray-100 dark:hover:bg-white/5">
+
+                                                    <span class="relative block h-10 w-10 rounded-full">
+                                                        <img src="{{ asset('storage/' . $notif->user->photo_profile) }}"
                                                             class="rounded-full" />
                                                         <span
-                                                            class="absolute right-0 bottom-0 z-10 h-2.5 w-full max-w-2.5 rounded-full border-[1.5px] border-white {{ $notif->is_read ? 'bg-gray-400' : 'bg-success-500' }}">
-                                                        </span>
+                                                            class="absolute right-0 bottom-0 h-2.5 w-2.5 rounded-full border border-white
+                                                                                {{ $notif->is_read ? 'bg-gray-400' : 'bg-success-500' }}"></span>
                                                     </span>
 
-                                                    <!-- Pesan -->
                                                     <span class="block">
-                                                        <span
-                                                            class="text-theme-sm mb-1.5 block {{ $notif->is_read ? 'text-gray-500' : 'text-gray-800 dark:text-white font-medium' }}">
-                                                            {{ $notif->message }}
-                                                        </span>
+                                                        @php
+
+                                                            $userName = auth()->user()->name;
+                                                            $message = $notif->message;
+
+                                                            // Jika notifikasi Approved dan message mengandung nama user login → ganti dengan "Anda"
+                                                            if ($notif->title === 'Budget Request Approved' && Str::contains($message, $userName)) {
+                                                                $message = Str::replace($userName, 'Anda', $message);
+                                                            }
+                                                        @endphp
 
                                                         <span
-                                                            class="text-theme-xs flex items-center gap-2 text-gray-500 dark:text-gray-400">
-                                                            <span>{{ $notif->created_at->diffForHumans() }}</span>
+                                                            class="text-theme-sm mb-1.5 block {{ $notif->is_read ? 'text-gray-500' : 'text-gray-800 dark:text-white font-medium' }}">
+
+                                                            {{-- Kode lama tetap bekerja untuk Pengajuan Budget Baru --}}
+                                                            @if($notif->title === 'Pengajuan Budget Baru' && Str::contains($notif->message, $userName))
+                                                                Anda mengajukan budget request baru.
+                                                            @else
+                                                                {{ $message }}
+                                                            @endif
+
+                                                        </span>
+
+                                                        <span class="text-theme-xs text-gray-500 dark:text-gray-400">
+                                                            {{ $notif->created_at->diffForHumans() }}
                                                         </span>
                                                     </span>
                                                 </a>
+
+                                                <form action="{{ route('notifications.delete', $notif->id) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+
+                                                    <button class="text-gray-400 hover:text-red-500 px-2">
+                                                        ✕
+                                                    </button>
+                                                </form>
+
                                             </li>
                                         @empty
                                             <li class="text-gray-500 text-center py-3">Tidak ada notifikasi</li>
                                         @endforelse
                                     </ul>
 
-                                    <!-- Tombol Mark all read -->
-                                    <form action="{{ route('notifications.readAll') }}" method="POST">
-                                        @csrf
-                                        <button
-                                            class="text-theme-sm shadow-theme-xs mt-3 flex justify-center rounded-lg border border-gray-300 bg-white p-3 font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200">
-                                            Tandai semua sudah dibaca
-                                        </button>
-                                    </form>
+                                    <div class="mt-3 flex gap-2">
+                                        <form action="{{ route('notifications.readAll') }}" method="POST"
+                                            class="flex-1">
+                                            @csrf
+                                            <button
+                                                class="w-full text-theme-sm shadow-theme-xs flex justify-center rounded-lg border border-gray-300 bg-white p-3 font-medium text-gray-700 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-700 dark:hover:bg-gray-700/50">
+                                                Tandai dibaca
+                                            </button>
+                                        </form>
+
+                                        <form action="{{ route('notifications.deleteAll') }}" method="POST"
+                                            class="flex-1">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button
+                                                class="w-full text-theme-sm shadow-theme-xs flex justify-center rounded-lg border border-red-300 bg-red-50 p-3 font-medium text-red-600 hover:bg-red-100 dark:bg-red-900 dark:text-red-300 dark:border-red-700 dark:hover:bg-red-800">
+                                                Hapus semua
+                                            </button>
+                                        </form>
+                                    </div>
+
+
                                 </div>
                             </div>
+
 
 
                             <!-- Notification Menu Area -->

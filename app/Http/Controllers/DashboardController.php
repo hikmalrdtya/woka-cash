@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Branch;
+use App\Models\BudgetRequest;
 use App\Models\Expense;
 use App\Models\Income;
 use App\Models\User;
@@ -171,7 +172,37 @@ class DashboardController extends Controller
                 'expense'  => $expense,
             ]);
         } elseif ($user->role === 'staff') {
-            return view('staff.dashboard');
+
+            $branches = Branch::where('user_id', $user->id)->first();
+            $branchId = $branches->id;
+
+            $totalIncome = Income::where('branch_id', $branchId)->sum('amount');
+            $totalExpense = Expense::where('branch_id', $branchId)->sum('amount');
+            $netBalance = $totalIncome - $totalExpense;
+            $pendingRequests = BudgetRequest::where('branch_id', $branchId)
+                ->where('status', 'pending')
+                ->count();
+
+
+            $latestIncome = Income::where('branch_id', $branchId)
+                ->with('project')
+                ->orderByDesc('date')
+                ->limit(5)
+                ->get();
+
+            $latestExpense = Expense::where('branch_id', $branchId)
+                ->orderByDesc('expense_date')
+                ->limit(5)
+                ->get();
+
+            return view('staff.dashboard', compact(
+                'totalIncome',
+                'totalExpense',
+                'netBalance',
+                'pendingRequests',
+                'latestIncome',
+                'latestExpense',
+            ));
         } elseif ($user->role === 'finance') {
             return view('finance.dashboard');
         }
@@ -219,4 +250,6 @@ class DashboardController extends Controller
             'expenses' => array_values($expenses),
         ]);
     }
+
+    
 }

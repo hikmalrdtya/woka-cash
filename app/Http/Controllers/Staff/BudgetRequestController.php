@@ -55,23 +55,20 @@ class BudgetRequestController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        $user = Auth::user()->id;
-        $branchId = BranchUser::where('user_id', $user)->value('branch_id');
-
         $request->validate([
+            'branch_id' => 'required|exists:branches,id',
             'title' => 'required|string|max:255',
             'amount' => 'required',
             'note' => 'nullable|string',
             'date_submission' => 'required|date',
         ]);
 
-
         $cleanAmount = str_replace('.', '', $request->amount);
 
-        BudgetRequest::create([
+        // Simpan budget request
+        $budget = BudgetRequest::create([
             'user_id' => auth()->id(),
-            'branch_id' => $branchId,
+            'branch_id' => $request->branch_id,
             'title' => $request->title,
             'amount' => $cleanAmount,
             'note' => $request->note,
@@ -89,7 +86,7 @@ class BudgetRequestController extends Controller
         // ]);
 
         // Jika finance banyak user -> gunakan role finance
-        $financeUsers = User::where('role', 'finance')->get();
+        $financeUsers = User::where('id', Auth::user()->id)->get();
 
         foreach ($financeUsers as $fin) {
             Notification::create([
