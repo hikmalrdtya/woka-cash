@@ -54,37 +54,6 @@
             </div>
         </div>
 
-        {{-- Filter + Charts --}}
-        <div class="mt-8 space-y-8">
-
-            {{-- Filter --}}
-            <div class="flex items-center gap-4">
-                <select id="chartFilter" class="px-3 py-2 rounded-lg border dark:bg-gray-700 dark:text-white">
-                    <option value="daily">Harian</option>
-                    <option value="monthly" selected>Bulanan</option>
-                    <option value="yearly">Tahunan</option>
-                </select>
-
-                <span class="text-gray-600 dark:text-gray-300 text-sm">
-                    Filter data transaksi
-                </span>
-            </div>
-
-            {{-- Income Chart --}}
-            <div class="bg-white dark:bg-gray-800 shadow rounded-2xl p-6">
-                <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-3">Income Chart</h3>
-                <canvas id="incomeChart" height="120"></canvas>
-            </div>
-
-            {{-- Expense Chart --}}
-            <div class="bg-white dark:bg-gray-800 shadow rounded-2xl p-6">
-                <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-3">Expense Chart</h3>
-                <canvas id="expenseChart" height="120"></canvas>
-            </div>
-
-        </div>
-
-
         {{-- Latest Income & Expense --}}
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
             {{-- Latest Income --}}
@@ -136,7 +105,7 @@
                                             <td class="py-3 px-2">{{ ucfirst($row->category) }}</td>
                                             <td class="py-3 px-2">
                                                 <span class="px-2 py-1 text-xs rounded-full
-                                                                                                                                                                    {{ $row->status == 'pending' ? 'bg-yellow-100 text-yellow-700' :
+                                                                                                    {{ $row->status == 'pending' ? 'bg-yellow-100 text-yellow-700' :
                             ($row->status == 'approved' ? 'bg-green-100 text-green-700' :
                                 'bg-red-100 text-red-700') }}">
                                                     {{ ucfirst($row->status) }}
@@ -150,85 +119,5 @@
         </div>
 
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
-    <script>
-        let incomeChart, expenseChart;
-
-        function createGradient(ctx, color1, color2) {
-            const gradient = ctx.createLinearGradient(0, 0, 0, 250);
-            gradient.addColorStop(0, color1);
-            gradient.addColorStop(1, color2);
-            return gradient;
-        }
-
-        function initCharts(labels, incomeData, expenseData) {
-            const incomeCtx = document.getElementById('incomeChart').getContext('2d');
-            const expenseCtx = document.getElementById('expenseChart').getContext('2d');
-
-            const gradientBlue = createGradient(incomeCtx, '#3b82f6', 'rgba(59,130,246,0.1)');
-            const gradientRed = createGradient(expenseCtx, '#ef4444', 'rgba(239,68,68,0.1)');
-
-            incomeChart = new Chart(incomeCtx, {
-                type: 'line',
-                data: {
-                    labels,
-                    datasets: [{
-                        label: 'Income',
-                        data: incomeData,
-                        borderColor: '#3b82f6',
-                        backgroundColor: gradientBlue,
-                        borderWidth: 3,
-                        fill: true,
-                        tension: 0.4
-                    }]
-                },
-                options: { responsive: true, animation: { duration: 800 } }
-            });
-
-            expenseChart = new Chart(expenseCtx, {
-                type: 'line',
-                data: {
-                    labels,
-                    datasets: [{
-                        label: 'Expense',
-                        data: expenseData,
-                        borderColor: '#ef4444',
-                        backgroundColor: gradientRed,
-                        borderWidth: 3,
-                        fill: true,
-                        tension: 0.4
-                    }]
-                },
-                options: { responsive: true, animation: { duration: 800 } }
-            });
-        }
-
-        async function loadInitialChart() {
-            const res = await axios.get('/api/chart-data?filter=monthly');
-            initCharts(res.data.labels, res.data.incomes, res.data.expenses);
-        }
-
-        async function loadChartData(filter = 'monthly') {
-            const res = await axios.get(`/api/chart-data?filter=${filter}`);
-
-            incomeChart.data.labels = res.data.labels;
-            incomeChart.data.datasets[0].data = res.data.incomes;
-            incomeChart.update();
-
-            expenseChart.data.labels = res.data.labels;
-            expenseChart.data.datasets[0].data = res.data.expenses;
-            expenseChart.update();
-        }
-
-        document.getElementById('chartFilter').addEventListener('change', function () {
-            loadChartData(this.value);
-        });
-
-        loadInitialChart();
-    </script>
-
-
+    
 @endsection
