@@ -162,6 +162,9 @@
                     @error('amount') <p class="text-error-500 text-sm">{{ $message }}</p> @enderror
                 </div>
 
+                <textarea name="reason" class="form-control" required></textarea>
+
+
                 <div class="flex mt-4 items-center justify-end mt-4">
                     <button type="button" onclick="closeRejectModal()" class="px-3 py-1 bg-gray-300 rounded-lg mr-2">
                         Cancel

@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -22,6 +21,9 @@ return new class extends Migration
             $table->date('date_submission');
             $table->foreignId('approved_by')->nullable()->constrained('users')->cascadeOnDelete();
             $table->timestamp('approved_at')->nullable();
+            $table->unsignedBigInteger('rejected_by')->nullable();
+            $table->timestamp('rejected_at')->nullable();
+            $table->string('reject_reason')->nullable();
             $table->timestamps();
         });
     }

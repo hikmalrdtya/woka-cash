@@ -13,5 +13,11 @@ class ViewChatController extends Controller
         if ($user->role === 'admin') {
             return view('admin.ai.index');
         }
+        else if ($user->role === 'finance') {
+            return view('finance.ai.index');
+        }
+        else if ($user->role === 'staff') {
+            return view('staff.ai.index');
+        }
     }
 }

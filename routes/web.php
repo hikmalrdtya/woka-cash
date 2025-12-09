@@ -48,6 +48,7 @@ Route::prefix('staff')->name('staff.')->middleware(['auth', 'role:staff'])->grou
     Route::resource('projects', ProjectController::class);
     Route::get('/profile', [UserController::class, 'editProfileStaff'])->name('profile.edit');
     Route::put('/profile', [UserController::class, 'updateProfileStaff'])->name('profile.update');
+    Route::get('/ai-agent', [ViewChatController::class, 'view'])->name('ai.index');
 });
 
 Route::prefix('finance')->name('finance.')->middleware(['auth', 'role:finance'])->group(function () {
@@ -63,6 +64,7 @@ Route::prefix('finance')->name('finance.')->middleware(['auth', 'role:finance'])
         ->name('budget_requests.reject.update');
     Route::get('/profile', [UserController::class, 'editProfileFinance'])->name('profile.edit');
     Route::put('/profile', [UserController::class, 'updateProfileFinance'])->name('profile.update');
+    Route::get('/ai-agent', [ViewChatController::class, 'view'])->name('ai.index');
 });
 
 Route::middleware(['auth'])->group(function () {
