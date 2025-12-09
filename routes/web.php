@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\BranchController;
 use App\Http\Controllers\Admin\BranchUserController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\Staff\BudgetRequestController;
@@ -13,6 +14,7 @@ use App\Http\Controllers\Finance\IncomesController as FinanceIncomesController;
 use App\Http\Controllers\Finance\ExpensesController as FinanceExpensesController;
 use App\Http\Controllers\Finance\BudgetRequestController as FinanceBudgetRequestController;
 use App\Http\Controllers\Staff\ProjectController;
+use App\Http\Controllers\ViewChatController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', action: function () {
@@ -35,6 +37,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::resource('branchUser', BranchUserController::class);
     Route::get('/profile', [UserController::class, 'editProfile'])->name('profile.edit');
     Route::put('/profile', [UserController::class, 'updateProfile'])->name('profile.update');
+    Route::get('/ai-agent', [ViewChatController::class, 'view'])->name('ai.index');
 });
 
 Route::prefix('staff')->name('staff.')->middleware(['auth', 'role:staff'])->group(function () {
