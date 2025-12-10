@@ -41,6 +41,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
 });
 
 Route::prefix('staff')->name('staff.')->middleware(['auth', 'role:staff'])->group(function () {
+    Route::get('/api/chart-data', [DashboardController::class, 'filteredSummary'])->name('chart.data');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('incomes', IncomesController::class);
     Route::resource('expenses', ExpensesController::class);
