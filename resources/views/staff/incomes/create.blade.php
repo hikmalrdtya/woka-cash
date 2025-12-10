@@ -97,7 +97,7 @@
                         <!-- Input -->
                         <input type="text" id="amount" name="amount"
                             class="w-full py-2.5 px-3 bg-transparent focus:outline-none dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
-                            oninput="formatRupiah(this)" required>
+                            oninput="formatRupiah(this)" required>  
                         @error('amount')
                             <p class="text-error-500 text-sm">{{ $message }}</p>
                         @enderror

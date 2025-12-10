@@ -7,7 +7,7 @@
     <body
         x-data="{ page: 'ecommerce', 'loaded': true, 'darkMode': false, 'stickyMenu': false, 'sidebarToggle': false, 'scrollTop': false }"
         x-init="darkMode = JSON.parse(localStorage.getItem('darkMode'));
-                                            $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))"
+                                                    $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))"
         :class="{ 'dark bg-gray-900': darkMode === true }">
         <!-- ===== Preloader Start ===== -->
         <div x-show="loaded"
@@ -60,16 +60,43 @@
                                                 </h4>
                                             </div>
 
-                                            <span
-                                                class="flex items-center gap-1 rounded-full bg-success-50 py-0.5 pl-2 pr-2.5 text-sm font-medium text-success-600 dark:bg-success-500/15 dark:text-success-500">
-                                                <svg class="fill-current" width="12" height="12" viewBox="0 0 12 12"
-                                                    fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                                        d="M5.56462 1.62393C5.70193 1.47072 5.90135 1.37432 6.12329 1.37432C6.1236 1.37432 6.12391 1.37432 6.12422 1.37432C6.31631 1.37415 6.50845 1.44731 6.65505 1.59381L9.65514 4.5918C9.94814 4.88459 9.94831 5.35947 9.65552 5.65246C9.36273 5.94546 8.88785 5.94562 8.59486 5.65283L6.87329 3.93247L6.87329 10.125C6.87329 10.5392 6.53751 10.875 6.12329 10.875C5.70908 10.875 5.37329 10.5392 5.37329 10.125L5.37329 3.93578L3.65516 5.65282C3.36218 5.94562 2.8873 5.94547 2.5945 5.65248C2.3017 5.35949 2.30185 4.88462 2.59484 4.59182L5.56462 1.62393Z"
-                                                        fill="" />
-                                                </svg>
+                                            @php
+                                            $isIncomeUp = $incomeChange >= 0;
+                                            @endphp
 
-                                                11.01%
+                                            <span
+                                                class="flex items-center gap-1 rounded-full 
+                                                    {{ $isIncomeUp
+                                                        ? 'bg-success-50 text-success-600 dark:bg-success-500/15 dark:text-success-500' 
+                                                        : 'bg-danger-50 text-danger-600 dark:bg-danger-500/15 dark:text-danger-400' }}
+                                                    py-0.5 pl-2 pr-2.5 text-sm font-medium">
+
+                                                {{-- Icon --}}
+                                                @if($isIncomeUp)
+                                                    {{-- Arrow Up --}}
+                                                    <svg class="fill-current" width="12" height="12" viewBox="0 0 12 12">
+                                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                                            d="M5.56462 1.62393C5.70193 1.47072 5.90135 1.37432 6.12329 1.37432C6.1236 1.37432 6.12391 1.37432 
+                                                            6.12422 1.37432C6.31631 1.37415 6.50845 1.44731 6.65505 1.59381L9.65514 4.5918C9.94814 4.88459 
+                                                            9.94831 5.35947 9.65552 5.65246C9.36273 5.94546 8.88785 5.94562 8.59486 5.65283L6.87329 3.93247V10.125
+                                                            C6.87329 10.5392 6.53751 10.875 6.12329 10.875C5.70908 10.875 5.37329 10.5392 5.37329 10.125V3.93578
+                                                            L3.65516 5.65282C3.36218 5.94562 2.8873 5.94547 2.5945 5.65248C2.3017 5.35949 2.30185 4.88462 
+                                                            2.59484 4.59182L5.56462 1.62393Z" />
+                                                    </svg>
+                                                @else
+                                                    {{-- Arrow Down --}}
+                                                    <svg class="fill-current" width="12" height="12" viewBox="0 0 12 12">
+                                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                                            d="M6.43538 10.3761C6.29807 10.5293 6.09865 10.6257 5.87671 10.6257C5.8764 10.6257 5.87609 
+                                                            10.6257 5.87578 10.6257C5.68369 10.6259 5.49155 10.5527 5.34495 10.4062L2.34486 7.4082C2.05186 
+                                                            7.11541 2.05169 6.64053 2.34448 6.34754C2.63727 6.05454 3.11215 6.05438 3.40514 6.34717L5.12671 8.06753
+                                                            V1.875C5.12671 1.46077 5.46249 1.125 5.87671 1.125C6.29092 1.125 6.62671 1.46077 6.62671 1.875
+                                                            V8.06422L8.34484 6.34718C8.63782 6.05438 9.1127 6.05453 9.4055 6.34752C9.6983 6.64051 9.69815 
+                                                            7.11538 9.40516 7.40818L6.43538 10.3761Z"/>
+                                                    </svg>
+                                                @endif
+
+                                                {{ number_format($incomeChange, 2) }}%
                                             </span>
                                         </div>
                                     </div>
@@ -105,16 +132,39 @@
                                             </div>
 
                                             <span
-                                                class="flex items-center gap-1 rounded-full bg-error-50 py-0.5 pl-2 pr-2.5 text-sm font-medium text-error-600 dark:bg-error-500/15 dark:text-error-500">
-                                                <svg class="fill-current" width="12" height="12" viewBox="0 0 12 12"
-                                                    fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                                        d="M5.31462 10.3761C5.45194 10.5293 5.65136 10.6257 5.87329 10.6257C5.8736 10.6257 5.8739 10.6257 5.87421 10.6257C6.0663 10.6259 6.25845 10.5527 6.40505 10.4062L9.40514 7.4082C9.69814 7.11541 9.69831 6.64054 9.40552 6.34754C9.11273 6.05454 8.63785 6.05438 8.34486 6.34717L6.62329 8.06753L6.62329 1.875C6.62329 1.46079 6.28751 1.125 5.87329 1.125C5.45908 1.125 5.12329 1.46079 5.12329 1.875L5.12329 8.06422L3.40516 6.34719C3.11218 6.05439 2.6373 6.05454 2.3445 6.34752C2.0517 6.64051 2.05185 7.11538 2.34484 7.40818L5.31462 10.3761Z"
-                                                        fill="" />
-                                                </svg>
+                                                class="flex items-center gap-1 rounded-full 
+                                                    {{ $isExpenseUp = $expenseChange >= 0 
+                                                        ? 'bg-success-50 text-success-600 dark:bg-success-500/15 dark:text-success-500' 
+                                                        : 'bg-danger-50 text-danger-600 dark:bg-danger-500/15 dark:text-danger-400' }}
+                                                    py-0.5 pl-2 pr-2.5 text-sm font-medium">
 
-                                                9.05%
+                                                @if($isExpenseUp)
+                                                    {{-- Arrow Up --}}
+                                                    <svg class="fill-current" width="12" height="12" viewBox="0 0 12 12">
+                                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                                            d="M5.56462 1.62393C5.70193 1.47072 5.90135 1.37432 6.12329 1.37432C6.1236 1.37432 6.12391 1.37432 
+                                                            6.12422 1.37432C6.31631 1.37415 6.50845 1.44731 6.65505 1.59381L9.65514 4.5918C9.94814 4.88459 
+                                                            9.94831 5.35947 9.65552 5.65246C9.36273 5.94546 8.88785 5.94562 8.59486 5.65283L6.87329 3.93247V10.125
+                                                            C6.87329 10.5392 6.53751 10.875 6.12329 10.875C5.70908 10.875 5.37329 10.5392 5.37329 10.125V3.93578
+                                                            L3.65516 5.65282C3.36218 5.94562 2.8873 5.94547 2.5945 5.65248C2.3017 5.35949 2.30185 4.88462 
+                                                            2.59484 4.59182L5.56462 1.62393Z" />
+                                                    </svg>
+                                                @else
+                                                    {{-- Arrow Down --}}
+                                                    <svg class="fill-current" width="12" height="12" viewBox="0 0 12 12">
+                                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                                            d="M6.43538 10.3761C6.29807 10.5293 6.09865 10.6257 5.87671 10.6257C5.8764 10.6257 5.87609 
+                                                            10.6257 5.87578 10.6257C5.68369 10.6259 5.49155 10.5527 5.34495 10.4062L2.34486 7.4082C2.05186 
+                                                            7.11541 2.05169 6.64053 2.34448 6.34754C2.63727 6.05454 3.11215 6.05438 3.40514 6.34717L5.12671 8.06753
+                                                            V1.875C5.12671 1.46077 5.46249 1.125 5.87671 1.125C6.29092 1.125 6.62671 1.46077 6.62671 1.875
+                                                            V8.06422L8.34484 6.34718C8.63782 6.05438 9.1127 6.05453 9.4055 6.34752C9.6983 6.64051 9.69815 
+                                                            7.11538 9.40516 7.40818L6.43538 10.3761Z"/>
+                                                    </svg>
+                                                @endif
+
+                                                {{ number_format($expenseChange, 2) }}%
                                             </span>
+
                                         </div>
                                     </div>
                                     <!-- Metric Item End -->
@@ -157,6 +207,44 @@
                                         </table>
                                     </div>
                                 </div>
+                                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+                                    {{-- Latest Expense --}}
+                                    <div
+                                        class="bg-white dark:bg-gray-800 rounded-2xl shadow-md border border-gray-100 dark:border-gray-700 p-5">
+                                        <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-white">Latest Expense
+                                        </h3>
+
+                                        <table class="w-full text-sm">
+                                            <thead class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200">
+                                                <tr>
+                                                    <th class="py-3 px-2 text-left">Date</th>
+                                                    <th class="py-3 px-2 text-left">Amount</th>
+                                                    <th class="py-3 px-2 text-left">Category</th>
+                                                    <th class="py-3 px-2 text-left">Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($latestExpense as $row)
+                                                    <tr
+                                                        class="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/30 transition">
+                                                        <td class="py-3 px-2">
+                                                            {{ \Carbon\Carbon::parse($row->expense_date)->format('d M Y') }}
+                                                        </td>
+                                                        <td class="py-3 px-2">Rp {{ number_format($row->amount, 0, ',', '.') }}
+                                                        </td>
+                                                        <td class="py-3 px-2">{{ ucfirst($row->category) }}</td>
+                                                        <td class="py-3 px-2">
+                                                            <span
+                                                                class="px-2 py-1 text-xs rounded-full {{ $row->status == 'pending' ? 'bg-yellow-100 text-yellow-700' : ($row->status == 'approved' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700') }}">
+                                                                {{ ucfirst($row->status) }}
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
 
                             </div>
                             <div class="col-span-12 xl:col-span-5">
@@ -176,7 +264,7 @@
                                             <div x-data="{ openDropDown: false }" class="relative h-fit">
                                                 <button @click="openDropDown = !openDropDown"
                                                     :class="openDropDown ? 'text-gray-700 dark:text-white' :
-                                                                                                'text-gray-400 hover:text-gray-700 dark:hover:text-white'">
+                                                                                                        'text-gray-400 hover:text-gray-700 dark:hover:text-white'">
                                                     <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24"
                                                         fill="none" xmlns="http://www.w3.org/2000/svg">
                                                         <path fill-rule="evenodd" clip-rule="evenodd"
@@ -262,49 +350,9 @@
                                     </div>
                                 </div>
                                 <!-- ====== Chart Two End -->
-                            </div>
-                            <div class="col-span-12 space-y-6 xl:col-span-7">
-                                {{-- Latest Expense --}}
+                                <!-- Pending Approval Start -->
                                 <div
-                                    class="bg-white dark:bg-gray-800 rounded-2xl shadow-md border border-gray-100 dark:border-gray-700 p-5">
-                                    <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-white">Latest Expense
-                                    </h3>
-
-                                    <table class="w-full text-sm">
-                                        <thead class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200">
-                                            <tr>
-                                                <th class="py-3 px-2 text-left">Date</th>
-                                                <th class="py-3 px-2 text-left">Amount</th>
-                                                <th class="py-3 px-2 text-left">Category</th>
-                                                <th class="py-3 px-2 text-left">Status</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($latestExpense as $row)
-                                                <tr
-                                                    class="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/30 transition">
-                                                    <td class="py-3 px-2">
-                                                        {{ \Carbon\Carbon::parse($row->expense_date)->format('d M Y') }}
-                                                    </td>
-                                                    <td class="py-3 px-2">Rp {{ number_format($row->amount, 0, ',', '.') }}
-                                                    </td>
-                                                    <td class="py-3 px-2">{{ ucfirst($row->category) }}</td>
-                                                    <td class="py-3 px-2">
-                                                        <span
-                                                            class="px-2 py-1 text-xs rounded-full {{ $row->status == 'pending' ? 'bg-yellow-100 text-yellow-700' : ($row->status == 'approved' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700') }}">
-                                                            {{ ucfirst($row->status) }}
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="col-span-12 xl:col-span-5">
-                                <!-- Metric Item Start -->
-                                <div
-                                    class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
+                                    class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6 mt-6">
                                     <div
                                         class="flex h-12 w-12 items-center justify-center rounded-xl bg-gray-100 dark:bg-gray-800">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -335,73 +383,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- Metric Item End -->
+                                <!-- Panding Approval End -->
                             </div>
-
-                            <div class="col-span-12">
-                                <!-- ====== Chart Three Start -->
-                                <div
-                                    class="rounded-2xl border border-gray-200 bg-white px-5 pb-5 pt-5 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6 sm:pt-6">
-                                    <div class="flex flex-col gap-5 mb-6 sm:flex-row sm:justify-between">
-                                        <div class="w-full">
-                                            <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
-                                                Statistics
-                                            </h3>
-                                            <p class="mt-1 text-gray-500 text-theme-sm dark:text-gray-400">
-                                                Target you’ve set for each month
-                                            </p>
-                                        </div>
-
-                                        <div class="flex items-start w-full gap-3 sm:justify-end">
-                                            <div x-data="{ selected: 'overview' }"
-                                                class="inline-flex w-fit items-center gap-0.5 rounded-lg bg-gray-100 p-0.5 dark:bg-gray-900">
-                                                <button @click="selected = 'overview'"
-                                                    :class="selected === 'overview' ?
-                                                                                                'shadow-theme-xs text-gray-900 dark:text-white bg-white dark:bg-gray-800' :
-                                                                                                'text-gray-500 dark:text-gray-400'"
-                                                    class="px-3 py-2 font-medium rounded-md text-theme-sm hover:text-gray-900 dark:hover:text-white">
-                                                    Overview
-                                                </button>
-                                                <button @click="selected = 'sales'"
-                                                    :class="selected === 'sales' ?
-                                                                                                'shadow-theme-xs text-gray-900 dark:text-white bg-white dark:bg-gray-800' :
-                                                                                                'text-gray-500 dark:text-gray-400'"
-                                                    class="px-3 py-2 font-medium rounded-md text-theme-sm hover:text-gray-900 dark:hover:text-white">
-                                                    Sales
-                                                </button>
-                                                <button @click="selected = 'revenue'"
-                                                    :class="selected === 'revenue' ?
-                                                                                                'shadow-theme-xs text-gray-900 dark:text-white bg-white dark:bg-gray-800' :
-                                                                                                'text-gray-500 dark:text-gray-400'"
-                                                    class="px-3 py-2 font-medium rounded-md text-theme-sm hover:text-gray-900 dark:hover:text-white">
-                                                    Revenue
-                                                </button>
-                                            </div>
-
-                                            <div class="relative w-fit">
-                                                <input
-                                                    class="datepicker h-10 w-full max-w-11 rounded-lg border border-gray-200 bg-white py-2.5 pl-[34px] pr-4 text-theme-sm font-medium text-gray-700 shadow-theme-xs focus:outline-hidden focus:ring-0 focus-visible:outline-hidden dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 xl:max-w-fit xl:pl-11"
-                                                    placeholder="Select dates" data-class="flatpickr-right"
-                                                    readonly="readonly" />
-                                                <div
-                                                    class="absolute inset-0 right-auto flex items-center pointer-events-none left-4">
-                                                    <svg class="fill-gray-700 dark:fill-gray-400" width="20" height="20"
-                                                        viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path fill-rule="evenodd" clip-rule="evenodd"
-                                                            d="M6.66683 1.54199C7.08104 1.54199 7.41683 1.87778 7.41683 2.29199V3.00033H12.5835V2.29199C12.5835 1.87778 12.9193 1.54199 13.3335 1.54199C13.7477 1.54199 14.0835 1.87778 14.0835 2.29199V3.00033L15.4168 3.00033C16.5214 3.00033 17.4168 3.89576 17.4168 5.00033V7.50033V15.8337C17.4168 16.9382 16.5214 17.8337 15.4168 17.8337H4.5835C3.47893 17.8337 2.5835 16.9382 2.5835 15.8337V7.50033V5.00033C2.5835 3.89576 3.47893 3.00033 4.5835 3.00033L5.91683 3.00033V2.29199C5.91683 1.87778 6.25262 1.54199 6.66683 1.54199ZM6.66683 4.50033H4.5835C4.30735 4.50033 4.0835 4.72418 4.0835 5.00033V6.75033H15.9168V5.00033C15.9168 4.72418 15.693 4.50033 15.4168 4.50033H13.3335H6.66683ZM15.9168 8.25033H4.0835V15.8337C4.0835 16.1098 4.30735 16.3337 4.5835 16.3337H15.4168C15.693 16.3337 15.9168 16.1098 15.9168 15.8337V8.25033Z"
-                                                            fill="" />
-                                                    </svg>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="max-w-full overflow-x-auto custom-scrollbar">
-                                        <div id="chartThree" class="-ml-4 min-w-[700px] pl-2"></div>
-                                    </div>
-                                </div>
-                                <!-- ====== Chart Three End -->
-                            </div>
-
 
                         </div>
                     </div>

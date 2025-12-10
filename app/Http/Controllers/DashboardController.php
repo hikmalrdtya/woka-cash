@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Branch;
+use App\Models\BranchUser;
 use App\Models\BudgetRequest;
 use App\Models\Expense;
 use App\Models\Income;
@@ -69,18 +70,18 @@ class DashboardController extends Controller
             // build array 1..12 stabil
             $incomeAll = array_fill(1, 12, 0);
             foreach ($overviewIncomeRaw as $row) {
-                $m = (int)$row->month;
+                $m = (int) $row->month;
                 if ($m >= 1 && $m <= 12) {
-                    $incomeAll[$m] = (float)$row->total;
+                    $incomeAll[$m] = (float) $row->total;
                 }
             }
             $incomeAll = array_values($incomeAll);
 
             $expenseAll = array_fill(1, 12, 0);
             foreach ($overviewExpenseRaw as $row) {
-                $m = (int)$row->month;
+                $m = (int) $row->month;
                 if ($m >= 1 && $m <= 12) {
-                    $expenseAll[$m] = (float)$row->total;
+                    $expenseAll[$m] = (float) $row->total;
                 }
             }
             $expenseAll = array_values($expenseAll);
@@ -108,17 +109,17 @@ class DashboardController extends Controller
                 // prepare array 1..12 = 0
                 $incArr = array_fill(1, 12, 0);
                 foreach ($incRaw as $r) {
-                    $m = (int)$r->month;
+                    $m = (int) $r->month;
                     if ($m >= 1 && $m <= 12) {
-                        $incArr[$m] = (float)$r->total;
+                        $incArr[$m] = (float) $r->total;
                     }
                 }
 
                 $expArr = array_fill(1, 12, 0);
                 foreach ($expRaw as $r) {
-                    $m = (int)$r->month;
+                    $m = (int) $r->month;
                     if ($m >= 1 && $m <= 12) {
-                        $expArr[$m] = (float)$r->total;
+                        $expArr[$m] = (float) $r->total;
                     }
                 }
 
@@ -152,37 +153,71 @@ class DashboardController extends Controller
             // dd($incomeAll, $expenseAll, $branchCharts);
 
             return view('admin.dashboard', [
-                'user'     => $user,
-                'staff'    => $staff,
-                'branchCount'   => $branchCount,
+                'user' => $user,
+                'staff' => $staff,
+                'branchCount' => $branchCount,
 
-                'percent'  => round($percent, 2),
-                'growth'   => round($growth, 2),
-                'target'   => $monthlyTarget,
-                'revenue'  => $thisMonthRevenue,
-                'today'    => $todayIncome,
+                'percent' => round($percent, 2),
+                'growth' => round($growth, 2),
+                'target' => $monthlyTarget,
+                'revenue' => $thisMonthRevenue,
+                'today' => $todayIncome,
 
                 'months' => $months,
                 'overviewIncome' => $incomeAll,
                 'overviewExpense' => $expenseAll,
                 'branchCharts' => $branchCharts,
 
-                'labels'   => $labels,
-                'income'   => $income,
-                'expense'  => $expense,
+                'labels' => $labels,
+                'income' => $income,
+                'expense' => $expense,
             ]);
         } elseif ($user->role === 'staff') {
 
-            $branches = Branch::where('user_id', $user->id)->first();
-            $branchId = $branches->id;
+            // Hitung Persentase Perbandingan Hari Ini vs Kemarin
+            //Income
+            $today = Carbon::today()->format('Y-m-d');
+            $yesterday = Carbon::yesterday()->format('Y-m-d');
 
-            $totalIncome = Income::where('branch_id', $branchId)->sum('amount');
-            $totalExpense = Expense::where('branch_id', $branchId)->sum('amount');
+            // === INCOME ===
+            $incomeToday = Income::where('branch_id', Auth::user()->branch_id)
+                ->whereDate('date', $today)->sum('amount');
+            $incomeYesterday = Income::where('branch_id', Auth::user()->branch_id)
+                ->whereDate('date', $yesterday)->sum('amount');
+
+            $incomeChange = 0;
+            if ($incomeYesterday > 0) {
+                $incomeChange = (($incomeToday - $incomeYesterday) / $incomeYesterday) * 100;
+            }
+
+            //Expenses
+            $expenseToday = Expense::where('branch_id', Auth::user()->branch_id)
+                ->whereDate('expense_date', $today)->sum('amount');
+            $expenseYesterday = Expense::where('branch_id', Auth::user()->branch_id)
+                ->whereDate('expense_date', $yesterday)->sum('amount');
+
+            $expenseChange = 0;
+            if ($expenseYesterday > 0) {
+                $expenseChange = (($expenseToday - $expenseYesterday) / $expenseYesterday) * 100;
+            }
+
+            // and Hitung Persentase Perbandingan Hari Ini vs Kemarin
+
+            // Ambil branch yang diikuti staff dari tabel branch_users
+            $branchUser = BranchUser::where('user_id', $user->id)->first();
+
+            if (!$branchUser) {
+                abort(403, 'Anda belum terdaftar di cabang manapun.');
+            }
+
+            $branchId = $branchUser->branch_id;
+
+            $totalIncome = Income::where('branch_id', $branchId)->whereDate('date', $today)->sum('amount');
+            $totalExpense = Expense::where('branch_id', $branchId)->whereDate('expense_date', $today)->sum('amount');
             $netBalance = $totalIncome - $totalExpense;
             $pendingRequests = BudgetRequest::where('branch_id', $branchId)
                 ->where('status', 'pending')
                 ->count();
-
 
             $latestIncome = Income::where('branch_id', $branchId)
                 ->with('project')
@@ -196,12 +231,14 @@ class DashboardController extends Controller
                 ->get();
 
             return view('staff.dashboard', compact(
+                'expenseChange',
+                'incomeChange',
                 'totalIncome',
                 'totalExpense',
                 'netBalance',
                 'pendingRequests',
                 'latestIncome',
-                'latestExpense',
+                'latestExpense'
             ));
         } elseif ($user->role === 'finance') {
             return view('finance.dashboard');
@@ -251,5 +288,5 @@ class DashboardController extends Controller
         ]);
     }
 
-    
+
 }

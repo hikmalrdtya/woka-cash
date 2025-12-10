@@ -56,11 +56,11 @@
                                         {{ $row->user->name }}
                                     </td>
                                     <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->branch->name ?? 'N/A' }}</td>
-                                    <td class="py-3 px-4 text-gray-700 dark:text-white">
+                                    <td class="py-3 px-4 text-gray-700 dark:text-white"> Rp
                                         {{ number_format((int) $row->amount, 0, ',', '.') }}</td>
                                     <td class="py-3 px-4 text-gray-700 dark:text-white">
                                         {{ $row->budgetRequest->title ?? 'N/A' }}</td>
-                                    <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->expense_date }}</td>
+                                    <td class="py-3 px-4 text-gray-700 dark:text-white">{{ \Carbon\Carbon::parse($row->expense_date)->format('d M Y') }}</td>
                                 </tr>
                             @empty
                                 <tr>
