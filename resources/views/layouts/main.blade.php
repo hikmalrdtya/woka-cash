@@ -45,9 +45,9 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
             @if (session('success'))
                 <div id="alert-success"
                     class="fixed z-999999 top-6 left-1/2 -translate-x-1/2 z-[9999]
-                                                                                   px-4 py-3 text-sm text-white rounded-xl shadow-lg
-                                                                                   bg-brand-500 w-max max-w-[90%]
-                                                                                   animate-toast-in flex items-center gap-3">
+                                                                                               px-4 py-3 text-sm text-white rounded-xl shadow-lg
+                                                                                               bg-brand-500 w-max max-w-[90%]
+                                                                                               animate-toast-in flex items-center gap-3">
 
                     <!-- Icon -->
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none"
@@ -182,6 +182,11 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                                         ->latest()
                                         ->take(10)
                                         ->get();
+                                    
+                                    $notifs = App\Models\Notification::where('title', '!=', 'Konfirmasi Penolakan')
+                                        ->latest()
+                                        ->take(10)
+                                        ->get();
 
                                 } else if (auth()->user()->role === 'finance') {
 
@@ -197,6 +202,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                                                 });
                                         })
                                         ->select('notifications.*')
+                                        ->distinct()
                                         ->latest('notifications.created_at')
                                         ->take(10)
                                         ->get();
@@ -272,13 +278,32 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                                                 <a href="{{ $notif->url }}"
                                                     class="flex flex-grow gap-3 p-3 hover:bg-gray-100 dark:hover:bg-white/5">
 
+                                                    @php
+                                                        $photo = $notif->user->photo_profile ?? null;
+                                                        $name = $notif->user->name ?? '';
+                                                        $initials = collect(explode(' ', $name))->map(fn($n) => strtoupper($n[0]))->join('');
+                                                    @endphp
+
                                                     <span class="relative block h-10 w-10 rounded-full">
-                                                        <img src="{{ asset('storage/' . $notif->user->photo_profile) }}"
-                                                            class="rounded-full" />
-                                                        <span
-                                                            class="absolute right-0 bottom-0 h-2.5 w-2.5 rounded-full border border-white
-                                                                                {{ $notif->is_read ? 'bg-gray-400' : 'bg-success-500' }}"></span>
+                                                        @if ($photo)
+                                                            <div
+                                                                class="h-10 w-10 rounded-full bg-gray-400 flex items-center justify-center">
+                                                                <img src="{{ asset('storage/' . $photo) }}" />
+                                                            </div>
+                                                        @else
+                                                            <div
+                                                                class="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center">
+                                                                <span class="text-white font-semibold">
+                                                                    {{ $initials }}
+                                                                </span>
+                                                            </div>
+                                                        @endif
+
+                                                        <span class="absolute right-0 bottom-0 h-2.5 w-2.5 rounded-full border border-white
+                                                            {{ $notif->is_read ? 'bg-gray-400' : 'bg-success-500' }}">
+                                                        </span>
                                                     </span>
+
 
                                                     <span class="block">
                                                         @php
@@ -315,7 +340,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                                                     @csrf
                                                     @method('DELETE')
 
-                                                    <button class="text-gray-400 hover:text-red-500 px-2">
+                                                    <button class="text-gray-400 px-2">
                                                         ✕
                                                     </button>
                                                 </form>
@@ -331,7 +356,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                                             class="flex-1">
                                             @csrf
                                             <button
-                                                class="w-full text-theme-sm shadow-theme-xs flex justify-center rounded-lg border border-gray-300 bg-white p-3 font-medium text-gray-700 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-700 dark:hover:bg-gray-700/50">
+                                                class="w-full text-theme-sm shadow-theme-xs flex justify-center rounded-lg border border-gray-300 bg-brand-500 p-3 font-medium text-white dark:bg-gray-800 dark:text-gray-300 dark:border-gray-700">
                                                 Tandai dibaca
                                             </button>
                                         </form>
@@ -341,7 +366,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                                             @csrf
                                             @method('DELETE')
                                             <button
-                                                class="w-full text-theme-sm shadow-theme-xs flex justify-center rounded-lg border border-red-300 bg-red-50 p-3 font-medium text-red-600 hover:bg-red-100 dark:bg-red-900 dark:text-red-300 dark:border-red-700 dark:hover:bg-red-800">
+                                                class="w-full text-theme-sm shadow-theme-xs flex justify-center rounded-lg border border-gray-300 bg-error-500 p-3 font-medium text-white dark:bg-error-900 dark:text-white-300 dark:border-error-700">
                                                 Hapus semua
                                             </button>
                                         </form>

@@ -85,6 +85,7 @@ class BudgetRequestController extends Controller
     {
         $request->validate([
             'amount_usulan' => 'required',
+            'reason' => 'required|string|max:255', // alasan wajib
         ]);
 
         $cleanAmount = str_replace('.', '', $request->amount_usulan);
@@ -95,14 +96,34 @@ class BudgetRequestController extends Controller
 
         $budget = BudgetRequest::findOrFail($id);
 
+        // UPDATE STATUS DAN ALASAN PENOLAKAN
         $budget->update([
             'amount' => $cleanAmount,
-            'status' => 'pending',
+            'status' => 'rejected',
+            'rejected_by' => auth()->id(),
+            'rejected_at' => now(),
+            'reject_reason' => $request->reason,
+        ]);
+
+        // === NOTIFIKASI UNTUK STAFF ===
+        Notification::create([
+            'user_id' => $budget->user_id,
+            'title' => 'Budget Request Ditolak',
+            'message' => 'Budget request Anda ditolak oleh ' . Auth::user()->name .
+                ' dengan alasan: ' . $request->reason,
+        ]);
+
+        // === NOTIFIKASI UNTUK FINANCE ===
+        Notification::create([
+            'user_id' => auth()->id(),
+            'title' => 'Konfirmasi Penolakan',
+            'message' => "Anda telah menolak budget request milik " . $budget->user->name,
         ]);
 
         return redirect()->route('finance.budget_requests.index')
-            ->with('success', 'Usulan biaya berhasil diperbarui.');
+            ->with('success', 'Request berhasil ditolak dan notifikasi dikirim.');
     }
+
 
 
 
