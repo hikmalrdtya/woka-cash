@@ -41,7 +41,7 @@ class BranchController extends Controller
     {
         $data = $request->validate([
             'user' => 'required|string',
-            'name_branches' => 'required|string|max:255',
+            'name_branches' => 'required|string|max:255|unique:branches,name',
             'address' => 'required',
         ]);
 
