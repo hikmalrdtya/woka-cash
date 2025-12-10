@@ -83,7 +83,7 @@
                                     <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $no + 1 }}</td>
                                     <td class="py-3 px-4 text-gray-700 dark:text-white flex items-center gap-3">
                                         <div
-                                            class="w-10 h-10 rounded-xl overflow-hidden bg-gray-300 dark:bg-gray-700 flex items-center justify-center">
+                                            class="w-10 h-10 rounded-full overflow-hidden bg-gray-300 dark:bg-gray-700 flex items-center justify-center">
                                             @if ($row->photo_profile)
                                                 <img src="{{ asset('storage/' . $row->photo_profile) }}"
                                                     class="w-full h-full object-cover" alt="photo">

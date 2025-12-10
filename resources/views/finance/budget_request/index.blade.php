@@ -79,8 +79,7 @@
                                     @else
                                      bg-gray-100 text-gray-700 @endif
 
-                                                                                                                                                                ">
-                                        {{ ucfirst($row->status) }}
+                            {{ ucfirst($row->status) }}
                                     </span>
                                 </td>
 
@@ -162,7 +161,8 @@
                     @error('amount') <p class="text-error-500 text-sm">{{ $message }}</p> @enderror
                 </div>
 
-                <textarea name="reason" class="form-control" required></textarea>
+                <label class="text-sm text-gray-700 dark:text-gray-300">Reason</label>
+                <textarea name="reason" class="w-full py-2.5 px-3 bg-transparent focus:outline-none dark:text-white" required></textarea>
 
 
                 <div class="flex mt-4 items-center justify-end mt-4">
