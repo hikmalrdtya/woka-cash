@@ -39,14 +39,14 @@ class BudgetRequestController extends Controller
     public function create()
     {
         //
-        $branches = Branch::get();
+        $branchId = BranchUser::where('user_id', auth()->id())->value('branch_id');
         $budgetList = BudgetRequest::with('branch')
             ->where('user_id', auth()->id())
             ->latest()
             ->get();
         return view('staff.budget_request.create', compact([
             'budgetList',
-            'branches'
+            'branchId'
         ]));
     }
 
@@ -55,6 +55,7 @@ class BudgetRequestController extends Controller
      */
     public function store(Request $request)
     {
+        
         $request->validate([
             'branch_id' => 'required|exists:branches,id',
             'title' => 'required|string|max:255',
@@ -66,7 +67,7 @@ class BudgetRequestController extends Controller
         $cleanAmount = str_replace('.', '', $request->amount);
 
         // Simpan budget request
-        $budget = BudgetRequest::create([
+        BudgetRequest::create([
             'user_id' => auth()->id(),
             'branch_id' => $request->branch_id,
             'title' => $request->title,
