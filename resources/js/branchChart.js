@@ -61,7 +61,7 @@ export function initBranchAreaChart() {
                     borderColor:
                         type === "income"
                             ? colors[i % colors.length]
-                            : "#dc2626",
+                            : colors[i % colors.length],
                     borderWidth: 2,
                     tension: 0.3,
                     pointRadius: 0,

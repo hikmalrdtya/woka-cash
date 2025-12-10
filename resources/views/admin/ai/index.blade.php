@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('content')
-    <div class="container rounded-2xl bg-gray-100 px-2">
+    <div class="container rounded-2xl bg-transparent px-2">
         <div style="max-height: 500px; width: 80%;"
             class="max-w-xl mx-auto mt-6 dark:bg-gray-900 rounded-xl shadow-xl flex flex-col h-screen p-5">
 
