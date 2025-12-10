@@ -82,17 +82,20 @@
 
                     {{-- Tanggal Pengajuan (auto today) --}}
                     <input type="hidden" name="date_submission" value="{{ date('Y-m-d') }}">
+
+                    {{-- BRANCH ID otomatis dari user login --}}
+                    <input type="hidden" name="branch_id" value="{{ $branchId }}">
                 </div>
 
                 <!-- BUTTON -->
                 <div class="mt-8 flex justify-end gap-2">
                     <a href="{{ route('staff.budget_requests.index') }}"
                         class="bg-gray-500 hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 text-white px-4 py-2 rounded-lg shadow transition 
-                                                                                                                                                        focus:ring-2">
+                                                                                                                                                            focus:ring-2">
                         ← Back
                     </a>
                     <button type="submit" class="bg-brand-500 hover:bg-blue-700 text-white  px-4 py-2 rounded-lg shadow transition 
-                                focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-600">
+                                    focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-600">
                         Create Budget
                     </button>
                 </div>
