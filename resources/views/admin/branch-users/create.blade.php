@@ -91,8 +91,8 @@
                         <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-white">Select Staff</label>
                         <button type="button"
                             class="dropdownButton
-        w-full h-11 px-4 rounded-lg border border-gray-300 dark:border-gray-700 
-        bg-white dark:bg-gray-800 text-gray-800 dark:text-white flex justify-between items-center">
+                                    w-full h-11 px-4 rounded-lg border border-gray-300 dark:border-gray-700 
+                                    bg-white dark:bg-gray-800 text-gray-800 dark:text-white flex justify-between items-center">
                             <span class="selectedText">Select User</span>
                             <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" stroke-width="2"
                                 viewBox="0 0 24 24">
@@ -104,18 +104,18 @@
 
                         <div
                             class="dropdownMenu hidden absolute z-30 mt-2 w-full p-3 rounded-lg border border-gray-300 
-        dark:border-gray-700 dark:bg-gray-800 shadow-lg">
+                                    dark:border-gray-700 dark:bg-gray-800 shadow-lg">
 
                             <input
                                 class="searchInput w-full h-10 px-3 mb-3 rounded-md border border-gray-300 dark:border-gray-700 
-            bg-white dark:bg-gray-900 text-gray-800 dark:text-white placeholder-gray-400 dark:placeholder-white/30"
+                                        bg-white dark:bg-gray-900 text-gray-800 dark:text-white placeholder-gray-400 dark:placeholder-white/30"
                                 placeholder="Search user..." />
 
                             <ul class="itemList max-h-60 overflow-y-auto">
                                 @foreach ($users as $user)
                                     <li data-id="{{ $user->id }}" data-name="{{ strtolower($user->name) }}"
                                         class="p-2 rounded-md cursor-pointer bg-white dark:bg-gray-800 
-                    hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-white">
+                                                hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-white">
                                         {{ $user->name }}
                                     </li>
                                 @endforeach
@@ -123,15 +123,20 @@
 
                             <p class="notFound hidden text-error-500 text-sm px-2">User not found</p>
                         </div>
+                        @error('user')
+                            <p class="text-error-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <!-- Role in Branch -->
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-white">Role in Branch</label>
-                        <select class="w-full h-11 px-4 rounded-lg border border-gray-300 dark:border-gray-700 
+                        <select
+                            class="w-full h-11 px-4 rounded-lg border border-gray-300 dark:border-gray-700 
                             bg-white dark:bg-gray-800 text-gray-800 dark:text-white 
                             placeholder-gray-400 dark:placeholder-white/30
-                            focus:ring-2 focus:ring-brand-400 focus:border-brand-500 outline-none" name="role_in_branch" id="">
+                            focus:ring-2 focus:ring-brand-400 focus:border-brand-500 outline-none"
+                            name="role_in_branch" id="">
                             <option value="" selected disabled>-- Pilih Jabatan --</option>
                             <option value="developer">Developer</option>
                             <option value="project-manager">Project Manager</option>

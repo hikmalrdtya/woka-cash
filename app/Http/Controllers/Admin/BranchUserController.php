@@ -50,11 +50,18 @@ class BranchUserController extends Controller
             'role_in_branch' => 'nullable|string|max:255'
         ]);
 
-        $role = null;
+        // Cek apakah user sudah ada di branch yang sama
+        $exists = BranchUser::where('branch_id', $data['branch'])
+            ->where('user_id', $data['user'])
+            ->exists();
 
-        if (!empty($data['role_in_branch'])) {
-            $role = $data['role_in_branch'];
+        if ($exists) {
+            return back()->withErrors([
+                'user' => 'User ini sudah terdaftar di branch tersebut'
+            ]);
         }
+
+        $role = $data['role_in_branch'] ?? null;
 
         BranchUser::create([
             'branch_id' => $data['branch'],
