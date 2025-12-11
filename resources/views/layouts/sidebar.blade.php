@@ -61,7 +61,7 @@
                         <li>
                             <a href="{{ route('admin.user.index') }}"
                                 class="menu-item group
-                                                                {{ request()->routeIs('admin.user.*') ? 'menu-item-active' : 'menu-item-inactive' }}">
+                                                                                {{ request()->routeIs('admin.user.*') ? 'menu-item-active' : 'menu-item-inactive' }}">
                                 <svg class="{{ request()->routeIs('admin.user.*') ? 'menu-item-icon-active' : 'menu-item-icon-inactive' }}"
                                     width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -81,14 +81,24 @@
                         <li>
                             <a href="{{ route('admin.branch.index') }}"
                                 class="menu-item group
-                                                                {{ request()->routeIs('admin.branch.*') ? 'menu-item-active' : 'menu-item-inactive' }}">
-                                <svg class="{{ request()->routeIs('admin.branch.*') ? 'menu-item-icon-active' : 'menu-item-icon-inactive' }}"
-                                    width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                        d="M12 3.5C7.30558 3.5 3.5 7.30558 3.5 12C3.5 14.1526 4.3002 16.1184 5.61936 17.616C6.17279 15.3096 8.24852 13.5955 10.7246 13.5955H13.2746C15.7509 13.5955 17.8268 15.31 18.38 17.6167C19.6996 16.119 20.5 14.153 20.5 12C20.5 7.30558 16.6944 3.5 12 3.5ZM17.0246 18.8566V18.8455C17.0246 16.7744 15.3457 15.0955 13.2746 15.0955H10.7246C8.65354 15.0955 6.97461 16.7744 6.97461 18.8455V18.856C8.38223 19.8895 10.1198 20.5 12 20.5C13.8798 20.5 15.6171 19.8898 17.0246 18.8566ZM2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM11.9991 7.25C10.8847 7.25 9.98126 8.15342 9.98126 9.26784C9.98126 10.3823 10.8847 11.2857 11.9991 11.2857C13.1135 11.2857 14.0169 10.3823 14.0169 9.26784C14.0169 8.15342 13.1135 7.25 11.9991 7.25ZM8.48126 9.26784C8.48126 7.32499 10.0563 5.75 11.9991 5.75C13.9419 5.75 15.5169 7.32499 15.5169 9.26784C15.5169 11.2107 13.9419 12.7857 11.9991 12.7857C10.0563 12.7857 8.48126 11.2107 8.48126 9.26784Z"
-                                        fill="" />
+                                                                                {{ request()->routeIs('admin.branch.*') ? 'menu-item-active' : 'menu-item-inactive' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6" fill="none"
+                                    stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+
+                                    <!-- Building -->
+                                    <rect x="3" y="5" width="9" height="14" rx="1.6" />
+                                    <path d="M6 9h3M6 12h3M6 15h3" />
+
+                                    <!-- Network Nodes -->
+                                    <circle cx="19" cy="8" r="1.4" />
+                                    <circle cx="19" cy="16" r="1.4" />
+
+                                    <!-- Lines connecting nodes to building -->
+                                    <path d="M12 9.5h5" />
+                                    <path d="M12 15.5h5" />
+                                    <path d="M17 9.5v6" />
                                 </svg>
+
                                 <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">
                                     Branch Management
                                 </span>
@@ -100,14 +110,20 @@
                         <li>
                             <a href="{{ route('admin.branchUser.index') }}"
                                 class="menu-item group
-                                                    {{ request()->routeIs('admin.branchUser.*') ? 'menu-item-active' : 'menu-item-inactive' }}">
-                                <svg class="{{ request()->routeIs('admin.branchUser.*') ? 'menu-item-icon-active' : 'menu-item-icon-inactive' }}"
-                                    width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                        d="M12 3.5C7.30558 3.5 3.5 7.30558 3.5 12C3.5 14.1526 4.3002 16.1184 5.61936 17.616C6.17279 15.3096 8.24852 13.5955 10.7246 13.5955H13.2746C15.7509 13.5955 17.8268 15.31 18.38 17.6167C19.6996 16.119 20.5 14.153 20.5 12C20.5 7.30558 16.6944 3.5 12 3.5ZM17.0246 18.8566V18.8455C17.0246 16.7744 15.3457 15.0955 13.2746 15.0955H10.7246C8.65354 15.0955 6.97461 16.7744 6.97461 18.8455V18.856C8.38223 19.8895 10.1198 20.5 12 20.5C13.8798 20.5 15.6171 19.8898 17.0246 18.8566ZM2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM11.9991 7.25C10.8847 7.25 9.98126 8.15342 9.98126 9.26784C9.98126 10.3823 10.8847 11.2857 11.9991 11.2857C13.1135 11.2857 14.0169 10.3823 14.0169 9.26784C14.0169 8.15342 13.1135 7.25 11.9991 7.25ZM8.48126 9.26784C8.48126 7.32499 10.0563 5.75 11.9991 5.75C13.9419 5.75 15.5169 7.32499 15.5169 9.26784C15.5169 11.2107 13.9419 12.7857 11.9991 12.7857C10.0563 12.7857 8.48126 11.2107 8.48126 9.26784Z"
-                                        fill="" />
+                                                                    {{ request()->routeIs('admin.branchUser.*') ? 'menu-item-active' : 'menu-item-inactive' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6" fill="none"
+                                    stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                                    
+
+                                    <!-- Building (left) -->
+                                    <rect x="3" y="4.5" width="8.5" height="15" rx="1.6" />
+                                    <path d="M6 9h2.5M6 12h2.5M6 15h2.5" />
+
+                                    <!-- Person (right side) -->
+                                    <circle cx="18" cy="10" r="2.2" />
+                                    <path d="M14.8 16c0-2 1.9-3.5 4.2-3.5S23.2 14 23.2 16" />
                                 </svg>
+
 
                                 <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">
                                     Branch User Management
@@ -119,15 +135,29 @@
                         <!-- Menu Item AI Agent -->
                         <li>
                             <a href="{{ route('admin.ai.index') }}"
-                                class="menu-item group
-                                                    {{ request()->routeIs('admin.ai.*') ? 'menu-item-active' : 'menu-item-inactive' }}">
-                                <svg class="{{ request()->routeIs('admin.ai.*') ? 'menu-item-icon-active' : 'menu-item-icon-inactive' }}"
-                                    width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                        d="M12 3.5C7.30558 3.5 3.5 7.30558 3.5 12C3.5 14.1526 4.3002 16.1184 5.61936 17.616C6.17279 15.3096 8.24852 13.5955 10.7246 13.5955H13.2746C15.7509 13.5955 17.8268 15.31 18.38 17.6167C19.6996 16.119 20.5 14.153 20.5 12C20.5 7.30558 16.6944 3.5 12 3.5ZM17.0246 18.8566V18.8455C17.0246 16.7744 15.3457 15.0955 13.2746 15.0955H10.7246C8.65354 15.0955 6.97461 16.7744 6.97461 18.8455V18.856C8.38223 19.8895 10.1198 20.5 12 20.5C13.8798 20.5 15.6171 19.8898 17.0246 18.8566ZM2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM11.9991 7.25C10.8847 7.25 9.98126 8.15342 9.98126 9.26784C9.98126 10.3823 10.8847 11.2857 11.9991 11.2857C13.1135 11.2857 14.0169 10.3823 14.0169 9.26784C14.0169 8.15342 13.1135 7.25 11.9991 7.25ZM8.48126 9.26784C8.48126 7.32499 10.0563 5.75 11.9991 5.75C13.9419 5.75 15.5169 7.32499 15.5169 9.26784C15.5169 11.2107 13.9419 12.7857 11.9991 12.7857C10.0563 12.7857 8.48126 11.2107 8.48126 9.26784Z"
-                                        fill="" />
+                                class="menu-item group {{ request()->routeIs('admin.ai.*') ? 'menu-item-active' : 'menu-item-inactive' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6" fill="none"
+                                    stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+
+                                    <!-- Outer Circle -->
+                                    <circle cx="12" cy="12" r="10" />
+
+                                    <!-- Antenna -->
+                                    <circle cx="12" cy="6" r="1.1" />
+                                    <path d="M12 7v1.5" />
+
+                                    <!-- Robot Head -->
+                                    <rect x="7" y="10" width="10" height="8" rx="2" />
+
+                                    <!-- Eyes -->
+                                    <circle cx="10" cy="14" r="1.2" />
+                                    <circle cx="14" cy="14" r="1.2" />
+
+                                    <!-- Mouth -->
+                                    <path d="M10 17h4" />
                                 </svg>
+
+
 
                                 <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">
                                     AI Agent
@@ -220,17 +250,16 @@
                             </a>
                         </li>
                         @if ($isDeveloper = auth()->user()->staffBranch()->wherePivot('role_in_branch', 'developer')->exists())
-                        <li>
-                            <a href="{{ route('staff.projects.index') }}"
-                                class="menu-item group {{ request()->routeIs('staff.projects.*') ? 'menu-item-active' : 'menu-item-inactive' }}">
+                            <li>
+                                <a href="{{ route('staff.projects.index') }}"
+                                    class="menu-item group {{ request()->routeIs('staff.projects.*') ? 'menu-item-active' : 'menu-item-inactive' }}">
 
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                    stroke="currentColor" class="w-6 h-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M3 7.5A2.5 2.5 0 0 1 5.5 5h4l2 2h7A2.5 2.5 0 0 1 21 9.5v8A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5v-10Z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 13l1.5 1.5L13 12M9 17h4" />
-                                </svg>
-
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                        stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M3 7.5A2.5 2.5 0 0 1 5.5 5h4l2 2h7A2.5 2.5 0 0 1 21 9.5v8A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5v-10Z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 13l1.5 1.5L13 12M9 17h4" />
+                                    </svg>
                                 <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">
                                     Projects List
                                 </span>
@@ -243,14 +272,26 @@
                             <a href="{{ route('staff.ai.index') }}"
                                 class="menu-item group
                                                     {{ request()->routeIs('staff.ai.*') ? 'menu-item-active' : 'menu-item-inactive' }}">
-                                <svg class="{{ request()->routeIs('staff.ai.*') ? 'menu-item-icon-active' : 'menu-item-icon-inactive' }}"
-                                    width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                        d="M12 3.5C7.30558 3.5 3.5 7.30558 3.5 12C3.5 14.1526 4.3002 16.1184 5.61936 17.616C6.17279 15.3096 8.24852 13.5955 10.7246 13.5955H13.2746C15.7509 13.5955 17.8268 15.31 18.38 17.6167C19.6996 16.119 20.5 14.153 20.5 12C20.5 7.30558 16.6944 3.5 12 3.5ZM17.0246 18.8566V18.8455C17.0246 16.7744 15.3457 15.0955 13.2746 15.0955H10.7246C8.65354 15.0955 6.97461 16.7744 6.97461 18.8455V18.856C8.38223 19.8895 10.1198 20.5 12 20.5C13.8798 20.5 15.6171 19.8898 17.0246 18.8566ZM2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM11.9991 7.25C10.8847 7.25 9.98126 8.15342 9.98126 9.26784C9.98126 10.3823 10.8847 11.2857 11.9991 11.2857C13.1135 11.2857 14.0169 10.3823 14.0169 9.26784C14.0169 8.15342 13.1135 7.25 11.9991 7.25ZM8.48126 9.26784C8.48126 7.32499 10.0563 5.75 11.9991 5.75C13.9419 5.75 15.5169 7.32499 15.5169 9.26784C15.5169 11.2107 13.9419 12.7857 11.9991 12.7857C10.0563 12.7857 8.48126 11.2107 8.48126 9.26784Z"
-                                        fill="" />
-                                </svg>
+                               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6" fill="none"
+                                    stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
 
+                                    <!-- Outer Circle -->
+                                    <circle cx="12" cy="12" r="10" />
+
+                                    <!-- Antenna -->
+                                    <circle cx="12" cy="6" r="1.1" />
+                                    <path d="M12 7v1.5" />
+
+                                    <!-- Robot Head -->
+                                    <rect x="7" y="10" width="10" height="8" rx="2" />
+
+                                    <!-- Eyes -->
+                                    <circle cx="10" cy="14" r="1.2" />
+                                    <circle cx="14" cy="14" r="1.2" />
+
+                                    <!-- Mouth -->
+                                    <path d="M10 17h4" />
+                                </svg>
                                 <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">
                                     AI Agent
                                 </span>
@@ -349,12 +390,25 @@
                             <a href="{{ route('finance.ai.index') }}"
                                 class="menu-item group
                                                     {{ request()->routeIs('finance.ai.*') ? 'menu-item-active' : 'menu-item-inactive' }}">
-                                <svg class="{{ request()->routeIs('finance.ai.*') ? 'menu-item-icon-active' : 'menu-item-icon-inactive' }}"
-                                    width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                        d="M12 3.5C7.30558 3.5 3.5 7.30558 3.5 12C3.5 14.1526 4.3002 16.1184 5.61936 17.616C6.17279 15.3096 8.24852 13.5955 10.7246 13.5955H13.2746C15.7509 13.5955 17.8268 15.31 18.38 17.6167C19.6996 16.119 20.5 14.153 20.5 12C20.5 7.30558 16.6944 3.5 12 3.5ZM17.0246 18.8566V18.8455C17.0246 16.7744 15.3457 15.0955 13.2746 15.0955H10.7246C8.65354 15.0955 6.97461 16.7744 6.97461 18.8455V18.856C8.38223 19.8895 10.1198 20.5 12 20.5C13.8798 20.5 15.6171 19.8898 17.0246 18.8566ZM2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM11.9991 7.25C10.8847 7.25 9.98126 8.15342 9.98126 9.26784C9.98126 10.3823 10.8847 11.2857 11.9991 11.2857C13.1135 11.2857 14.0169 10.3823 14.0169 9.26784C14.0169 8.15342 13.1135 7.25 11.9991 7.25ZM8.48126 9.26784C8.48126 7.32499 10.0563 5.75 11.9991 5.75C13.9419 5.75 15.5169 7.32499 15.5169 9.26784C15.5169 11.2107 13.9419 12.7857 11.9991 12.7857C10.0563 12.7857 8.48126 11.2107 8.48126 9.26784Z"
-                                        fill="" />
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6" fill="none"
+                                    stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+
+                                    <!-- Outer Circle -->
+                                    <circle cx="12" cy="12" r="10" />
+
+                                    <!-- Antenna -->
+                                    <circle cx="12" cy="6" r="1.1" />
+                                    <path d="M12 7v1.5" />
+
+                                    <!-- Robot Head -->
+                                    <rect x="7" y="10" width="10" height="8" rx="2" />
+
+                                    <!-- Eyes -->
+                                    <circle cx="10" cy="14" r="1.2" />
+                                    <circle cx="14" cy="14" r="1.2" />
+
+                                    <!-- Mouth -->
+                                    <path d="M10 17h4" />
                                 </svg>
 
                                 <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">
