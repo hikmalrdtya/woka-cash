@@ -89,16 +89,22 @@
                                 </td>
                                 <td class="py-3 px-4 text-gray-700 dark:text-white">
                                     <span class="inline-flex items-center justify-center gap-1 rounded-full
-                                                                                @if($row->status == 'pending') bg-warning-50 py-0.5 pl-2 pr-2.5 text-sm font-medium text-warning-600 dark:bg-warning-500/15 dark:text-orange-400
-                                                                                @elseif($row->status == 'approved') bg-success-50 py-0.5 pl-2 pr-2.5 text-sm font-medium text-success-600 dark:bg-success-500/15 dark:text-success-500
-                                                                                @elseif($row->status == 'rejected') bg-error-50 py-0.5 pl-2 pr-2.5 text-sm font-medium text-error-600 dark:bg-error-500/15 dark:text-error-500
-                                                                                @else bg-gray-100 text-gray-700 
-                                                                                @endif
-                                                                                ">
+                                                                                        @if($row->status == 'pending') bg-warning-50 py-0.5 pl-2 pr-2.5 text-sm font-medium text-warning-600 dark:bg-warning-500/15 dark:text-orange-400
+                                                                                        @elseif($row->status == 'approved') bg-success-50 py-0.5 pl-2 pr-2.5 text-sm font-medium text-success-600 dark:bg-success-500/15 dark:text-success-500
+                                                                                        @elseif($row->status == 'rejected') bg-error-50 py-0.5 pl-2 pr-2.5 text-sm font-medium text-error-600 dark:bg-error-500/15 dark:text-error-500
+                                                                                        @else bg-gray-100 text-gray-700 
+                                                                                        @endif
+                                                                                        ">
                                         @if($row->status == 'approved')
                                             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                                 <path d="M20 6L9 17l-5-5" />
+                                            </svg>
+                                        @elseif($row->status == 'pending')
+                                            <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <circle cx="12" cy="12" r="9" />
+                                                <path d="M12 7.5v4.7l2.2 1.3" />
                                             </svg>
 
                                         @elseif($row->status == 'rejected')
