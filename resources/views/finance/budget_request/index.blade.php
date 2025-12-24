@@ -79,7 +79,7 @@
                                     @else
                                      bg-gray-100 text-gray-700 @endif
 
-                            {{ ucfirst($row->status) }}
+                                        {{ ucfirst($row->status) }}
                                     </span>
                                 </td>
 

@@ -28,7 +28,7 @@
 
                 <a href="{{ route('finance.expenses.create') }}"
                     class="bg-brand-500 px-4 py-2 rounded-lg text-white text-sm shadow hover:bg-brand-600 transition">
-                    Create Budget Requests
+                    Create Expanses
                 </a>
             </div>
 
@@ -36,7 +36,7 @@
 
             <div class="w-full p-4 bg-white dark:bg-gray-900 rounded-xl shadow-md">
                 <h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-4">
-                    Daftar Incomes
+                    Daftar Expanses
                 </h2>
 
                 <div class="w-full overflow-x-auto">
@@ -68,10 +68,8 @@
                                         {{ $row->budgetRequest->title ?? 'N/A' }}</td>
                                     <td class="py-3 px-4 text-gray-700 dark:text-white">{{ $row->expense_date }}</td>
                                     <td class="py-3 px-4 flex gap-3 justify-center items-center">
-                                        <a href="{{ route('admin.user.edit', $row->id) }}"
-                                            class="inline-flex items-center gap-2 px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">Edit</a>
                                         <form id="delete-form-{{ $row->id }}"
-                                            action="{{ route('admin.user.destroy', $row->id) }}" method="POST">
+                                            action="{{ route('finance.expenses.destroy', $row->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
                                             <button type="button" onclick="deleteUser({{ $row->id }})"

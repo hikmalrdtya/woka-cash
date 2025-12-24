@@ -1,18 +1,12 @@
 @extends('layouts.main')
 
-@section('content')
-
-@extends('layouts.main')
-
 @section('title', 'Expanses Create | WokaCash')
 
 @section('content')
     <style>
-        /* DARK MODE FIX untuk TomSelect */
         .dark .ts-control,
         .dark .ts-dropdown {
             background-color: #1f2937 !important;
-            /* gray-800 */
             color: white !important;
             border: 1px 1px solid #374151;
         }
@@ -35,7 +29,7 @@
         <div class="mt-5 mb-4 flex items-center justify-between">
             <h2 class="text-2xl font-semibold text-gray-800 dark:text-white">Create Expanses</h2>
 
-            <a href="{{ route('staff.budget_requests.index') }}"
+            <a href="{{ route('finance.expenses.index') }}"
                 class="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-white px-4 py-2 rounded-lg transition">
                 ← Back
             </a>
@@ -44,7 +38,7 @@
         <!-- Card -->
         <div class="bg-white dark:bg-gray-900 rounded-xl mt-4 shadow p-6">
 
-            <form id="userCreateForm" action="{{ route('finance.expanses.store') }}" method="POST"
+            <form id="userCreateForm" action="{{ route('finance.expenses.store') }}" method="POST"
                 enctype="multipart/form-data">
                 @csrf
 
@@ -66,8 +60,7 @@
                         @error('branch_id') <p class="text-error-500 text-sm">{{ $message }}</p> @enderror
                     </div>
 
-                    
-                    {{-- AMOUNT --}}
+
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             Jumlah Pengeluaran
@@ -85,132 +78,116 @@
                         @error('amount') <p class="text-error-500 text-sm">{{ $message }}</p> @enderror
                     </div>
 
-                    {{-- NOTE --}}
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Catatan
-                        </label>
-                        <textarea name="note" rows="3"
-                            class="w-full border border-gray-300/50 dark:border-gray-600/50 bg-white/50 dark:bg-gray-700/50 rounded-xl px-3 py-2.5 dark:text-white"></textarea>
-                        @error('note') <p class="text-error-500 text-sm">{{ $message }}</p> @enderror
+                    {{-- FILE --}}
+                    <div>
+                        <label class="text-sm">Upload Nota</label>
+                        <input type="file" name="receipt_file" id="receipt_file" accept="image/*"
+                            class="w-full rounded-lg border px-3 py-2">
                     </div>
 
-                    {{-- Tanggal Pengajuan (auto today) --}}
-                    <input type="hidden" name="date_submission" value="{{ date('Y-m-d') }}">
-                </div>
+                    {{-- PREVIEW IMAGE --}}
+                    <div id="preview-wrapper" class="hidden">
+                        <label class="text-sm">Preview Nota</label>
+                        <img id="preview-image" class="rounded-lg border max-h-64">
+                    </div>
 
-                <!-- BUTTON -->
-                <div class="mt-8 flex justify-end">
-                    <button type="submit" class="bg-brand-500 hover:bg-blue-700 text-white  px-4 py-2 rounded-lg shadow transition 
-                                focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-600">
-                        Create Budget
-                    </button>
-                </div>
+                    {{-- STORE --}}
+                    <div id="store-wrapper" class="hidden">
+                        <label class="text-sm">Nama Toko</label>
+                        <input type="text" name="store_name" id="store_name" class="w-full rounded-lg border px-3 py-2">
+                    </div>
+
+                    {{-- NOTE NUMBER --}}
+                    <div id="note-wrapper" class="hidden">
+                        <label class="text-sm">Nomor Nota</label>
+                        <input type="text" name="note_number" id="note_number" class="w-full rounded-lg border px-3 py-2">
+                    </div>
+
+                    {{-- DATE --}}
+                    <div id="date-wrapper" class="hidden">
+                        <label class="text-sm">Tanggal</label>
+                        <input type="date" name="expense_date" id="expense_date" class="w-full rounded-lg border px-3 py-2">
+                    </div>
+
+                    <input type="hidden" name="ocr_raw_text" id="ocr_raw_text">
+
+                    <div class="mt-8 flex justify-end">
+                        <button type="submit" class="bg-brand-500 hover:bg-blue-700 text-white  px-4 py-2 rounded-lg shadow transition 
+                                                                focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-600">
+                            Create Expanse
+                        </button>
+                    </div>
 
             </form>
         </div>
 
     </div>
 
-    <!-- SCRIPT PREVIEW -->
     <script>
-        function formatRupiah(el) {
-            let value = el.value.replace(/[^0-9]/g, ""); // hanya angka
+        const receiptInput = document.getElementById('receipt_file');
 
-            if (!value) {
-                el.value = "";
-                return;
-            }
+        const storeWrapper = document.getElementById('store-wrapper');
+        const storeName = document.getElementById('store_name');
+        const noteWrapper = document.getElementById('note-wrapper');
+        const noteNumber = document.getElementById('note_number');
+        const dateWrapper = document.getElementById('date-wrapper');
+        const expenseDate = document.getElementById('expense_date');
+        const amountInput = document.getElementById('amount');
 
-            // format angka dengan locale Indonesia
-            let formatted = new Intl.NumberFormat("id-ID").format(value);
+        const previewWrapper = document.getElementById('preview-wrapper');
+        const previewImage = document.getElementById('preview-image');
 
-            el.value = formatted;
-        }
+        receiptInput.addEventListener('change', async function () {
+            if (!this.files.length) return;
 
-        const dropdownButton = document.getElementById("dropdownButton");
-        const dropdownMenu = document.getElementById("dropdownMenu");
-        const searchUser = document.getElementById("searchUser");
-        const userList = document.getElementById("userList");
-        const noUserFound = document.getElementById("noUserFound");
-        const selectedUser = document.getElementById("selectedUser");
-        const userInput = document.getElementById("userInput");
+            // preview image
+            previewWrapper.classList.remove('hidden');
+            previewImage.src = URL.createObjectURL(this.files[0]);
 
-        // Toggle dropdown
-        dropdownButton.addEventListener("click", () => {
-            dropdownMenu.classList.toggle("hidden");
-            searchUser.focus();
-        });
+            const formData = new FormData();
+            formData.append('receipt_file', this.files[0]);
+            formData.append('_token', '{{ csrf_token() }}');
 
-        // Filter user
-        searchUser.addEventListener("input", () => {
-            const keyword = searchUser.value.toLowerCase();
-            let found = false;
+            try {
+                const res = await fetch('{{ route('finance.expenses.ocr.preview') }}', {
+                    method: 'POST',
+                    body: formData
+                });
 
-            userList.querySelectorAll("li").forEach((li) => {
-                const name = li.dataset.name;
-                if (name.includes(keyword)) {
-                    li.classList.remove("hidden");
-                    found = true;
-                } else {
-                    li.classList.add("hidden");
+                if (!res.ok) throw new Error('OCR gagal');
+
+                const data = await res.json();
+
+                document.getElementById('ocr_raw_text').value = data.raw_text ?? '';
+
+                if (data.parsed?.store_name) {
+                    storeWrapper.classList.remove('hidden');
+                    storeName.value = data.parsed.store_name;
                 }
-            });
 
-            // Tampilkan atau sembunyikan pesan not found
-            if (!found) {
-                noUserFound.classList.remove("hidden");
-            } else {
-                noUserFound.classList.add("hidden");
+                if (data.parsed?.note_number) {
+                    noteWrapper.classList.remove('hidden');
+                    noteNumber.value = data.parsed.note_number;
+                }
+
+                if (data.parsed?.amount) {
+                    amountInput.value = new Intl.NumberFormat("id-ID").format(data.parsed.amount);
+                }
+
+                if (data.parsed?.expense_date) {
+                    dateWrapper.classList.remove('hidden');
+                    expenseDate.value = data.parsed.expense_date;
+                }
+
+            } catch (err) {
+                console.error(err);
+                alert('OCR gagal diproses');
             }
         });
 
-        // Pilih user
-        userList.querySelectorAll("li").forEach((li) => {
-            li.addEventListener("click", () => {
-                selectedUser.textContent = li.dataset.name;
-                userInput.value = li.dataset.id;
-                dropdownMenu.classList.add("hidden");
-            });
-        });
-
-        // Klik luar → tutup dropdown
-        document.addEventListener("click", (e) => {
-            if (!dropdownMenu.contains(e.target) && !dropdownButton.contains(e.target)) {
-                dropdownMenu.classList.add("hidden");
-            }
-        });
-
-        const passwordField = document.querySelector("[name=password]");
-        const invalidPassword = document.getElementById("invalid-password");
-
-        passwordField.addEventListener("keyup", () => {
-            const value = passwordField.value.trim();
-
-            if (value === "") {
-                invalidPassword.classList.add("hidden");
-                return;
-            }
-
-            if (!passwordField.validity.valid) {
-                invalidPassword.classList.remove("hidden");
-            } else {
-                invalidPassword.classList.add("hidden");
-            }
-        });
-
-        function previewPhoto(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const img = document.getElementById('preview-image');
-            const wrapper = document.getElementById('preview-wrapper');
-
-            img.src = URL.createObjectURL(file);
-            img.classList.remove('hidden');
-            wrapper.classList.add('border-brand-500');
+        function formatRupiah(el) {
+            el.value = el.value.replace(/\D/g, '')
+                .replace(/\B(?=(\d{3})+(?!\d))/g, '.');
         }
     </script>
-@endsection
-
 @endsection

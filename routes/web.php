@@ -63,6 +63,8 @@ Route::prefix('finance')->name('finance.')->middleware(['auth', 'role:finance'])
         ->name('budget_requests.reject');
     Route::post('/budget_requests/{id}/reject/update', [FinanceBudgetRequestController::class, 'rejectUpdate'])
         ->name('budget_requests.reject.update');
+    Route::post('/expenses/ocr-preview', [FinanceExpensesController::class, 'ocrPreview'])
+        ->name('expenses.ocr.preview');
     Route::get('/profile', [UserController::class, 'editProfileFinance'])->name('profile.edit');
     Route::put('/profile', [UserController::class, 'updateProfileFinance'])->name('profile.update');
     Route::get('/ai-agent', [ViewChatController::class, 'view'])->name('ai.index');

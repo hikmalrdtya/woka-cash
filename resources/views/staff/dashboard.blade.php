@@ -7,7 +7,7 @@
     <body
         x-data="{ page: 'ecommerce', 'loaded': true, 'darkMode': false, 'stickyMenu': false, 'sidebarToggle': false, 'scrollTop': false }"
         x-init="darkMode = JSON.parse(localStorage.getItem('darkMode'));
-                                                                $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))"
+                                                                    $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))"
         :class="{ 'dark bg-gray-900': darkMode === true }">
         <!-- ===== Preloader Start ===== -->
         <div x-show="loaded"
@@ -65,32 +65,33 @@
                                             @endphp
 
                                             <span class="flex items-center gap-1 rounded-full 
-                                                                {{ $isIncomeUp
+                                                                    {{ $isIncomeUp
         ? 'bg-success-50 text-success-600 dark:bg-success-500/15 dark:text-success-500'
         : 'bg-danger-50 text-danger-600 dark:bg-danger-500/15 dark:text-danger-400' }}
-                                                                py-0.5 pl-2 pr-2.5 text-sm font-medium">
+                                                                    py-0.5 pl-2 pr-2.5 text-sm font-medium">
 
                                                 {{-- Icon --}}
                                                 @if($isIncomeUp)
                                                     {{-- Arrow Up --}}
                                                     <svg class="fill-current" width="12" height="12" viewBox="0 0 12 12">
-                                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M5.56462 1.62393C5.70193 1.47072 5.90135 1.37432 6.12329 1.37432C6.1236 1.37432 6.12391 1.37432 
-                                                                                    6.12422 1.37432C6.31631 1.37415 6.50845 1.44731 6.65505 1.59381L9.65514 4.5918C9.94814 4.88459 
-                                                                                    9.94831 5.35947 9.65552 5.65246C9.36273 5.94546 8.88785 5.94562 8.59486 5.65283L6.87329 3.93247V10.125
-                                                                                    C6.87329 10.5392 6.53751 10.875 6.12329 10.875C5.70908 10.875 5.37329 10.5392 5.37329 10.125V3.93578
-                                                                                    L3.65516 5.65282C3.36218 5.94562 2.8873 5.94547 2.5945 5.65248C2.3017 5.35949 2.30185 4.88462 
-                                                                                    2.59484 4.59182L5.56462 1.62393Z" />
+                                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                                            d="M5.56462 1.62393C5.70193 1.47072 5.90135 1.37432 6.12329 1.37432C6.1236 1.37432 6.12391 1.37432 
+                                                                                            6.12422 1.37432C6.31631 1.37415 6.50845 1.44731 6.65505 1.59381L9.65514 4.5918C9.94814 4.88459 
+                                                                                            9.94831 5.35947 9.65552 5.65246C9.36273 5.94546 8.88785 5.94562 8.59486 5.65283L6.87329 3.93247V10.125
+                                                                                            C6.87329 10.5392 6.53751 10.875 6.12329 10.875C5.70908 10.875 5.37329 10.5392 5.37329 10.125V3.93578
+                                                                                            L3.65516 5.65282C3.36218 5.94562 2.8873 5.94547 2.5945 5.65248C2.3017 5.35949 2.30185 4.88462 
+                                                                                            2.59484 4.59182L5.56462 1.62393Z" />
                                                     </svg>
                                                 @else
                                                     {{-- Arrow Down --}}
                                                     <svg class="fill-current" width="12" height="12" viewBox="0 0 12 12">
                                                         <path fill-rule="evenodd" clip-rule="evenodd"
                                                             d="M6.43538 10.3761C6.29807 10.5293 6.09865 10.6257 5.87671 10.6257C5.8764 10.6257 5.87609 
-                                                                                    10.6257 5.87578 10.6257C5.68369 10.6259 5.49155 10.5527 5.34495 10.4062L2.34486 7.4082C2.05186 
-                                                                                    7.11541 2.05169 6.64053 2.34448 6.34754C2.63727 6.05454 3.11215 6.05438 3.40514 6.34717L5.12671 8.06753
-                                                                                    V1.875C5.12671 1.46077 5.46249 1.125 5.87671 1.125C6.29092 1.125 6.62671 1.46077 6.62671 1.875
-                                                                                    V8.06422L8.34484 6.34718C8.63782 6.05438 9.1127 6.05453 9.4055 6.34752C9.6983 6.64051 9.69815 
-                                                                                    7.11538 9.40516 7.40818L6.43538 10.3761Z" />
+                                                                                            10.6257 5.87578 10.6257C5.68369 10.6259 5.49155 10.5527 5.34495 10.4062L2.34486 7.4082C2.05186 
+                                                                                            7.11541 2.05169 6.64053 2.34448 6.34754C2.63727 6.05454 3.11215 6.05438 3.40514 6.34717L5.12671 8.06753
+                                                                                            V1.875C5.12671 1.46077 5.46249 1.125 5.87671 1.125C6.29092 1.125 6.62671 1.46077 6.62671 1.875
+                                                                                            V8.06422L8.34484 6.34718C8.63782 6.05438 9.1127 6.05453 9.4055 6.34752C9.6983 6.64051 9.69815 
+                                                                                            7.11538 9.40516 7.40818L6.43538 10.3761Z" />
                                                     </svg>
                                                 @endif
 
@@ -130,31 +131,32 @@
                                             </div>
 
                                             <span class="flex items-center gap-1 rounded-full 
-                                                                {{ $isExpenseUp = $expenseChange >= 0
+                                                                    {{ $isExpenseUp = $expenseChange >= 0
         ? 'bg-success-50 text-success-600 dark:bg-success-500/15 dark:text-success-500'
         : 'bg-danger-50 text-danger-600 dark:bg-danger-500/15 dark:text-danger-400' }}
-                                                                py-0.5 pl-2 pr-2.5 text-sm font-medium">
+                                                                    py-0.5 pl-2 pr-2.5 text-sm font-medium">
 
                                                 @if($isExpenseUp)
                                                     {{-- Arrow Up --}}
                                                     <svg class="fill-current" width="12" height="12" viewBox="0 0 12 12">
-                                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M5.56462 1.62393C5.70193 1.47072 5.90135 1.37432 6.12329 1.37432C6.1236 1.37432 6.12391 1.37432 
-                                                                                    6.12422 1.37432C6.31631 1.37415 6.50845 1.44731 6.65505 1.59381L9.65514 4.5918C9.94814 4.88459 
-                                                                                    9.94831 5.35947 9.65552 5.65246C9.36273 5.94546 8.88785 5.94562 8.59486 5.65283L6.87329 3.93247V10.125
-                                                                                    C6.87329 10.5392 6.53751 10.875 6.12329 10.875C5.70908 10.875 5.37329 10.5392 5.37329 10.125V3.93578
-                                                                                    L3.65516 5.65282C3.36218 5.94562 2.8873 5.94547 2.5945 5.65248C2.3017 5.35949 2.30185 4.88462 
-                                                                                    2.59484 4.59182L5.56462 1.62393Z" />
+                                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                                            d="M5.56462 1.62393C5.70193 1.47072 5.90135 1.37432 6.12329 1.37432C6.1236 1.37432 6.12391 1.37432 
+                                                                                            6.12422 1.37432C6.31631 1.37415 6.50845 1.44731 6.65505 1.59381L9.65514 4.5918C9.94814 4.88459 
+                                                                                            9.94831 5.35947 9.65552 5.65246C9.36273 5.94546 8.88785 5.94562 8.59486 5.65283L6.87329 3.93247V10.125
+                                                                                            C6.87329 10.5392 6.53751 10.875 6.12329 10.875C5.70908 10.875 5.37329 10.5392 5.37329 10.125V3.93578
+                                                                                            L3.65516 5.65282C3.36218 5.94562 2.8873 5.94547 2.5945 5.65248C2.3017 5.35949 2.30185 4.88462 
+                                                                                            2.59484 4.59182L5.56462 1.62393Z" />
                                                     </svg>
                                                 @else
                                                     {{-- Arrow Down --}}
                                                     <svg class="fill-current" width="12" height="12" viewBox="0 0 12 12">
                                                         <path fill-rule="evenodd" clip-rule="evenodd"
                                                             d="M6.43538 10.3761C6.29807 10.5293 6.09865 10.6257 5.87671 10.6257C5.8764 10.6257 5.87609 
-                                                                                    10.6257 5.87578 10.6257C5.68369 10.6259 5.49155 10.5527 5.34495 10.4062L2.34486 7.4082C2.05186 
-                                                                                    7.11541 2.05169 6.64053 2.34448 6.34754C2.63727 6.05454 3.11215 6.05438 3.40514 6.34717L5.12671 8.06753
-                                                                                    V1.875C5.12671 1.46077 5.46249 1.125 5.87671 1.125C6.29092 1.125 6.62671 1.46077 6.62671 1.875
-                                                                                    V8.06422L8.34484 6.34718C8.63782 6.05438 9.1127 6.05453 9.4055 6.34752C9.6983 6.64051 9.69815 
-                                                                                    7.11538 9.40516 7.40818L6.43538 10.3761Z" />
+                                                                                            10.6257 5.87578 10.6257C5.68369 10.6259 5.49155 10.5527 5.34495 10.4062L2.34486 7.4082C2.05186 
+                                                                                            7.11541 2.05169 6.64053 2.34448 6.34754C2.63727 6.05454 3.11215 6.05438 3.40514 6.34717L5.12671 8.06753
+                                                                                            V1.875C5.12671 1.46077 5.46249 1.125 5.87671 1.125C6.29092 1.125 6.62671 1.46077 6.62671 1.875
+                                                                                            V8.06422L8.34484 6.34718C8.63782 6.05438 9.1127 6.05453 9.4055 6.34752C9.6983 6.64051 9.69815 
+                                                                                            7.11538 9.40516 7.40818L6.43538 10.3761Z" />
                                                     </svg>
                                                 @endif
 
@@ -220,57 +222,69 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($latestExpense as $row)
-                                                    <tr
-                                                        class="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/30 transition">
-                                                        <td class="py-4 px-3 text-center">
-                                                            {{ \Carbon\Carbon::parse($row->expense_date)->format('d M Y') }}
-                                                        </td>
-                                                        <td class="text-center">Rp
-                                                            {{ number_format($row->amount, 0, ',', '.') }}
-                                                        </td>
-                                                        <td class="text-center">
-                                                            {{ ucfirst($row->budgetRequest->title ?? 'N/A') }}
-                                                        </td>
-                                                        <td class="text-center">
-                                                            <span class="inline-flex items-center justify-center gap-1 rounded-full
-                                                                                                        @if($row->budgetRequest->status == 'pending') bg-warning-50 py-0.5 pl-2 pr-2.5 text-sm font-medium text-warning-600 dark:bg-warning-500/15 dark:text-orange-400
-                                                                                                        @elseif($row->budgetRequest->status == 'approved') bg-success-50 py-0.5 pl-2 pr-2.5 text-sm font-medium text-success-600 dark:bg-success-500/15 dark:text-success-500
-                                                                                                        @elseif($row->budgetRequest->status == 'rejected') bg-error-50 py-0.5 pl-2 pr-2.5 text-sm font-medium text-error-600 dark:bg-error-500/15 dark:text-error-500
-                                                                                                        @else bg-gray-100 text-gray-700 
-                                                                                                        @endif
-                                                                                                        ">
-                                                                @if($row->budgetRequest->status == 'approved')
-                                                                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none"
-                                                                        stroke="currentColor" stroke-width="2"
-                                                                        stroke-linecap="round" stroke-linejoin="round">
-                                                                        <path d="M20 6L9 17l-5-5" />
-                                                                    </svg>
-                                                                @elseif($row->budgetRequest->status == 'pending')
-                                                                    <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none"
-                                                                        stroke="currentColor" stroke-width="2"
-                                                                        stroke-linecap="round" stroke-linejoin="round">
+                                                @forelse ($latestExpense as $row)
+                                                                                    <tr
+                                                                                        class="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/30 transition">
 
-                                                                        <!-- Minimal Clock -->
-                                                                        <circle cx="12" cy="12" r="9" />
-                                                                        <path d="M12 7.5v4.7l2.2 1.3" />
-                                                                    </svg>
+                                                                                        <td class="py-4 px-3 text-center">
+                                                                                            {{ \Carbon\Carbon::parse($row->expense_date)->format('d M Y') }}
+                                                                                        </td>
 
-                                                                @elseif($row->budgetRequest->status == 'rejected')
-                                                                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none"
-                                                                        stroke="currentColor" stroke-width="2"
-                                                                        stroke-linecap="round" stroke-linejoin="round">
-                                                                        <line x1="18" y1="6" x2="6" y2="18" />
-                                                                        <line x1="6" y1="6" x2="18" y2="18" />
-                                                                    </svg>
+                                                                                        <td class="text-center">
+                                                                                            Rp {{ number_format($row->amount, 0, ',', '.') }}
+                                                                                        </td>
 
-                                                                @endif
+                                                                                        <td class="text-center">
+                                                                                            {{ ucfirst($row->budgetRequest->title ?? 'N/A') }}
+                                                                                        </td>
 
-                                                                {{ ucfirst($row->budgetRequest->status) }}
-                                                            </span>
+                                                                                        <td class="text-center">
+                                                                                            <span class="inline-flex items-center justify-center gap-1 rounded-full
+                                                        @if(optional($row->budgetRequest)->status == 'pending')
+                                                            bg-warning-50 py-0.5 pl-2 pr-2.5 text-sm font-medium text-warning-600
+                                                        @elseif(optional($row->budgetRequest)->status == 'approved')
+                                                            bg-success-50 py-0.5 pl-2 pr-2.5 text-sm font-medium text-success-600
+                                                        @elseif(optional($row->budgetRequest)->status == 'rejected')
+                                                            bg-error-50 py-0.5 pl-2 pr-2.5 text-sm font-medium text-error-600
+                                                        @else
+                                                            bg-gray-100 text-gray-700
+                                                        @endif
+                                                    ">
+
+                                                                                                @if(optional($row->budgetRequest)->status == 'approved')
+                                                                                                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none"
+                                                                                                        stroke="currentColor" stroke-width="2"
+                                                                                                        stroke-linecap="round" stroke-linejoin="round">
+                                                                                                        <path d="M20 6L9 17l-5-5" />
+                                                                                                    </svg>
+                                                                                                @elseif(optional($row->budgetRequest)->status == 'pending')
+                                                                                                    <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none"
+                                                                                                        stroke="currentColor" stroke-width="2"
+                                                                                                        stroke-linecap="round" stroke-linejoin="round">
+                                                                                                        <circle cx="12" cy="12" r="9" />
+                                                                                                        <path d="M12 7.5v4.7l2.2 1.3" />
+                                                                                                    </svg>
+                                                                                                @elseif(optional($row->budgetRequest)->status == 'rejected')
+                                                                                                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none"
+                                                                                                        stroke="currentColor" stroke-width="2"
+                                                                                                        stroke-linecap="round" stroke-linejoin="round">
+                                                                                                        <line x1="18" y1="6" x2="6" y2="18" />
+                                                                                                        <line x1="6" y1="6" x2="18" y2="18" />
+                                                                                                    </svg>
+                                                                                                @endif
+
+                                                                                                {{ ucfirst(optional($row->budgetRequest)->status ?? 'N/A') }}
+                                                                                            </span>
+                                                                                        </td>
+                                                                                    </tr>
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="4"
+                                                            class="py-6 text-center text-gray-500 dark:text-gray-400">
+                                                            No data yet
                                                         </td>
                                                     </tr>
-                                                @endforeach
+                                                @endforelse
                                             </tbody>
                                         </table>
                                     </div>
@@ -294,7 +308,7 @@
                                             <div x-data="{ openDropDown: false }" class="relative h-fit">
                                                 <button @click="openDropDown = !openDropDown"
                                                     :class="openDropDown ? 'text-gray-700 dark:text-white' :
-                                                                                                                    'text-gray-400 hover:text-gray-700 dark:hover:text-white'">
+                                                                                                                        'text-gray-400 hover:text-gray-700 dark:hover:text-white'">
                                                     <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24"
                                                         fill="none" xmlns="http://www.w3.org/2000/svg">
                                                         <path fill-rule="evenodd" clip-rule="evenodd"
