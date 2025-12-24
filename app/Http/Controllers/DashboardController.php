@@ -241,7 +241,37 @@ class DashboardController extends Controller
                 'latestExpense'
             ));
         } elseif ($user->role === 'finance') {
-            return view('finance.dashboard');
+
+            $today = Carbon::today()->format('Y-m-d');
+            $yesterday = Carbon::yesterday()->format('Y-m-d');
+
+            $incomeToday = Income::whereDate('date', $today)->sum('amount');
+            $incomeYesterday = Income::whereDate('date', $yesterday)->sum('amount');
+
+            $incomeChange = 0;
+            if ($incomeYesterday > 0) {
+                $incomeChange = (($incomeToday - $incomeYesterday) / $incomeYesterday) * 100;
+            }
+
+            $expenseToday = Expense::whereDate('expense_date', $today)->sum('amount');
+            $expenseYesterday = Expense::whereDate('expense_date', $yesterday)->sum('amount');
+
+            $expenseChange = 0;
+            if ($expenseYesterday > 0) {
+                $expenseChange = (($expenseToday - $expenseYesterday) / $expenseYesterday) * 100;
+            }
+
+            $netBalance = $incomeToday - $expenseToday;
+
+            return view('finance.dashboard', compact(
+                'incomeToday',
+                'incomeYesterday',
+                'incomeChange',
+                'expenseToday',
+                'expenseYesterday',
+                'expenseChange',
+                'netBalance'
+            ));
         }
     }
 
