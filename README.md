@@ -1,59 +1,207 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 📓 WokaCash
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+**Sistem Pengelolaan Pengeluaran Keuangan dengan OCR & AI Chat Terintegrasi**
 
-## About Laravel
+WokaCash adalah aplikasi manajemen pengeluaran berbasis web yang dibangun menggunakan **Laravel**, dilengkapi dengan fitur **OCR (Optical Character Recognition)** menggunakan **Tesseract** untuk membaca nota belanja, serta integrasi **Chat AI (Grok API)** untuk membantu analisis dan konsultasi keuangan secara cerdas.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🚀 Fitur Utama
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 🔍 OCR Nota (Tesseract)
 
-## Learning Laravel
+* Upload foto nota (struk belanja)
+* Ekstraksi otomatis:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+  * Nama toko
+  * Nomor nota
+  * Tanggal transaksi
+  * Total pengeluaran
+* Preview hasil OCR sebelum data disimpan
+* Menyimpan teks OCR mentah (raw text) ke database
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 🤖 Chat AI (Grok API)
 
-## Laravel Sponsors
+* Chat interaktif untuk konsultasi keuangan
+* Analisis data pengeluaran
+* Membantu user memahami kondisi budget dan expense
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 📊 Manajemen Pengeluaran
 
-### Premium Partners
+* CRUD data pengeluaran
+* Relasi dengan cabang dan project
+* Upload & penyimpanan file nota
+* Status pengajuan budget (pending / approved / rejected)
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+---
 
-## Contributing
+## 🛠️ Teknologi yang Digunakan
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+* **Backend**: Laravel
+* **Frontend**: Blade + Tailwind CSS
+* **Database**: MySQL
+* **OCR Engine**: Tesseract OCR
+* **AI Chat**: Grok API
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 📥 Instalasi Project
 
-## Security Vulnerabilities
+### 1️⃣ Clone Repository
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+git clone https://github.com/hikmalrdtya/woka-cash.git
+cd woka-cash
+```
 
-## License
+### 2️⃣ Setup Environment
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Salin file `.env.example` menjadi `.env`:
+
+```bash
+cp .env.example .env
+```
+
+Atur konfigurasi berikut di `.env`:
+
+```env
+APP_NAME=WokaCash
+APP_URL=http://127.0.0.1:8000
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=wokacash
+DB_USERNAME=root
+DB_PASSWORD=
+
+GROK_API_KEY=your_grok_api_key_here
+```
+
+### 3️⃣ Install Dependency
+
+```bash
+composer install
+npm install
+npm run dev
+```
+
+### 4️⃣ Generate App Key
+
+```bash
+php artisan key:generate
+```
+
+### 5️⃣ Migrasi Database
+
+```bash
+php artisan migrate
+```
+
+### 6️⃣ Jalankan Server
+
+```bash
+php artisan serve
+```
+
+---
+
+## 🧠 Konfigurasi OCR (Tesseract)
+
+### 🔹 Install Tesseract
+
+Pastikan Tesseract sudah terinstall:
+
+```bash
+tesseract --version
+```
+
+Install bahasa Indonesia (opsional):
+
+```bash
+sudo apt install tesseract-ocr-ind
+```
+
+### 🔹 Path Tesseract
+
+Jika PHP tidak mendeteksi Tesseract, gunakan path absolut:
+
+```bash
+which tesseract
+```
+
+Contoh di controller:
+
+```php
+$process = new Process([
+    '/usr/bin/tesseract',
+    $fullPath,
+    'stdout',
+    '-l',
+    'eng+ind'
+]);
+```
+
+---
+
+## 💬 Integrasi Chat AI (Grok API)
+
+### Setting API Key
+
+Tambahkan di `.env`:
+
+```env
+GROK_API_KEY=your_api_key
+```
+
+### Contoh Pemanggilan API
+
+```php
+Http::withHeaders([
+    'Authorization' => 'Bearer ' . env('GROK_API_KEY'),
+])->post('https://api.openai.com/v1/grok', [
+    'prompt' => $message,
+]);
+```
+
+---
+
+## 🗂️ Struktur Folder Penting
+
+```
+app/Http/Controllers/Finance
+resources/views/finance/expenses
+routes/web.php
+database/migrations
+```
+
+---
+
+## 🧪 Testing OCR
+
+* Gunakan foto nota yang jelas
+* Hindari blur dan cahaya rendah
+* Gunakan nota dengan teks kontras tinggi
+
+---
+
+## 📄 Lisensi
+
+Project ini menggunakan lisensi **MIT**.
+
+---
+
+## 🙌 Kontribusi
+
+1. Fork repository
+2. Buat branch fitur baru
+3. Commit perubahan
+4. Ajukan Pull Request
+
+---
+
+## ✨ Penutup
+
+WokaCash dibuat untuk membantu pencatatan dan analisis keuangan secara modern dengan dukungan AI dan OCR.
+
+Happy Coding 🚀
